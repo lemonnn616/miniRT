@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:25:09 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/22 17:25:42 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/23 11:33:13 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,4 @@ typedef struct s_light
 	struct s_light	*next;
 }	t_light;
 
-#endif // LIGHT_H
+#endif
