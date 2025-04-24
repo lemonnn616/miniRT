@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:26:18 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 11:42:40 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:57:18 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,7 @@ typedef struct s_scene
 	t_ambient	ambient;
 	t_object	*objects;
 }	t_scene;
+
+void	free_scene(t_scene *scene);
 
 #endif
