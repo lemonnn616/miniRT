@@ -1,6 +1,6 @@
 NAME := miniRT
 
-SRC_DIRS := sources sources/parsing sources/math sources/utils
+SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug
 VPATH := $(SRC_DIRS)
 SRCS := \
 	main.c \
@@ -22,7 +22,8 @@ SRCS := \
 	ft_strtol.c \
 	ft_strtof.c \
 	ft_strtok.c \
-	split_whitespace.c
+	split_whitespace.c \
+	debug_parser.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)
