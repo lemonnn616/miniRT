@@ -18,11 +18,14 @@ void	debug_print_scene(const t_scene *scene)
 	t_camera *cam = scene->cameras;
 	while (cam)
 	{
-		printf("Camera %d: pos=(%.2f,%.2f,%.2f) dir=(%.2f,%.2f,%.2f) fov=%.2f\n",
-			idx++,
-			cam->pos.x, cam->pos.y, cam->pos.z,
-			cam->dir.x, cam->dir.y, cam->dir.z,
-			cam->fov);
+		printf("Camera %d: pos=(%.2f,%.2f,%.2f) dir=(%.2f,%.2f,%.2f) "
+				"right=(%.2f,%.2f,%.2f) up=(%.2f,%.2f,%.2f) fov=%.2f\n",
+				idx++,
+				cam->pos.x, cam->pos.y, cam->pos.z,
+				cam->dir.x, cam->dir.y, cam->dir.z,
+				cam->right.x, cam->right.y, cam->right.z,
+				cam->up.x, cam->up.y, cam->up.z,
+				cam->fov);
 		cam = cam->next;
 	}
 	idx = 0;

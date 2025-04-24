@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:24:26 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/23 11:14:32 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 17:19:02 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,7 @@ typedef struct s_camera
 	t_vec3	up;
 	struct s_camera *next;
 }	t_camera;
+
+void	camera_compute_basis(t_camera *cam);
 
 #endif

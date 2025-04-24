@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec3.h                                             :+:      :+:    :+:   */
+/*   camera_compute_basis.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:18:27 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 17:23:10 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/04/24 17:17:19 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/04/24 17:23:16 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VEC3_H
-#define VEC3_H
+#include "camera.h"
 
-#ifndef EPSILON
-# define EPSILON 1e-6f
-#endif
-
-#include <math.h>
-
-typedef struct s_vec3
+void camera_compute_basis(t_camera *cam)
 {
-	float x;
-	float y;
-	float z;
-}	t_vec3;
+	t_vec3 forward;
+	t_vec3 world_up;
 
-t_vec3	vec_normalize(t_vec3 v);
-float	vec_dot(t_vec3 a, t_vec3 b);
-t_vec3	vec_cross(t_vec3 a, t_vec3 b);
-
-#endif
+	forward  = vec_normalize(cam->dir);
+	world_up = (t_vec3){0.0f, 1.0f, 0.0f};
+	if (fabsf(vec_dot(forward, world_up)) > 0.999f)
+		world_up = (t_vec3){1.0f, 0.0f, 0.0f};
+	cam->right = vec_normalize(vec_cross(forward, world_up));
+	cam->up = vec_cross(cam->right, forward);
+}

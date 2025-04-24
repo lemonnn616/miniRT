@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec3.h                                             :+:      :+:    :+:   */
+/*   vec_cross.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:18:27 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 17:23:10 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/04/24 17:21:38 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/04/24 17:23:13 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VEC3_H
-#define VEC3_H
+#include "vec3.h"
 
-#ifndef EPSILON
-# define EPSILON 1e-6f
-#endif
-
-#include <math.h>
-
-typedef struct s_vec3
+t_vec3 vec_cross(t_vec3 a, t_vec3 b)
 {
-	float x;
-	float y;
-	float z;
-}	t_vec3;
-
-t_vec3	vec_normalize(t_vec3 v);
-float	vec_dot(t_vec3 a, t_vec3 b);
-t_vec3	vec_cross(t_vec3 a, t_vec3 b);
-
-#endif
+	t_vec3 result;
+	result.x = a.y * b.z - a.z * b.y;
+	result.y = a.z * b.x - a.x * b.z;
+	result.z = a.x * b.y - a.y * b.x;
+	return result;
+}

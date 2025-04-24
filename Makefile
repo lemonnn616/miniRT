@@ -23,6 +23,9 @@ SRCS := \
 	ft_strtof.c \
 	ft_strtok.c \
 	split_whitespace.c \
+	camera_compute_basis.c \
+	vec_cross.c \
+	vec_dot.c \
 	debug_parser.c
 
 OBJ_DIR := objects
