@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:02 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/23 13:50:09 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 13:39:10 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "utils.h"
 
 bool parse_vector(const char *str, t_vec3 *out)
 {
@@ -24,27 +25,27 @@ bool parse_vector(const char *str, t_vec3 *out)
 	copy = strdup(str); // libft
 	if (!copy)
 		return false;
-	tok = strtok(copy, ","); // libft
+	tok = ft_strtok(copy, ",");
 	if (!tok)
 	{
 		free(copy);
 		return false;
 	}
-	out->x = strtof(tok, NULL);
-	tok = strtok(NULL, ",");
+	out->x = ft_strtof(tok, NULL);
+	tok = ft_strtok(NULL, ",");
 	if (!tok)
 	{
 		free(copy);
 		return false;
 	}
-	out->y = strtof(tok, NULL);
-	tok = strtok(NULL, ",");
+	out->y = ft_strtof(tok, NULL);
+	tok = ft_strtok(NULL, ",");
 	if (!tok)
 	{
 		free(copy);
 		return false;
 	}
-	out->z = strtof(tok, NULL);
+	out->z = ft_strtof(tok, NULL);
 	free(copy);
 	return true;
 }

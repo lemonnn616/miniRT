@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:11 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/23 13:44:46 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 13:38:31 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "utils.h"
 
 bool parse_light(char **tokens, t_scene *scene)
 {
@@ -25,7 +26,7 @@ bool parse_light(char **tokens, t_scene *scene)
 	t_vec3 pos;
 	if (!parse_vector(tokens[1], &pos))
 		return false;
-	float intensity = strtof(tokens[2], NULL); // todo
+	float intensity = ft_strtof(tokens[2], NULL);
 	if (intensity < 0.0f || intensity > 1.0f)
 	{
 		fprintf(stderr, "Error\nLight intensity out of range [0,1]\n");

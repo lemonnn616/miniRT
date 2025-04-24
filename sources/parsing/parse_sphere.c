@@ -6,12 +6,13 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:26 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/23 13:46:59 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 13:42:18 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "libft.h"
+#include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -25,7 +26,7 @@ bool parse_sphere(char **tokens, t_scene *scene)
 	t_vec3 center;
 	if (!parse_vector(tokens[1], &center))
 		return false;
-	float dia = strtof(tokens[2], NULL); // todo
+	float dia = ft_strtof(tokens[2], NULL);
 	if (dia <= 0.0f)
 	{
 		fprintf(stderr, "Error\nSphere diameter <= 0\n");
@@ -34,7 +35,7 @@ bool parse_sphere(char **tokens, t_scene *scene)
 	t_color col;
 	if (!parse_color(tokens[3], &col))
 		return false;
-	t_material mat = { .color = col, .diffuse = 1.0f, // todo
+	t_material mat = { .color = col, .diffuse = 1.0f,
 						.specular = 0.0f, .shininess = 0.0f,
 						.reflectivity = 0.0f };
 	t_sphere *sp = malloc(sizeof(*sp));

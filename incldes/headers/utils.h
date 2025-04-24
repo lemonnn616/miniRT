@@ -1,31 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec3.h                                             :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:18:27 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 13:33:58 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/04/24 13:01:20 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/04/24 13:23:46 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VEC3_H
-#define VEC3_H
+#ifndef UTILS_H
+#define UTILS_H
 
-#ifndef EPSILON
-# define EPSILON 1e-6f
-#endif
-
-#include <math.h>
-
-typedef struct s_vec3
-{
-	float x;
-	float y;
-	float z;
-}	t_vec3;
-
-t_vec3	vec_normalize(t_vec3 v);
+char	**split_whitespace(const char *s);
+void	free_tokens(char **tokens);
+long	ft_strtol(const char *nptr, char **endptr, int base);
+float	ft_strtof(const char *nptr, char **endptr);
+char	*ft_strtok(char *str, const char *delim);
 
 #endif

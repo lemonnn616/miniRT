@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:09 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/23 14:17:05 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 13:41:21 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "utils.h"
 
 bool parse_cylinder(char **tokens, t_scene *scene)
 {
@@ -26,9 +27,9 @@ bool parse_cylinder(char **tokens, t_scene *scene)
 	t_vec3 base, axis;
 	if (!parse_vector(tokens[1], &base) || !parse_vector(tokens[2], &axis))
 		return false;
-	axis = vec_normalize(axis); // todo
-	float dia = strtof(tokens[3], NULL);
-	float h = strtof(tokens[4], NULL);
+	axis = vec_normalize(axis);
+	float dia = ft_strtof(tokens[3], NULL);
+	float h = ft_strtof(tokens[4], NULL);
 	if (dia <= 0.0f || h <= 0.0f)
 	{
 		fprintf(stderr, "Error\nCylinder size <= 0\n");

@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:13 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 11:43:32 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 13:41:44 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 #include "libft.h"
 #include <stdio.h>
 #include <string.h>
+#include "utils.h"
 
 bool parse_line(const char *line, t_scene *scene)
 {
 	char	**tokens;
 	bool	ok;
 
-	tokens = split_whitespace(line); // libft (if exist)
+	tokens = split_whitespace(line);
 	if (!tokens || !tokens[0])
 	{
-		free_tokens(tokens); // libft (if exist)
+		free_tokens(tokens);
 		return false;
 	}
 	ok = false;
@@ -45,6 +46,6 @@ bool parse_line(const char *line, t_scene *scene)
 		ok = parse_cone(tokens, scene);
 	else
 		fprintf(stderr, "Error\nUnknown identifier: %s\n", tokens[0]);
-	free_tokens(tokens); // libft (if exist)
+	free_tokens(tokens);
 	return ok;
 }

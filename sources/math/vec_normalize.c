@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec3.h                                             :+:      :+:    :+:   */
+/*   vec_normalize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:18:27 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 13:33:58 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/04/24 13:30:38 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/04/24 13:34:01 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VEC3_H
-#define VEC3_H
+#include "vec3.h"
 
-#ifndef EPSILON
-# define EPSILON 1e-6f
-#endif
-
-#include <math.h>
-
-typedef struct s_vec3
+t_vec3 vec_normalize(t_vec3 v)
 {
-	float x;
-	float y;
-	float z;
-}	t_vec3;
-
-t_vec3	vec_normalize(t_vec3 v);
-
-#endif
+	float len = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+	if (len < EPSILON)
+		return v;
+	v.x /= len;
+	v.y /= len;
+	v.z /= len;
+	return v;
+}

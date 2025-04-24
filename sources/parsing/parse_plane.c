@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:16 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/23 14:16:37 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 13:41:56 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool parse_plane(char **tokens, t_scene *scene)
 	t_vec3 point, normal;
 	if (!parse_vector(tokens[1], &point) || !parse_vector(tokens[2], &normal))
 		return false;
-	normal = vec_normalize(normal); // todo
+	normal = vec_normalize(normal);
 	t_color col;
 	if (!parse_color(tokens[3], &col))
 		return false;
