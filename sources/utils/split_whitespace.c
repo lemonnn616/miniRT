@@ -6,13 +6,14 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 13:20:05 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 13:42:29 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:16:37 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 #include <stdlib.h>
 #include <string.h>
+#include "libft.h"
 
 char **split_whitespace(const char *s)
 {
@@ -20,11 +21,11 @@ char **split_whitespace(const char *s)
 	char **res;
 
 	while (s[i]) {
-		while (s[i] && isspace((unsigned char)s[i]))
+		while (s[i] && ft_isspace((unsigned char)s[i]))
 			i++;
 		if (s[i]) {
 			count++;
-			while (s[i] && !isspace((unsigned char)s[i]))
+			while (s[i] && !ft_isspace((unsigned char)s[i]))
 				i++;
 		}
 	}
@@ -34,11 +35,11 @@ char **split_whitespace(const char *s)
 	i = 0;
 	size_t idx = 0;
 	while (s[i]) {
-		while (s[i] && isspace((unsigned char)s[i]))
+		while (s[i] && ft_isspace((unsigned char)s[i]))
 			i++;
 		if (s[i]) {
 			size_t start = i;
-			while (s[i] && !isspace((unsigned char)s[i]))
+			while (s[i] && !ft_isspace((unsigned char)s[i]))
 				i++;
 			size_t len = i - start;
 			res[idx] = malloc(len + 1);
@@ -48,7 +49,7 @@ char **split_whitespace(const char *s)
 				free(res);
 				return NULL;
 			}
-			memcpy(res[idx], s + start, len);
+			ft_memcpy(res[idx], s + start, len);
 			res[idx][len] = '\0';
 			idx++;
 		}

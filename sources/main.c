@@ -6,12 +6,13 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:00:53 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 14:00:56 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:19:31 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "parser.h"
+#include "libft.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -21,13 +22,13 @@ int main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		fprintf("Usage: ./minirt <scene.rt>\n");
+		fprintf(stderr, "Usage: ./minirt <scene.rt>\n");
 		return 1;
 	}
-	memset(&scene, 0, sizeof(scene));
+	ft_memset(&scene, 0, sizeof(scene));
 	if (!parse_scene(argv[1], &scene))
 	{
-		fprintf("Error\nFailed to parse scene.\n");
+		fprintf(stderr, "Error\nFailed to parse scene.\n");
 		return 1;
 	}
 	printf("OK\n");

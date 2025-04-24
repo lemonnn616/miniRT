@@ -6,9 +6,12 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:35:37 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 11:36:17 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:13:55 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef CONE_H
+#define CONE_H
 
 #include "vec3.h"
 #include "material.h"

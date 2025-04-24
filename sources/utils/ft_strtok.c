@@ -6,12 +6,13 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 13:29:36 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 13:42:26 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:16:53 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 #include <string.h>
+#include "libft.h"
 
 char *ft_strtok(char *str, const char *delim)
 {
@@ -23,7 +24,7 @@ char *ft_strtok(char *str, const char *delim)
 	if (!last)
 		return NULL;
 	start = last;
-	while (*start && strchr(delim, *start))
+	while (*start && ft_strchr(delim, *start))
 		start++;
 	if (!*start)
 	{
@@ -31,7 +32,7 @@ char *ft_strtok(char *str, const char *delim)
 		return NULL;
 	}
 	char *p = start;
-	while (*p && !strchr(delim, *p))
+	while (*p && !ft_strchr(delim, *p))
 		p++;
 	if (*p)
 	{

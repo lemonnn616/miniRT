@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:44:46 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 13:38:11 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:36:05 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool parse_cone(char **tokens, t_scene *scene)
 {
 	if (!tokens[1] || !tokens[2] || !tokens[3] || !tokens[4] || !tokens[5] || tokens[6])
 	{
-		fprintf("Error\nInvalid cone format\n");
+		fprintf(stderr, "Error\nInvalid cone format\n");
 		return false;
 	}
 	t_cone *co = malloc(sizeof(*co));
@@ -40,7 +40,7 @@ bool parse_cone(char **tokens, t_scene *scene)
 	co->height = ft_strtof(tokens[4], NULL);
 	if (co->angle <= 0.0f || co->angle >= 180.0f || co->height <= 0.0f)
 	{
-		fprintf("Error\nCone parameters out of range\n");
+		fprintf(stderr, "Error\nCone parameters out of range\n");
 		free(co);
 		return false;
 	}

@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:22 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 13:42:16 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:26:05 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ bool	parse_scene(const char *filename, t_scene *scene)
 	}
 	while (true)
 	{
-		line = get_next_line(fd); // libft (if exist)
+		line = get_next_line(fd);
 		if (!line)
 			break;
-		trimmed = trim(line); // libft (if exist)
+		trimmed = ft_strtrim(line, " \t\n\r\v\f");
 		free(line);
 		if (trimmed[0] == '\0' || trimmed[0] == '#')
 		{
