@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:26:55 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/23 12:32:07 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:37:56 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,7 @@ bool parse_plane(char **tokens, t_scene *scene);
 bool parse_cylinder(char **tokens, t_scene *scene);
 bool parse_vector(const char *str, t_vec3 *out);
 bool parse_color(const char *str, t_color *out);
+bool parse_cone(char **tokens, t_scene *scene);
+bool parse_resolution(char **tokens, t_scene *scene);
 
 #endif

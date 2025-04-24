@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:22 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/23 13:39:52 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:42:48 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,18 @@
 #include <unistd.h>
 #include <stdio.h>
 
+#define DEFAULT_WIDTH 800
+#define DEFAULT_HEIGHT 600
+
 bool	parse_scene(const char *filename, t_scene *scene)
 {
 	int		fd;
 	char	*line;
 	char	*trimmed;
 
+	scene->width = DEFAULT_WIDTH;
+	scene->height = DEFAULT_HEIGHT;
+	scene->resolution_set = false;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{

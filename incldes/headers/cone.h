@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   cone.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:26:18 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 11:42:40 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/04/24 11:35:37 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/04/24 11:36:17 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-#define SCENE_H
+#include "vec3.h"
+#include "material.h"
 
-#include "camera.h"
-#include "light.h"
-#include "ambient.h"
-#include "object.h"
-#include <stdbool.h>
-
-typedef struct s_scene
+typedef struct s_cone
 {
-	int	width;
-	int	height;
-	bool	resolution_set;
-	t_camera	*cameras;
-	t_camera	*active_cam;
-	t_light	*lights;
-	t_ambient	ambient;
-	t_object	*objects;
-}	t_scene;
+	t_vec3	apex;
+	t_vec3	axis;
+	float	angle;
+	float	height;
+	t_material	mat;
+}	t_cone;
 
 #endif
