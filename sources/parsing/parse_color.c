@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:32:07 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 14:32:08 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/25 13:44:29 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,44 +17,56 @@
 #include <string.h>
 #include "utils.h"
 
-bool parse_color(const char *str, t_color *out)
+static bool	color_range_valid(long r, long g, long b)
 {
-	char *copy;
-	char *tok;
-	long r, g, b;
+	if (r < 0 || r > 255)
+		return (false);
+	if (g < 0 || g > 255)
+		return (false);
+	if (b < 0 || b > 255)
+		return (false);
+	return (true);
+}
+
+static bool	extract_components(char *copy, long *r, long *g, long *b)
+{
+	char	*tok;
+
+	tok = ft_strtok(copy, ",");
+	if (!tok)
+		return (false);
+	*r = ft_strtol(tok, NULL, 10);
+	tok = ft_strtok(NULL, ",");
+	if (!tok)
+		return (false);
+	*g = ft_strtol(tok, NULL, 10);
+	tok = ft_strtok(NULL, ",");
+	if (!tok)
+		return (false);
+	*b = ft_strtol(tok, NULL, 10);
+	return (true);
+}
+
+bool	parse_color(const char *str, t_color *out)
+{
+	char	*copy;
+	long	r;
+	long	g;
+	long	b;
 
 	copy = ft_strdup(str);
 	if (!copy)
-		return false;
-	tok = ft_strtok(copy, ",");
-	if (!tok)
-	{
-		free(copy);
-		return false;
-	}
-	r = ft_strtol(tok, NULL, 10);
-	tok = ft_strtok(NULL, ",");
-	if (!tok)
-	{
-		free(copy);
-		return false;
-	}
-	g = ft_strtol(tok, NULL, 10);
-	tok = ft_strtok(NULL, ",");
-	if (!tok)
-	{
-		free(copy);
-		return false;
-	}
-	b = ft_strtol(tok, NULL, 10);
+		return (false);
+	if (!extract_components(copy, &r, &g, &b))
+		return (free(copy), false);
 	free(copy);
-	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
+	if (!color_range_valid(r, g, b))
 	{
-		fprintf(stderr, "Error\nColor out of range [0,255]\n");
-		return false;
+		printf("Error\nColor out of range [0,255]\n");
+		return (false);
 	}
 	out->r = (uint8_t)r;
 	out->g = (uint8_t)g;
 	out->b = (uint8_t)b;
-	return true;
+	return (true);
 }

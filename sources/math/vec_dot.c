@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 17:21:40 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 17:23:14 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/25 12:57:13 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 float	vec_dot(t_vec3 a, t_vec3 b)
 {
-	return a.x * b.x + a.y * b.y + a.z * b.z;
+	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }

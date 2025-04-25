@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:00:53 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 16:58:51 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/25 12:40:13 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,23 @@
 
 #include "debug.h"
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_scene scene;
+	t_scene	scene;
 
 	if (argc != 2)
 	{
-		fprintf(stderr, "Usage: ./minirt <scene.rt>\n");
-		return 1;
+		printf("Usage: ./minirt <scene.rt>\n");
+		return (1);
 	}
 	ft_memset(&scene, 0, sizeof(scene));
 	if (!parse_scene(argv[1], &scene))
 	{
-		fprintf(stderr, "Error\nFailed to parse scene.\n");
+		printf("Error\nFailed to parse scene.\n");
 		free_scene(&scene);
-		return 1;
+		return (1);
 	}
-	debug_print_scene(&scene); // debug function
-	// TODO:render_scene(&scene);
+	debug_print_scene(&scene);
 	free_scene(&scene);
-	return 0;
+	return (0);
 }

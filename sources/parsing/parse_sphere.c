@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:26 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 13:42:18 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/25 13:48:26 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,47 +16,65 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-bool parse_sphere(char **tokens, t_scene *scene)
+static bool	validate_sphere_tokens(char **tokens)
 {
 	if (!tokens[1] || !tokens[2] || !tokens[3] || tokens[4])
 	{
-		fprintf(stderr, "Error\nInvalid sphere format\n");
-		return false;
+		printf("Error\nInvalid sphere format\n");
+		return (false);
 	}
-	t_vec3 center;
+	return (true);
+}
+
+static bool	fill_sphere_data(t_sphere *sp, char **tokens)
+{
+	t_vec3	center;
+	float	dia;
+
 	if (!parse_vector(tokens[1], &center))
-		return false;
-	float dia = ft_strtof(tokens[2], NULL);
+		return (false);
+	dia = ft_strtof(tokens[2], NULL);
 	if (dia <= 0.0f)
 	{
-		fprintf(stderr, "Error\nSphere diameter <= 0\n");
-		return false;
-	}
-	t_color col;
-	if (!parse_color(tokens[3], &col))
-		return false;
-	t_material mat = { .color = col, .diffuse = 1.0f,
-						.specular = 0.0f, .shininess = 0.0f,
-						.reflectivity = 0.0f };
-	t_sphere *sp = malloc(sizeof(*sp));
-	if (!sp)
-	{
-		perror("malloc");
-		return false;
+		printf("Error\nSphere diameter <= 0\n");
+		return (false);
 	}
 	sp->center = center;
 	sp->radius = dia * 0.5f;
-	sp->mat = mat;
-	t_object *obj = malloc(sizeof(*obj));
+	return (true);
+}
+
+static void	set_sphere_material(t_sphere *sp, t_color col)
+{
+	sp->mat.color = col;
+	sp->mat.diffuse = 1.0f;
+	sp->mat.specular = 0.0f;
+	sp->mat.shininess = 0.0f;
+	sp->mat.reflectivity = 0.0f;
+}
+
+bool	parse_sphere(char **tokens, t_scene *scene)
+{
+	t_sphere	*sp;
+	t_object	*obj;
+	t_color		col;
+
+	if (!validate_sphere_tokens(tokens))
+		return (false);
+	sp = malloc(sizeof(*sp));
+	if (!sp)
+		return (perror("malloc"), false);
+	if (!fill_sphere_data(sp, tokens))
+		return (free(sp), false);
+	if (!parse_color(tokens[3], &col))
+		return (free(sp), false);
+	set_sphere_material(sp, col);
+	obj = malloc(sizeof(*obj));
 	if (!obj)
-	{
-		perror("malloc");
-		free(sp);
-		return false;
-	}
+		return (perror("malloc"), free(sp), false);
 	obj->type = OBJ_SPHERE;
-	obj->obj  = sp;
+	obj->obj = sp;
 	obj->next = scene->objects;
 	scene->objects = obj;
-	return true;
+	return (true);
 }

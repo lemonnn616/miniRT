@@ -6,24 +6,24 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:18:27 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 17:23:10 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/25 12:30:20 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VEC3_H
-#define VEC3_H
+# define VEC3_H
 
-#ifndef EPSILON
-# define EPSILON 1e-6f
-#endif
+# ifndef EPSILON
+#  define EPSILON 1e-6f
+# endif
 
-#include <math.h>
+# include <math.h>
 
 typedef struct s_vec3
 {
-	float x;
-	float y;
-	float z;
+	float	x;
+	float	y;
+	float	z;
 }	t_vec3;
 
 t_vec3	vec_normalize(t_vec3 v);

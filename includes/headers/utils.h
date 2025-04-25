@@ -6,12 +6,12 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 13:01:20 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 13:23:46 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/25 12:30:31 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_H
-#define UTILS_H
+# define UTILS_H
 
 char	**split_whitespace(const char *s);
 void	free_tokens(char **tokens);

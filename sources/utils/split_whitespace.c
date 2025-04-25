@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 13:20:05 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 14:16:37 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/25 12:55:31 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,45 +15,96 @@
 #include <string.h>
 #include "libft.h"
 
-char **split_whitespace(const char *s)
+static size_t	count_words(const char *s)
 {
-	size_t i = 0, count = 0;
-	char **res;
+	size_t	i;
+	size_t	count;
 
-	while (s[i]) {
+	i = 0;
+	count = 0;
+	while (s[i])
+	{
 		while (s[i] && ft_isspace((unsigned char)s[i]))
 			i++;
-		if (s[i]) {
+		if (s[i])
+		{
 			count++;
 			while (s[i] && !ft_isspace((unsigned char)s[i]))
 				i++;
 		}
 	}
-	res = malloc((count + 1) * sizeof(*res));
-	if (!res)
-		return NULL;
+	return (count);
+}
+
+static void	free_words(char **res, size_t last)
+{
+	size_t	i;
+
 	i = 0;
-	size_t idx = 0;
-	while (s[i]) {
+	while (i < last)
+	{
+		free(res[i]);
+		i++;
+	}
+	free(res);
+}
+
+static char	*alloc_word(const char *s, size_t start, size_t end)
+{
+	char	*word;
+	size_t	i;
+
+	word = malloc((end - start + 1) * sizeof(char));
+	if (!word)
+		return (NULL);
+	i = 0;
+	while (start < end)
+	{
+		word[i] = s[start];
+		i++;
+		start++;
+	}
+	word[i] = '\0';
+	return (word);
+}
+
+static int	fill_words(char **res, const char *s)
+{
+	size_t	i;
+	size_t	idx;
+	size_t	start;
+
+	i = 0;
+	idx = 0;
+	while (s[i])
+	{
 		while (s[i] && ft_isspace((unsigned char)s[i]))
 			i++;
-		if (s[i]) {
-			size_t start = i;
+		if (s[i])
+		{
+			start = i;
 			while (s[i] && !ft_isspace((unsigned char)s[i]))
 				i++;
-			size_t len = i - start;
-			res[idx] = malloc(len + 1);
-			if (!res[idx]) {
-				for (size_t j = 0; j < idx; j++)
-					free(res[j]);
-				free(res);
-				return NULL;
-			}
-			ft_memcpy(res[idx], s + start, len);
-			res[idx][len] = '\0';
+			res[idx] = alloc_word(s, start, i);
+			if (!res[idx])
+				return (free_words(res, idx), 0);
 			idx++;
 		}
 	}
 	res[idx] = NULL;
-	return res;
+	return (1);
+}
+
+char	**split_whitespace(const char *s)
+{
+	char	**res;
+	size_t	count;
+
+	count = count_words(s);
+	res = (char **)malloc((count + 1) * sizeof(char *));
+	if (!res)
+		return (NULL);
+	if (!fill_words(res, s))
+		return (NULL);
+	return (res);
 }

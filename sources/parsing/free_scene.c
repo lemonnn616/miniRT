@@ -6,16 +6,17 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:55:04 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 14:18:43 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/25 12:59:33 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scene.h"
 #include <stdlib.h>
 
-static void free_cameras(t_camera *cam)
+static void	free_cameras(t_camera *cam)
 {
-	t_camera *next;
+	t_camera	*next;
+
 	while (cam)
 	{
 		next = cam->next;
@@ -24,9 +25,10 @@ static void free_cameras(t_camera *cam)
 	}
 }
 
-static void free_lights(t_light *light)
+static void	free_lights(t_light *light)
 {
-	t_light *next;
+	t_light	*next;
+
 	while (light)
 	{
 		next = light->next;
@@ -35,9 +37,10 @@ static void free_lights(t_light *light)
 	}
 }
 
-static void free_objects(t_object *obj)
+static void	free_objects(t_object *obj)
 {
-	t_object *next;
+	t_object	*next;
+
 	while (obj)
 	{
 		next = obj->next;
@@ -48,10 +51,10 @@ static void free_objects(t_object *obj)
 	}
 }
 
-void free_scene(t_scene *scene)
+void	free_scene(t_scene *scene)
 {
 	if (!scene)
-		return;
+		return ;
 	free_cameras(scene->cameras);
 	free_lights(scene->lights);
 	free_objects(scene->objects);

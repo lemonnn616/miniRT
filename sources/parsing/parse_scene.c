@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:22 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/24 17:19:11 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/04/25 13:47:30 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,54 +19,50 @@
 #define DEFAULT_WIDTH 800
 #define DEFAULT_HEIGHT 600
 
+static void	setup_camera_basis(t_camera *cam)
+{
+	while (cam)
+	{
+		camera_compute_basis(cam);
+		cam = cam->next;
+	}
+}
+
+static bool	process_line(char *line, t_scene *scene)
+{
+	char	*trimmed;
+	bool	ok;
+
+	trimmed = ft_strtrim(line, " \t\n\r\v\f");
+	free(line);
+	if (trimmed[0] == '\0' || trimmed[0] == '#')
+		return (free(trimmed), true);
+	ok = parse_line(trimmed, scene);
+	return (free(trimmed), ok);
+}
+
 bool	parse_scene(const char *filename, t_scene *scene)
 {
 	int		fd;
 	char	*line;
-	char	*trimmed;
 
 	scene->width = DEFAULT_WIDTH;
 	scene->height = DEFAULT_HEIGHT;
 	scene->resolution_set = false;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-	{
-		perror("open");
-		return false;
-	}
-	while (true)
+		return (perror("open"), false);
+	while (1)
 	{
 		line = get_next_line(fd);
 		if (!line)
-			break;
-		trimmed = ft_strtrim(line, " \t\n\r\v\f");
-		free(line);
-		if (trimmed[0] == '\0' || trimmed[0] == '#')
-		{
-			free(trimmed);
-			continue;
-		}
-		if (!parse_line(trimmed, scene))
-		{
-			free(trimmed);
-			close(fd);
-			return false;
-		}
-		free(trimmed);
+			break ;
+		if (!process_line(line, scene))
+			return (close(fd), false);
 	}
 	close(fd);
 	if (!scene->ambient.is_set || !scene->cameras || !scene->lights)
-	{
-		fprintf(stderr, "Error\nMissing ambient, camera or light\n");
-		return false;
-	}
-	{
-		t_camera *cam = scene->cameras;
-		while (cam)
-		{
-			camera_compute_basis(cam);
-			cam = cam->next;
-		}
-	}
-	return true;
+		return (printf("Error\nMissing ambient, camera or light\n"), false);
+	setup_camera_basis(scene->cameras);
+	return (true);
 }
