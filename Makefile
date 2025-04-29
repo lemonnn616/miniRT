@@ -1,6 +1,6 @@
 NAME := miniRT
 
-SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug
+SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug sources/rendering
 VPATH := $(SRC_DIRS)
 SRCS := \
 	main.c \
@@ -26,7 +26,10 @@ SRCS := \
 	camera_compute_basis.c \
 	vec_cross.c \
 	vec_dot.c \
-	debug_parser.c
+	debug_parser.c \
+	exit.c \
+	window.c \
+	rays.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)
@@ -35,7 +38,7 @@ LIBFT_DIR := includes/libft
 MLX42_DIR := includes/MLX42
 MLX42_BUILD:= $(MLX42_DIR)/build
 
-INCLUDES := -Iincludes/headers -I$(MLX42_DIR)/include -I$(LIBFT_DIR)
+INCLUDES := -Iincludes/headers -I$(MLX42_DIR)/include/MLX42 -I$(LIBFT_DIR)
 CC := cc
 CFLAGS := -Wall -Wextra -Werror $(INCLUDES)
 MLX42_LIB := $(MLX42_BUILD)/libmlx42.a
