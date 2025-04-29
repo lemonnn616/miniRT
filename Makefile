@@ -1,61 +1,86 @@
-NAME = miniRT
+NAME := miniRT
 
-SRC_DIRS = sources sources/parsing
-VPATH = $(SRC_DIRS) includes/libft
-
-SRCS = \
+SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug
+VPATH := $(SRC_DIRS)
+SRCS := \
 	main.c \
+	vec_normalize.c \
+	free_scene.c \
+	parse_ambient.c \
+	parse_camera.c \
+	parse_color.c \
+	parse_cone.c \
+	parse_cylinder.c \
+	parse_light.c \
+	parse_line.c \
+	parse_plane.c \
+	parse_resolution.c \
 	parse_scene.c \
-	render.c \
-	shapes.c \
-	utils.c
+	parse_sphere.c \
+	parse_vector.c \
+	free_tokens.c \
+	ft_strtol.c \
+	ft_strtof.c \
+	ft_strtok.c \
+	split_whitespace.c \
+	camera_compute_basis.c \
+	vec_cross.c \
+	vec_dot.c \
+	debug_parser.c
 
-BONUS_SRCS  =
+OBJ_DIR := objects
+OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
-OBJ = $(SRCS:.c=.o)
-OBJ_BONUS = $(BONUS_SRCS:.c=.o)
+LIBFT_DIR := includes/libft
+MLX42_DIR := includes/MLX42
+MLX42_BUILD:= $(MLX42_DIR)/build
 
-LIBFT_DIR   = includes/libft
-MLX42_DIR   = includes/MLX42
+INCLUDES := -Iincludes/headers -I$(MLX42_DIR)/include -I$(LIBFT_DIR)
+CC := cc
+CFLAGS := -Wall -Wextra -Werror $(INCLUDES)
+MLX42_LIB := $(MLX42_BUILD)/libmlx42.a
+LDFLAGS := -L$(MLX42_BUILD) -lmlx42 -lglfw -ldl -pthread -lm \
+				$(LIBFT_DIR)/libft.a
 
-INCLUDES = -Iincludes/headers -I$(MLX42_DIR)/include -I$(LIBFT_DIR)
+all: git-submodule MLX42 $(NAME)
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
-LDFLAGS = -L$(MLX42_DIR)/build -lmlx42 -lglfw -ldl -pthread -lm $(LIBFT_DIR)/libft.a
+git-submodule:
+	@git submodule update --init --recursive
 
-all: $(NAME)
+$(MLX42_LIB):
+	@echo "[Info] Building MLX42…"
+	@mkdir -p $(MLX42_BUILD)
+	@cd $(MLX42_BUILD) && cmake .. && make
+	@echo "[Success] MLX42 built."
 
-$(NAME): $(LIBFT_DIR)/libft.a $(OBJ)
-	@echo "[Build] Compiling and linking $(NAME)..."
-	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) -o $@
-	@echo "[Success] $(NAME) has been created!"
-
-bonus: CFLAGS += -DBONUS
-bonus: $(NAME)
-	@echo "[Build] Compiling with BONUS and linking $(NAME)..."
-	@echo "[Success] $(NAME) (with bonus) has been created!"
+MLX42: $(MLX42_LIB)
 
 $(LIBFT_DIR)/libft.a:
-	@echo "[Info] Building libft library..."
+	@echo "[Info] Building libft…"
 	$(MAKE) -C $(LIBFT_DIR)
 	@echo "[Success] libft built."
 
-%.o: %.c
-	@echo "[Compile] $< -> $@"
+$(NAME): $(MLX42_LIB) $(LIBFT_DIR)/libft.a $(OBJECTS)
+	@echo "[Build] Linking $(NAME)…"
+	$(CC) $(CFLAGS) $(OBJECTS) $(LDFLAGS) -o $@
+	@echo "[Success] $(NAME) created!"
+
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
+	@echo "[Compile] $< → $@"
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@echo "[Clean] Removing object files..."
-	rm -f $(OBJ) $(OBJ_BONUS)
+	@echo "[Clean] Removing object files…"
+	rm -rf $(OBJ_DIR)
 	$(MAKE) -C $(LIBFT_DIR) clean
+	@echo "[Clean] Done."
 
 fclean: clean
-	@echo "[Fclean] Removing binary $(NAME)..."
+	@echo "[Fclean] Removing binary $(NAME)…"
 	rm -f $(NAME)
 	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
-	@echo "[Rebuild] Complete!"
 
-.PHONY: all bonus clean fclean re
+.PHONY: all clean fclean re git-submodule MLX42

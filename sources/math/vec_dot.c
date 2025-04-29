@@ -1,26 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ambient.h                                          :+:      :+:    :+:   */
+/*   vec_dot.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:25:51 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 12:37:38 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/04/24 17:21:40 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/04/25 12:57:13 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AMBIENT_H
-# define AMBIENT_H
+#include "vec3.h"
 
-# include "color.h"
-# include <stdbool.h>
-
-typedef struct s_ambient
+float	vec_dot(t_vec3 a, t_vec3 b)
 {
-	float	intensity;
-	t_color	color;
-	bool	is_set;
-}	t_ambient;
-
-#endif
+	return (a.x * b.x + a.y * b.y + a.z * b.z);
+}

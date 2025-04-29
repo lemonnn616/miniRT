@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ambient.h                                          :+:      :+:    :+:   */
+/*   cone.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:25:51 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 12:37:38 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/04/24 11:35:37 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/04/25 12:36:45 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AMBIENT_H
-# define AMBIENT_H
+#ifndef CONE_H
+# define CONE_H
 
-# include "color.h"
-# include <stdbool.h>
+# include "vec3.h"
+# include "material.h"
 
-typedef struct s_ambient
+typedef struct s_cone
 {
-	float	intensity;
-	t_color	color;
-	bool	is_set;
-}	t_ambient;
+	t_vec3		apex;
+	t_vec3		axis;
+	float		angle;
+	float		height;
+	t_material	mat;
+}	t_cone;
 
 #endif

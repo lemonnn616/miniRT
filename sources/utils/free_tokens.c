@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ambient.h                                          :+:      :+:    :+:   */
+/*   free_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:25:51 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 12:37:38 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/04/24 13:21:21 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/04/25 12:42:04 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AMBIENT_H
-# define AMBIENT_H
+#include "utils.h"
+#include <stdlib.h>
 
-# include "color.h"
-# include <stdbool.h>
-
-typedef struct s_ambient
+void	free_tokens(char **tokens)
 {
-	float	intensity;
-	t_color	color;
-	bool	is_set;
-}	t_ambient;
+	char	**ptr;
 
-#endif
+	ptr = tokens;
+	if (!tokens)
+		return ;
+	while (*ptr)
+	{
+		free(*ptr);
+		ptr++;
+	}
+	free(tokens);
+}

@@ -1,40 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parse_resolution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 14:00:53 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 12:40:13 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/04/24 11:43:59 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/04/25 13:46:24 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
 #include "parser.h"
-#include "libft.h"
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
+#include "utils.h"
 
-#include "debug.h"
-
-int	main(int argc, char **argv)
+bool	parse_resolution(char **tokens, t_scene *scene)
 {
-	t_scene	scene;
+	int	w;
+	int	h;
 
-	if (argc != 2)
+	if (!tokens[1] || !tokens[2] || tokens[3])
 	{
-		printf("Usage: ./minirt <scene.rt>\n");
-		return (1);
+		printf("Error\nInvalid resolution format\n");
+		return (false);
 	}
-	ft_memset(&scene, 0, sizeof(scene));
-	if (!parse_scene(argv[1], &scene))
+	w = ft_strtol(tokens[1], NULL, 10);
+	h = ft_strtol(tokens[2], NULL, 10);
+	if (w <= 0 || h <= 0)
 	{
-		printf("Error\nFailed to parse scene.\n");
-		free_scene(&scene);
-		return (1);
+		printf("Error\nResolution must be >0\n");
+		return (false);
 	}
-	debug_print_scene(&scene);
-	free_scene(&scene);
-	return (0);
+	scene->width = w;
+	scene->height = h;
+	scene->resolution_set = true;
+	return (true);
 }

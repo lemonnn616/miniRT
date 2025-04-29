@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ambient.h                                          :+:      :+:    :+:   */
+/*   vec_cross.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:25:51 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 12:37:38 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/04/24 17:21:38 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/04/25 12:57:34 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AMBIENT_H
-# define AMBIENT_H
+#include "vec3.h"
 
-# include "color.h"
-# include <stdbool.h>
-
-typedef struct s_ambient
+t_vec3	vec_cross(t_vec3 a, t_vec3 b)
 {
-	float	intensity;
-	t_color	color;
-	bool	is_set;
-}	t_ambient;
+	t_vec3	result;
 
-#endif
+	result.x = a.y * b.z - a.z * b.y;
+	result.y = a.z * b.x - a.x * b.z;
+	result.z = a.x * b.y - a.y * b.x;
+	return (result);
+}

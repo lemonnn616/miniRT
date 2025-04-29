@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ambient.h                                          :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:25:51 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 12:37:38 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/04/24 13:01:20 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/04/25 12:30:31 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AMBIENT_H
-# define AMBIENT_H
+#ifndef UTILS_H
+# define UTILS_H
 
-# include "color.h"
-# include <stdbool.h>
-
-typedef struct s_ambient
-{
-	float	intensity;
-	t_color	color;
-	bool	is_set;
-}	t_ambient;
+char	**split_whitespace(const char *s);
+void	free_tokens(char **tokens);
+long	ft_strtol(const char *nptr, char **endptr, int base);
+float	ft_strtof(const char *nptr, char **endptr);
+char	*ft_strtok(char *str, const char *delim);
 
 #endif

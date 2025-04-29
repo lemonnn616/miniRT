@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ambient.h                                          :+:      :+:    :+:   */
+/*   vec_normalize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:25:51 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 12:37:38 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/04/24 13:30:38 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/04/25 12:58:09 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AMBIENT_H
-# define AMBIENT_H
+#include "vec3.h"
 
-# include "color.h"
-# include <stdbool.h>
-
-typedef struct s_ambient
+t_vec3	vec_normalize(t_vec3 v)
 {
-	float	intensity;
-	t_color	color;
-	bool	is_set;
-}	t_ambient;
+	float	len;
 
-#endif
+	len = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+	if (len < EPSILON)
+		return (v);
+	v.x /= len;
+	v.y /= len;
+	v.z /= len;
+	return (v);
+}
