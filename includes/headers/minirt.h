@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/29 21:58:54 by natallia         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:48:18 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,42 @@
 
 # include "debug.h"
 
-# define PI 3.1415927f
 # define ERR_MEM "Failed to allocate memory"
+
+typedef struct s_hit
+{
+	bool		hit_occurred;
+	t_obj_type	type;
+	void		*obj_ptr;
+	bool		inside_obj;
+	bool		caps;
+	float		distance;
+	t_vec3		location;
+	float		specular;
+	float		shininess;
+	float		reflectivity;
+	t_color		colour;
+	t_color		obj_colour;
+	t_vec3		surface_norm;
+}	t_hit;
+
+typedef struct s_ray
+{
+	t_vec3	origin;
+	t_vec3	direction;
+	t_hit	*hit_data;
+}	t_ray;
 
 typedef struct s_pixel
 {
 	t_vec3	ray_direction;
-	t_vec3	base_colour;
-	t_vec3	final_colour;
+	t_color	obj_colour;
+	t_color	final_colour;
 	t_vec3	location;
 	t_vec3	surface_norm;
+	float	specular;
+	float	shininess;
+	t_color	ambient;
 }	t_pixel;
 
 typedef struct s_data
@@ -70,5 +96,18 @@ void	free_scene(t_scene *scene);
 
 void	initialise_mlx_window(t_data *data);
 void	free_pixels(t_pixel ***pixels, uint32_t y);
+void	cast_rays(t_data *data);
+void	render(t_data *data, uint32_t y, uint32_t x);
+bool	quadratic_equation(t_vec3 quad_coeff, float *roots);
+bool	valid_intersection(float *low, float *high);
+void	update_hit(t_ray *ray, float distance, t_object *obj);
+void	intersect_sphere(t_hit *hit, t_ray *ray, t_object *obj);
+void	update_orientation(t_hit *hit, t_vec3 normal, float denominator);
+bool	is_within_cylinder_height(t_ray *ray, t_cylinder *c, float root);
+bool	is_within_circular_area(t_ray *ray, float radius,
+			t_vec3 top_center, float distance);
+void	intersect_cone(t_hit *hit, t_ray *ray, t_object *obj);
+void	intersect_plane(t_hit *hit, t_ray *ray, t_object *obj);
+void	intersect_cylinder(t_hit *hit, t_ray *ray, t_object *obj);
 
 #endif

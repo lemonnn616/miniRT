@@ -86,6 +86,11 @@ void	debug_print_scene(const t_scene *scene)
 				cn->mat.color.r, cn->mat.color.g, cn->mat.color.b);
 			break;
 		}
+		case OBJ_LIGHT:
+		{
+			printf("Obj %d: Light\n", idx++);
+			break;
+		}
 		default:
 			printf("Obj %d: Unknown type %d\n", idx++, obj->type);
 		}

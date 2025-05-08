@@ -6,11 +6,19 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:00:53 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/29 22:23:51 by natallia         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:59:58 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+void	rt_close(void *param)
+{
+	t_data	*data;
+
+	data = (t_data *)param;
+	exit_success(data);
+}
 
 int	main(int argc, char **argv)
 {
@@ -30,5 +38,10 @@ int	main(int argc, char **argv)
 	}
 	debug_print_scene(&data.scene);
 	initialise_mlx_window(&data);
-
+	cast_rays(&data);
+	render(&data, 0, 0);
+	mlx_close_hook(data.mlx, &rt_close, &data);
+	// mlx_key_hook(data.mlx, &rt_keys, &data);
+	// mlx_scroll_hook(data.mlx, &rt_scroll, &data);
+	mlx_loop(data.mlx);
 }

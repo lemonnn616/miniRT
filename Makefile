@@ -29,7 +29,22 @@ SRCS := \
 	debug_parser.c \
 	exit.c \
 	window.c \
-	rays.c
+	degree_to_radian.c \
+	quadratic_equation.c \
+	vec_add.c \
+	vec_scale.c \
+	vec_subtract.c \
+	vec_distance.c \
+	vec_length.c \
+	cone.c \
+	cylinder.c \
+	cylinder_utils.c \
+	draw.c \
+	path_tracing.c \
+	plane.c \
+	ray_casting.c \
+	sphere.c \
+	hit_utils.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)

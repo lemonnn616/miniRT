@@ -1,42 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   object.h                                           :+:      :+:    :+:   */
+/*   degree_to_radian.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:23:46 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/05/08 14:46:42 by natallia         ###   ########.fr       */
+/*   Created: 2025/05/01 10:12:08 by natallia          #+#    #+#             */
+/*   Updated: 2025/05/01 10:13:12 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OBJECT_H
-# define OBJECT_H
+#include "vec3.h"
 
-# include "sphere.h"
-# include "plane.h"
-# include "cylinder.h"
-# include "triangle.h"
-# include "square.h"
-# include "cone.h"
-
-typedef enum e_obj_type
+float	degree_to_radian(float degree)
 {
-	OBJ_SPHERE,
-	OBJ_PLANE,
-	OBJ_CYLINDER,
-	OBJ_TRIANGLE,
-	OBJ_SQUARE,
-	OBJ_CONE,
-	OBJ_LIGHT,
-	OBJ_NONE
-}	t_obj_type;
-
-typedef struct s_object
-{
-	t_obj_type		type;
-	void			*obj;
-	struct s_object	*next;
-}	t_object;
-
-#endif
+	return (degree * PI / 180.0f);
+}
