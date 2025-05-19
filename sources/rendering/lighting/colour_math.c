@@ -1,23 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec_add.c                                          :+:      :+:    :+:   */
+/*   colour_math.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/01 10:06:34 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/18 15:36:59 by natallia         ###   ########.fr       */
+/*   Created: 2025/05/18 15:37:10 by natallia          #+#    #+#             */
+/*   Updated: 2025/05/18 15:37:49 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vec3.h"
+#include "minirt.h"
 
-t_vec3	vec_add(t_vec3 a, t_vec3 b)
+t_color	colour_scale(t_color c, float s)
 {
-	t_vec3	result;
+	c.r *= s;
+	c.g *= s;
+	c.b *= s;
+	return (c);
+}
 
-	result.x = a.x + b.x;
-	result.y = a.y + b.y;
-	result.z = a.z + b.z;
+t_color	colour_add(t_color a, t_color b)
+{
+	t_color	result;
+
+	result.r = a.r + b.r;
+	result.g = a.g + b.g;
+	result.b = a.b + b.b;
 	return (result);
+}
+
+t_color	new_colour(float r, float g, float b)
+{
+	t_color	c;
+
+	c.r = r;
+	c.g = g;
+	c.b = b;
+	return (c);
 }

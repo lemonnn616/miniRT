@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/05/08 14:48:18 by natallia         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:51:42 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@
 # include "debug.h"
 
 # define ERR_MEM "Failed to allocate memory"
+# define OFFSET 0.001f
+# define GLOBE_RADIUS 0.1f
+# define MAX_RAYS 10
+# define MAX_BOUNCES 25
+# define SEED_BASE 16045690984833335038ULL
 
 typedef struct s_hit
 {
@@ -58,6 +63,8 @@ typedef struct s_hit
 	t_color		colour;
 	t_color		obj_colour;
 	t_vec3		surface_norm;
+	bool		reflection_ray;
+	bool		is_shiny;
 }	t_hit;
 
 typedef struct s_ray
@@ -65,6 +72,7 @@ typedef struct s_ray
 	t_vec3	origin;
 	t_vec3	direction;
 	t_hit	*hit_data;
+	t_pcg	rng;
 }	t_ray;
 
 typedef struct s_pixel
@@ -77,6 +85,7 @@ typedef struct s_pixel
 	float	specular;
 	float	shininess;
 	t_color	ambient;
+	t_color	colour_sum;
 }	t_pixel;
 
 typedef struct s_data
@@ -109,5 +118,21 @@ bool	is_within_circular_area(t_ray *ray, float radius,
 void	intersect_cone(t_hit *hit, t_ray *ray, t_object *obj);
 void	intersect_plane(t_hit *hit, t_ray *ray, t_object *obj);
 void	intersect_cylinder(t_hit *hit, t_ray *ray, t_object *obj);
+void	intersect_light_globe(t_hit *hit, t_ray *ray, t_object *obj);
+t_color	tint_reflected_light(t_color base_colour, t_color incoming_light);
+t_color	blend_ambient_light(t_color base, t_ambient amb, float shininess);
+t_color	new_colour(float r, float g, float b);
+t_color	colour_scale(t_color c, float s);
+t_color	colour_add(t_color a, t_color b);
+t_color	combine_colours(t_color c1, t_color c2);
+void	gamma_adjust(t_color *c);
+void	compute_surface_interaction(t_hit *hit, t_vec3 ray_direction);
+void	handle_cone_surface_interaction(t_hit *hit);
+void	handle_sphere_surface_interaction(t_hit *hit);
+void	handle_plane_surface_interaction(t_hit *hit);
+void	handle_cylinder_surface_interaction(t_hit *hit);
+void	handle_light_globe_interaction(t_hit *hit, t_vec3 ray_direction);
+void	find_closest_object(t_data *data, t_ray *ray, t_hit *hit);
+void	trace_paths(t_data *data, t_ray *ray, uint32_t y, uint32_t x);
 
 #endif

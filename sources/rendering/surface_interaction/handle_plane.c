@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec_add.c                                          :+:      :+:    :+:   */
+/*   handle_plane.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/01 10:06:34 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/18 15:36:59 by natallia         ###   ########.fr       */
+/*   Created: 2025/05/15 16:48:51 by natallia          #+#    #+#             */
+/*   Updated: 2025/05/15 18:26:06 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vec3.h"
+#include "minirt.h"
 
-t_vec3	vec_add(t_vec3 a, t_vec3 b)
+void	handle_plane_surface_interaction(t_hit *hit)
 {
-	t_vec3	result;
-
-	result.x = a.x + b.x;
-	result.y = a.y + b.y;
-	result.z = a.z + b.z;
-	return (result);
+	if (hit->reflection_ray == false)
+		hit->colour = tint_reflected_light(hit->obj_colour, hit->colour);
 }

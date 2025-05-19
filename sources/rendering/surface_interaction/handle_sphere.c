@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec_add.c                                          :+:      :+:    :+:   */
+/*   handle_sphere.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/01 10:06:34 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/18 15:36:59 by natallia         ###   ########.fr       */
+/*   Created: 2025/05/15 16:48:32 by natallia          #+#    #+#             */
+/*   Updated: 2025/05/15 18:23:34 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vec3.h"
+#include "minirt.h"
 
-t_vec3	vec_add(t_vec3 a, t_vec3 b)
+void	handle_sphere_surface_interaction(t_hit *hit)
 {
-	t_vec3	result;
+	t_sphere	*s;
 
-	result.x = a.x + b.x;
-	result.y = a.y + b.y;
-	result.z = a.z + b.z;
-	return (result);
+	s = (t_sphere *)hit->obj_ptr;
+	hit->surface_norm = vec_normalize(vec_subtract(hit->location, s->center));
+	if (hit->inside_obj == true)
+		hit->surface_norm = vec_scale(hit->surface_norm, -1.0f);
+	if (hit->reflection_ray == false)
+		hit->colour = tint_reflected_light(hit->obj_colour, hit->colour);
 }

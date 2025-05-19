@@ -1,10 +1,10 @@
 NAME := miniRT
 
-SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug sources/rendering
+SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug sources/rendering/intersection \
+			sources/rendering/surface_interaction sources/rendering/lighting sources/rendering
 VPATH := $(SRC_DIRS)
 SRCS := \
 	main.c \
-	vec_normalize.c \
 	free_scene.c \
 	parse_ambient.c \
 	parse_camera.c \
@@ -24,27 +24,39 @@ SRCS := \
 	ft_strtok.c \
 	split_whitespace.c \
 	camera_compute_basis.c \
-	vec_cross.c \
-	vec_dot.c \
-	debug_parser.c \
-	exit.c \
-	window.c \
 	degree_to_radian.c \
+	lerp.c \
 	quadratic_equation.c \
+	random.c \
 	vec_add.c \
+	vec_cross.c \
+	vec_distance.c \
+	vec_dot.c \
+	vec_length.c \
+	vec_normalize.c \
 	vec_scale.c \
 	vec_subtract.c \
-	vec_distance.c \
-	vec_length.c \
-	cone.c \
-	cylinder.c \
-	cylinder_utils.c \
+	debug_parser.c \
+	exit.c \
+	intersect_cone.c \
+	intersect_cylinder.c \
+	intersect_cylinder2.c \
+	intersect_light_globe.c \
+	intersect_plane.c \
+	intersect_sphere.c \
+	intersection_utils.c \
+	colour_math.c \
+	colours.c \
+	handle_cone.c \
+	handle_cylinder.c \
+	handle_light_globe.c \
+	handle_plane.c \
+	handle_sphere.c \
+	handle_surface_hit.c \
 	draw.c \
 	path_tracing.c \
-	plane.c \
 	ray_casting.c \
-	sphere.c \
-	hit_utils.c
+	window.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)
