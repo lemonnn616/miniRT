@@ -1,42 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   object.h                                           :+:      :+:    :+:   */
+/*   handle_sphere.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:23:46 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/05/08 14:46:42 by natallia         ###   ########.fr       */
+/*   Created: 2025/05/15 16:48:32 by natallia          #+#    #+#             */
+/*   Updated: 2025/05/15 18:23:34 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OBJECT_H
-# define OBJECT_H
+#include "minirt.h"
 
-# include "sphere.h"
-# include "plane.h"
-# include "cylinder.h"
-# include "triangle.h"
-# include "square.h"
-# include "cone.h"
-
-typedef enum e_obj_type
+void	handle_sphere_surface_interaction(t_hit *hit)
 {
-	OBJ_SPHERE,
-	OBJ_PLANE,
-	OBJ_CYLINDER,
-	OBJ_TRIANGLE,
-	OBJ_SQUARE,
-	OBJ_CONE,
-	OBJ_LIGHT,
-	OBJ_NONE
-}	t_obj_type;
+	t_sphere	*s;
 
-typedef struct s_object
-{
-	t_obj_type		type;
-	void			*obj;
-	struct s_object	*next;
-}	t_object;
-
-#endif
+	s = (t_sphere *)hit->obj_ptr;
+	hit->surface_norm = vec_normalize(vec_subtract(hit->location, s->center));
+	if (hit->inside_obj == true)
+		hit->surface_norm = vec_scale(hit->surface_norm, -1.0f);
+	if (hit->reflection_ray == false)
+		hit->colour = tint_reflected_light(hit->obj_colour, hit->colour);
+}

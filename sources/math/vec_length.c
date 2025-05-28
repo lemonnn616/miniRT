@@ -1,32 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.h                                            :+:      :+:    :+:   */
+/*   vec_length.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkhamich <nkhamich@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:18:53 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/05/19 12:05:23 by nkhamich         ###   ########.fr       */
+/*   Created: 2025/05/07 11:58:53 by natallia          #+#    #+#             */
+/*   Updated: 2025/05/07 11:59:35 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COLOR_H
-# define COLOR_H
+#include "vec3.h"
 
-# include <stdint.h>
-
-typedef struct s_color
+float	vec_length(t_vec3 v)
 {
-	uint8_t	r;
-	uint8_t	g;
-	uint8_t	b;
-}	t_color;
-
-typedef struct s_fcolor
-{
-	float	r;
-	float	g;
-	float	b;
-}	t_fcolor;
-
-#endif
+	return (sqrtf(v.x * v.x + v.y * v.y + v.z * v.z));
+}

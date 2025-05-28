@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:55:04 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 12:59:33 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:50:13 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@ static void	free_cameras(t_camera *cam)
 	}
 }
 
-static void	free_lights(t_light *light)
-{
-	t_light	*next;
+// static void	free_lights(t_light *light)
+// {
+// 	t_light	*next;
 
-	while (light)
-	{
-		next = light->next;
-		free(light);
-		light = next;
-	}
-}
+// 	while (light)
+// 	{
+// 		next = light->next;
+// 		free(light);
+// 		light = next;
+// 	}
+// }
 
 static void	free_objects(t_object *obj)
 {
@@ -56,6 +56,6 @@ void	free_scene(t_scene *scene)
 	if (!scene)
 		return ;
 	free_cameras(scene->cameras);
-	free_lights(scene->lights);
+	// free_lights(scene->lights);
 	free_objects(scene->objects);
 }

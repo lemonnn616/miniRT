@@ -1,32 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.h                                            :+:      :+:    :+:   */
+/*   handle_plane.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkhamich <nkhamich@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:18:53 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/05/19 12:05:23 by nkhamich         ###   ########.fr       */
+/*   Created: 2025/05/15 16:48:51 by natallia          #+#    #+#             */
+/*   Updated: 2025/05/15 18:26:06 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COLOR_H
-# define COLOR_H
+#include "minirt.h"
 
-# include <stdint.h>
-
-typedef struct s_color
+void	handle_plane_surface_interaction(t_hit *hit)
 {
-	uint8_t	r;
-	uint8_t	g;
-	uint8_t	b;
-}	t_color;
-
-typedef struct s_fcolor
-{
-	float	r;
-	float	g;
-	float	b;
-}	t_fcolor;
-
-#endif
+	if (hit->reflection_ray == false)
+		hit->colour = tint_reflected_light(hit->obj_colour, hit->colour);
+}

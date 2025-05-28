@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.h                                            :+:      :+:    :+:   */
+/*   vec_distance.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkhamich <nkhamich@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:18:53 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/05/19 12:05:23 by nkhamich         ###   ########.fr       */
+/*   Created: 2025/05/07 11:57:55 by natallia          #+#    #+#             */
+/*   Updated: 2025/05/07 11:58:34 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COLOR_H
-# define COLOR_H
+#include "vec3.h"
 
-# include <stdint.h>
-
-typedef struct s_color
+float	vec_distance(t_vec3 a, t_vec3 b)
 {
-	uint8_t	r;
-	uint8_t	g;
-	uint8_t	b;
-}	t_color;
+	t_vec3	diff;
 
-typedef struct s_fcolor
-{
-	float	r;
-	float	g;
-	float	b;
-}	t_fcolor;
-
-#endif
+	diff.x = a.x - b.x;
+	diff.y = a.y - b.y;
+	diff.z = a.z - b.z;
+	return (vec_length(diff));
+}

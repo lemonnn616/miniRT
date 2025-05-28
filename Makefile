@@ -1,10 +1,10 @@
 NAME := miniRT
 
-SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug
+SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug sources/rendering/intersection \
+			sources/rendering/surface_interaction sources/rendering/lighting sources/rendering
 VPATH := $(SRC_DIRS)
 SRCS := \
 	main.c \
-	vec_normalize.c \
 	free_scene.c \
 	parse_ambient.c \
 	parse_camera.c \
@@ -24,9 +24,39 @@ SRCS := \
 	ft_strtok.c \
 	split_whitespace.c \
 	camera_compute_basis.c \
+	degree_to_radian.c \
+	lerp.c \
+	quadratic_equation.c \
+	random.c \
+	vec_add.c \
 	vec_cross.c \
+	vec_distance.c \
 	vec_dot.c \
-	debug_parser.c
+	vec_length.c \
+	vec_normalize.c \
+	vec_scale.c \
+	vec_subtract.c \
+	debug_parser.c \
+	exit.c \
+	intersect_cone.c \
+	intersect_cylinder.c \
+	intersect_cylinder2.c \
+	intersect_light_globe.c \
+	intersect_plane.c \
+	intersect_sphere.c \
+	intersection_utils.c \
+	colour_math.c \
+	colours.c \
+	handle_cone.c \
+	handle_cylinder.c \
+	handle_light_globe.c \
+	handle_plane.c \
+	handle_sphere.c \
+	handle_surface_hit.c \
+	draw.c \
+	path_tracing.c \
+	ray_casting.c \
+	window.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)
@@ -35,7 +65,7 @@ LIBFT_DIR := includes/libft
 MLX42_DIR := includes/MLX42
 MLX42_BUILD:= $(MLX42_DIR)/build
 
-INCLUDES := -Iincludes/headers -I$(MLX42_DIR)/include -I$(LIBFT_DIR)
+INCLUDES := -Iincludes/headers -I$(MLX42_DIR)/include/MLX42 -I$(LIBFT_DIR)
 CC := cc
 CFLAGS := -Wall -Wextra -Werror $(INCLUDES)
 MLX42_LIB := $(MLX42_BUILD)/libmlx42.a
