@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:32:07 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 13:44:29 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:11:04 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ bool	parse_color(const char *str, t_color *out)
 		printf("Error\nColor out of range [0,255]\n");
 		return (false);
 	}
-	out->r = (uint8_t)r;
-	out->g = (uint8_t)g;
-	out->b = (uint8_t)b;
+	out->r = (float)r / 255.0f;
+	out->g = (float)g / 255.0f;
+	out->b = (float)b / 255.0f;
 	return (true);
 }
