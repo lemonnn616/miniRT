@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkhamich <nkhamich@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/05/19 12:51:26 by nkhamich         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:20:47 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@
 
 # define ERR_MEM "Failed to allocate memory"
 # define OFFSET 0.001f
-# define GLOBE_RADIUS 0.1f
-# define MAX_RAYS 2
-# define MAX_BOUNCES 3
+# define GLOBE_RADIUS 5.0f
+# define MAX_RAYS 20
+# define MAX_BOUNCES 25
 # define SEED_BASE 16045690984833335038ULL
 
 typedef struct s_hit
@@ -123,8 +123,6 @@ t_color	new_colour(float r, float g, float b);
 t_color	colour_scale(t_color c, float s);
 t_color	colour_add(t_color a, t_color b);
 t_color	combine_colours(t_color c1, t_color c2);
-void	color_to_float(t_color c, float *r, float *g, float *b);
-t_color	float_to_color(float r, float g, float b);
 void	gamma_adjust(t_color *c);
 void	compute_surface_interaction(t_hit *hit, t_vec3 ray_direction);
 void	handle_cone_surface_interaction(t_hit *hit);

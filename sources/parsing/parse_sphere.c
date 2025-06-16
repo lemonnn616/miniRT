@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_sphere.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:26 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 13:48:26 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/06 16:01:54 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,22 @@ static bool	fill_sphere_data(t_sphere *sp, char **tokens)
 	return (true);
 }
 
+// static void	set_sphere_material(t_sphere *sp, t_color col)
+// {
+// 	sp->mat.color = col;
+// 	sp->mat.diffuse = 1.0f;
+// 	sp->mat.specular = 0.0f;
+// 	sp->mat.shininess = 0.0f;
+// 	sp->mat.reflectivity = 0.0f;
+// }
+
 static void	set_sphere_material(t_sphere *sp, t_color col)
 {
 	sp->mat.color = col;
-	sp->mat.diffuse = 1.0f;
-	sp->mat.specular = 0.0f;
-	sp->mat.shininess = 0.0f;
-	sp->mat.reflectivity = 0.0f;
+	sp->mat.diffuse = 0.8f;
+	sp->mat.specular = 0.2f;
+	sp->mat.shininess = 0.5f;
+	sp->mat.reflectivity = 0.1f;
 }
 
 bool	parse_sphere(char **tokens, t_scene *scene)

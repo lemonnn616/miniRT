@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   path_tracing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkhamich <nkhamich@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:26:40 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/19 11:40:29 by nkhamich         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:02:14 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+float	sum(t_color colour)
+{
+	return (colour.r + colour.g + colour.b);
+}
 
 bool	is_shiny(t_pcg *rng, float shininess)
 {
@@ -22,8 +27,6 @@ bool	is_shiny(t_pcg *rng, float shininess)
 	return (false);
 }
 
-// change formula to account for incoming light colour!
-// shininess fraction or boolean?
 static void	prepare_ray(t_data *d, t_ray *r, uint32_t y, uint32_t x)
 {
 	t_pixel	*pxl;
