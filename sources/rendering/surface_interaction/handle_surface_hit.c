@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:50:21 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/16 09:48:00 by natallia         ###   ########.fr       */
+/*   Updated: 2025/06/06 14:31:18 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	compute_surface_interaction(t_hit *hit, t_vec3 ray_direction)
 {
 	if (hit->hit_occurred == false)
 	{
-		hit->colour = new_colour(0.5f, 0.7f, 1.0f);
+		hit->colour = new_colour(0.0f, 0.0f, 0.0f);
 		return ;
 	}
 	if (hit->type == OBJ_SPHERE)
