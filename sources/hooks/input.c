@@ -1,24 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera_compute_basis.c                             :+:      :+:    :+:   */
+/*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/19 19:02:19 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/19 19:02:28 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/06/19 15:22:08 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/06/19 17:26:14 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "camera.h"
+#include "vec3.h"
+#include <math.h>
+#include "quaternion.h"
+#include "minirt.h"
 
-void camera_compute_basis(t_camera *cam)
-{
-	const t_vec3 f0 = { 0.0f, 0.0f, -1.0f };
-	const t_vec3 u0 = { 0.0f, 1.0f,  0.0f };
-
-	cam->dir = vec_normalize(quat_rotate_vec(f0, cam->orient));
-	cam->up  = vec_normalize(quat_rotate_vec(u0, cam->orient));
-	cam->right = vec_normalize(vec_cross(cam->dir, cam->up));
-	cam->up	= vec_cross(cam->right, cam->dir);
-}

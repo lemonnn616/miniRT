@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera_compute_basis.c                             :+:      :+:    :+:   */
+/*   quaternion.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/19 19:02:19 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/19 19:02:28 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/06/19 14:10:33 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/06/19 18:50:50 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "camera.h"
+#ifndef QUATERNION_H
+# define QUATERNION_H
 
-void camera_compute_basis(t_camera *cam)
+# include "vec3.h"
+
+typedef struct	s_quat
 {
-	const t_vec3 f0 = { 0.0f, 0.0f, -1.0f };
-	const t_vec3 u0 = { 0.0f, 1.0f,  0.0f };
+	float	w;
+	t_vec3	v;
+}	t_quat;
 
-	cam->dir = vec_normalize(quat_rotate_vec(f0, cam->orient));
-	cam->up  = vec_normalize(quat_rotate_vec(u0, cam->orient));
-	cam->right = vec_normalize(vec_cross(cam->dir, cam->up));
-	cam->up	= vec_cross(cam->right, cam->dir);
-}
+t_quat	quat_from_axis_angle(t_vec3 axis, float angle);
+t_quat	quat_mul(t_quat a, t_quat b);
+t_quat	quat_conj(t_quat q);
+t_quat	quat_normalize(t_quat q);
+t_vec3	quat_rotate_vec(t_vec3 vec, t_quat q);
+t_quat quat_from_two_vecs(t_vec3 from, t_vec3 to);
+
+#endif

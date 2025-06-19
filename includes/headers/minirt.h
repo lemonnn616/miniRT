@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/16 13:20:47 by natallia         ###   ########.fr       */
+/*   Updated: 2025/06/19 18:45:02 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@
 # define ERR_MEM "Failed to allocate memory"
 # define OFFSET 0.001f
 # define GLOBE_RADIUS 5.0f
-# define MAX_RAYS 20
-# define MAX_BOUNCES 25
+# define MAX_RAYS 4
+# define MAX_BOUNCES 5
 # define SEED_BASE 16045690984833335038ULL
 
 typedef struct s_hit
