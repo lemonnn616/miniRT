@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/20 13:24:11 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:43:13 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,10 @@ typedef struct s_data
 	mlx_t			*mlx;
 	mlx_image_t		*image_buffer;
 	t_pixel			**pixels;
-
+	int				max_rays;
+	int				max_bounces;
+	bool			preview_mode;
+	double			last_move_time;
 } t_data;
 
 void	exit_error(t_data *data, char *msg);
@@ -134,6 +137,6 @@ void	find_closest_object(t_data *data, t_ray *ray, t_hit *hit);
 void	trace_paths(t_data *data, t_ray *ray, uint32_t y, uint32_t x);
 
 
-void reset_pixel_buffer(t_data *d);
+void	reset_pixel_buffer(t_data *d);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:07:27 by natallia          #+#    #+#             */
-/*   Updated: 2025/06/19 19:02:41 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:43:48 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,29 @@ void	get_first_hit(t_data *data, t_ray *ray, int32_t y, int32_t x)
 	}
 }
 
+// void	render(t_data *data, uint32_t y, uint32_t x)
+// {
+// 	t_ray		ray;
+// 	t_hit		hit;
+
+// 	ray.hit_data = &hit;
+// 	while (y < (uint32_t)data->scene.height)
+// 	{
+// 		x = 0;
+// 		while (x < (uint32_t)data->scene.width)
+// 		{
+// 			update_ray(data, &ray, y, x);
+// 			get_first_hit(data, &ray, y, x);
+// 			if (hit.hit_occurred && hit.type != OBJ_LIGHT)
+// 				trace_paths(data, &ray, y, x);
+// 			mlx_put_pixel(data->image_buffer, x, y,
+// 				percentage_to_rgba(data->pixels[y][x].final_colour));
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+// }
+
 void	render(t_data *data, uint32_t y, uint32_t x)
 {
 	t_ray		ray;
@@ -87,6 +110,7 @@ void	render(t_data *data, uint32_t y, uint32_t x)
 	ray.hit_data = &hit;
 	while (y < (uint32_t)data->scene.height)
 	{
+		int step = data->preview_mode ? 2 : 1;
 		x = 0;
 		while (x < (uint32_t)data->scene.width)
 		{
@@ -96,8 +120,8 @@ void	render(t_data *data, uint32_t y, uint32_t x)
 				trace_paths(data, &ray, y, x);
 			mlx_put_pixel(data->image_buffer, x, y,
 				percentage_to_rgba(data->pixels[y][x].final_colour));
-			x++;
+			x += step;
 		}
-		y++;
+		y += step;
 	}
 }

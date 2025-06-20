@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:26:40 by natallia          #+#    #+#             */
-/*   Updated: 2025/06/19 18:38:51 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:44:08 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,11 @@ void	trace_paths(t_data *data, t_ray *ray, uint32_t y, uint32_t x)
 
 	pxl = &data->pixels[y][x];
 	rays = 0;
-	while (rays < MAX_RAYS)
+	while (rays < data->max_rays)
 	{
 		prepare_ray(data, ray, y, x);
 		bounces = 0;
-		while (bounces < MAX_BOUNCES && ray->hit_data->type != OBJ_LIGHT)
+		while (bounces < data->max_bounces && ray->hit_data->type != OBJ_LIGHT)
 		{
 			bounce_ray(data, ray, ray->hit_data);
 			bounces++;
