@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:16 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 13:45:26 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:27:04 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ static bool	fill_plane_data(t_plane *pl, char **tokens)
 	if (!parse_vector(tokens[2], &normal))
 		return (false);
 	pl->point = point;
-	pl->normal = vec_normalize(normal);
+	pl->normal0 = vec_normalize(normal);
+	pl->normal = pl->normal0;
+	pl->orient = (t_quat){ 1.0f, {0,0,0} }; 
 	return (true);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_sphere.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:26 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/06 16:01:54 by natallia         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:35:42 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,6 @@ static bool	fill_sphere_data(t_sphere *sp, char **tokens)
 	sp->radius = dia * 0.5f;
 	return (true);
 }
-
-// static void	set_sphere_material(t_sphere *sp, t_color col)
-// {
-// 	sp->mat.color = col;
-// 	sp->mat.diffuse = 1.0f;
-// 	sp->mat.specular = 0.0f;
-// 	sp->mat.shininess = 0.0f;
-// 	sp->mat.reflectivity = 0.0f;
-// }
 
 static void	set_sphere_material(t_sphere *sp, t_color col)
 {

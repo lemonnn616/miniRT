@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:44:46 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 13:44:16 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:11:31 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ static bool	parse_cone_data(t_cone *co, char **tokens)
 		return (false);
 	if (!parse_vector(tokens[2], &co->axis))
 		return (false);
-	co->axis = vec_normalize(co->axis);
+	co->axis0 = vec_normalize(co->axis);
+	co->axis = co->axis0;
+	co->orient = (t_quat){ 1.0f, {0,0,0} };
 	co->angle = ft_strtof(tokens[3], NULL);
 	co->height = ft_strtof(tokens[4], NULL);
 	if (co->angle <= 0.0f || co->angle >= 180.0f || co->height <= 0.0f)
