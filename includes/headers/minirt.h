@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/19 18:45:02 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:24:11 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,5 +132,8 @@ void	handle_cylinder_surface_interaction(t_hit *hit);
 void	handle_light_globe_interaction(t_hit *hit, t_vec3 ray_direction);
 void	find_closest_object(t_data *data, t_ray *ray, t_hit *hit);
 void	trace_paths(t_data *data, t_ray *ray, uint32_t y, uint32_t x);
+
+
+void reset_pixel_buffer(t_data *d);
 
 #endif

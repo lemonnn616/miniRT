@@ -5,12 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 14:00:53 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/19 18:57:51 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/06/20 13:29:34 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/06/20 13:29:39 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+void reset_pixel_buffer(t_data *d)
+{
+	for (int y = 0; y < d->scene.height; ++y)
+	{
+		for (int x = 0; x < d->scene.width; ++x)
+		{
+			t_pixel *p = &d->pixels[y][x];
+
+			/* Сбрасываем ТОЛЬКО накопительные / итоговые цвета */
+			p->colour_sum	 = new_colour(0,0,0);
+			p->final_colour   = new_colour(0,0,0);
+
+			/* Если вы используете ambient/obj_colour как старт —
+			   тоже обнуляем; геометрия оставляем. */
+			p->ambient		= new_colour(0,0,0);
+		}
+	}
+}
 
 void	rt_close(void *param)
 {
@@ -36,8 +55,8 @@ static void recalc_rays_with_orientation(t_data *data)
 				vec_add(
 					vec_add(
 						vec_scale(cam->right, v.x),
-						vec_scale(cam->up,    v.y)),
-					vec_scale(cam->dir,     v.z));
+						vec_scale(cam->up,	v.y)),
+					vec_scale(cam->dir,	 v.z));
 			data->pixels[y][x].ray_direction = vec_normalize(world);
 		}
 	}
@@ -67,12 +86,13 @@ static void mouse_move(double mx, double my, void *param)
 
 	/* кватернионное вращение камеры */
 	t_quat q_yaw   = quat_from_axis_angle((t_vec3){0,1,0}, (float)(dx * sens));
-	t_quat q_pitch = quat_from_axis_angle(cam->right,      (float)(dy * sens));
+	t_quat q_pitch = quat_from_axis_angle(cam->right,	  (float)(dy * sens));
 	cam->orient = quat_normalize(quat_mul(q_pitch, quat_mul(q_yaw, cam->orient)));
 	camera_compute_basis(cam);
 
 	/* 1) пересчитываем направления лучей под новый basis */
 	recalc_rays_with_orientation(data);
+	reset_pixel_buffer(data);
 	/* 2) обычный рендер целиком */
 	render(data, 0, 0);
 }
@@ -97,6 +117,7 @@ int	main(int argc, char **argv)
 	debug_print_scene(&data.scene);
 	initialise_mlx_window(&data);
 	recalc_rays_with_orientation(&data);
+	reset_pixel_buffer(&data);
 	render(&data, 0, 0);
 	mlx_cursor_hook(data.mlx, mouse_move, &data);
 	mlx_close_hook(data.mlx, &rt_close, &data);
