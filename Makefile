@@ -68,7 +68,9 @@ SRCS := \
 	mouse.c \
 	wasd.c \
 	recalculate_rays_with_orientation.c \
-	reset_pixel_buffer.c
+	reset_pixel_buffer.c \
+	update_wasd.c \
+	loop_hook.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)

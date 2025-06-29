@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 14:13:16 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/29 14:49:40 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,10 @@ typedef struct s_data
 	int				max_bounces;
 	bool			preview_mode;
 	double			last_move_time;
+	t_keys			keys;
+	bool			first_mouse;
+	double			last_mouse_x;
+	double			last_mouse_y;
 }	t_data;
 
 void	exit_error(t_data *data, char *msg);
@@ -137,11 +141,12 @@ void	find_closest_object(t_data *data, t_ray *ray, t_hit *hit);
 void	trace_paths(t_data *data, t_ray *ray, uint32_t y, uint32_t x);
 
 void	reset_pixel_buffer(t_data *d);
-void rotate_square(t_square *sq, t_quat q_rot);
-void rotate_cone(t_cone *co, t_quat q_rot);
-void rotate_cylinder(t_cylinder *c, t_quat q_rot);
-void rotate_plane(t_plane *p, t_quat q_rot);
-void recalc_rays_with_orientation(t_data *data);
-void rotate_all_objects(t_data *d, t_quat q_rot);
+void	rotate_square(t_square *sq, t_quat q_rot);
+void	rotate_cone(t_cone *co, t_quat q_rot);
+void	rotate_cylinder(t_cylinder *c, t_quat q_rot);
+void	rotate_plane(t_plane *p, t_quat q_rot);
+void	recalc_rays_with_orientation(t_data *data);
+void	rotate_all_objects(t_data *d, t_quat q_rot);
+void	loop_hook(void *param);
 
 #endif
