@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 13:42:43 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/29 14:13:16 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ void	initialise_mlx_window(t_data *data);
 void	free_pixels(t_pixel ***pixels, uint32_t y);
 void	cast_rays(t_data *data);
 void	render(t_data *data, uint32_t y, uint32_t x);
-bool	quadratic_equation(t_vec3 quad_coeff, float *roots);
 bool	valid_intersection(float *low, float *high);
 void	update_hit(t_ray *ray, float distance, t_object *obj);
 void	intersect_sphere(t_hit *hit, t_ray *ray, t_object *obj);

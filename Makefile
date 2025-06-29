@@ -57,7 +57,6 @@ SRCS := \
 	path_tracing.c \
 	ray_casting.c \
 	window.c \
-	input.c \
 	rotate_objects.c \
 	conjugate.c \
 	create_from_two_vectors.c \
@@ -65,7 +64,11 @@ SRCS := \
 	multiply.c \
 	normalize.c \
 	rotate_vector.c \
-	solve_quadratic.c
+	solve_quadratic.c \
+	mouse.c \
+	wasd.c \
+	recalculate_rays_with_orientation.c \
+	reset_pixel_buffer.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)
