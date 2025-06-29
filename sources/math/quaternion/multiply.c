@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera_compute_basis.c                             :+:      :+:    :+:   */
+/*   multiply.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/19 19:02:19 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 13:45:42 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/06/29 14:04:27 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/06/29 14:06:13 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "camera.h"
+#include "quaternion.h"
 
-void	camera_compute_basis(t_camera *cam)
+t_quat	quat_mul(t_quat a, t_quat b)
 {
-	const t_vec3	f0 = {0.0f, 0.0f, -1.0f};
-	const t_vec3	u0 = {0.0f, 1.0f, 0.0f};
+	t_quat	result;
+	t_vec3	term1;
+	t_vec3	term2;
+	t_vec3	term3;
 
-	cam->dir = vec_normalize(quat_rotate_vec(f0, cam->orient));
-	cam->up = vec_normalize(quat_rotate_vec(u0, cam->orient));
-	cam->right = vec_normalize(vec_cross(cam->dir, cam->up));
-	cam->up = vec_cross(cam->right, cam->dir);
+	result.w = a.w * b.w - vec_dot(a.v, b.v);
+	term1 = vec_scale(b.v, a.w);
+	term2 = vec_scale(a.v, b.w);
+	term3 = vec_cross(a.v, b.v);
+	result.v = vec_add(vec_add(term1, term2), term3);
+	return (result);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_light.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:11 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/05/08 14:47:40 by natallia         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:53:55 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,56 +16,37 @@
 #include <stdlib.h>
 #include "utils.h"
 
-// bool	parse_light(char **tokens, t_scene *scene)
-// {
-// 	t_vec3	pos;
-// 	float	intensity;
-// 	t_color	col;
-// 	t_light	*l;
+static bool	validate_light_tokens(char **tokens)
+{
+	if (!tokens[1] || !tokens[2] || !tokens[3] || tokens[4])
+		return (printf("Error\nInvalid light format\n"), false);
+	return (true);
+}
 
-// 	if (!tokens[1] || !tokens[2] || !tokens[3] || tokens[4])
-// 		return (printf("Error\nInvalid light format\n"), false);
-// 	if (!parse_vector(tokens[1], &pos))
-// 		return (false);
-// 	intensity = ft_strtof(tokens[2], NULL);
-// 	if (intensity < 0.0f || intensity > 1.0f)
-// 		return (printf("Error\nLight intensity out of range [0,1]\n"), false);
-// 	if (!parse_color(tokens[3], &col))
-// 		return (false);
-// 	l = malloc(sizeof(*l));
-// 	if (!l)
-// 		return (perror("malloc"), false);
-// 	l->pos = pos;
-// 	l->intensity = intensity;
-// 	l->color = col;
-// 	l->next = scene->lights;
-// 	scene->lights = l;
-// 	return (true);
-// }
+static bool	fill_light_data(t_light *l, char **tokens)
+{
+	if (!parse_vector(tokens[1], &l->pos))
+		return (false);
+	l->intensity = ft_strtof(tokens[2], NULL);
+	if (l->intensity < 0.0f || l->intensity > 1.0f)
+		return (printf("Error\nLight intensity out of range [0,1]\n"), false);
+	if (!parse_color(tokens[3], &l->color))
+		return (false);
+	return (true);
+}
 
 bool	parse_light(char **tokens, t_scene *scene)
 {
-	t_vec3		pos;
-	float		intensity;
-	t_color		col;
 	t_light		*l;
 	t_object	*obj;
 
-	if (!tokens[1] || !tokens[2] || !tokens[3] || tokens[4])
-		return (printf("Error\nInvalid light format\n"), false);
-	if (!parse_vector(tokens[1], &pos))
-		return (false);
-	intensity = ft_strtof(tokens[2], NULL);
-	if (intensity < 0.0f || intensity > 1.0f)
-		return (printf("Error\nLight intensity out of range [0,1]\n"), false);
-	if (!parse_color(tokens[3], &col))
+	if (!validate_light_tokens(tokens))
 		return (false);
 	l = malloc(sizeof(*l));
 	if (!l)
 		return (perror("malloc"), false);
-	l->pos = pos;
-	l->intensity = intensity;
-	l->color = col;
+	if (!fill_light_data(l, tokens))
+		return (free(l), false);
 	l->next = scene->lights;
 	scene->lights = l;
 	obj = malloc(sizeof(*obj));

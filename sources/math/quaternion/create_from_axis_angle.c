@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera_compute_basis.c                             :+:      :+:    :+:   */
+/*   create_from_axis_angle.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/19 19:02:19 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 13:45:42 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/06/29 14:04:22 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/06/29 14:05:06 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "camera.h"
+#include "quaternion.h"
 
-void	camera_compute_basis(t_camera *cam)
+t_quat	quat_from_axis_angle(t_vec3 axis, float angle)
 {
-	const t_vec3	f0 = {0.0f, 0.0f, -1.0f};
-	const t_vec3	u0 = {0.0f, 1.0f, 0.0f};
+	float	half;
+	float	s;
+	t_quat	q;
 
-	cam->dir = vec_normalize(quat_rotate_vec(f0, cam->orient));
-	cam->up = vec_normalize(quat_rotate_vec(u0, cam->orient));
-	cam->right = vec_normalize(vec_cross(cam->dir, cam->up));
-	cam->up = vec_cross(cam->right, cam->dir);
+	half = angle * 0.5f;
+	s = sinf(half);
+	q.w = cosf(half);
+	q.v = vec_scale(axis, s);
+	return (q);
 }

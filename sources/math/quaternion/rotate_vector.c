@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera_compute_basis.c                             :+:      :+:    :+:   */
+/*   rotate_vector.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/19 19:02:19 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 13:45:42 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/06/29 14:04:32 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/06/29 14:06:43 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "camera.h"
+#include "quaternion.h"
 
-void	camera_compute_basis(t_camera *cam)
+t_vec3	quat_rotate_vec(t_vec3 vec, t_quat q)
 {
-	const t_vec3	f0 = {0.0f, 0.0f, -1.0f};
-	const t_vec3	u0 = {0.0f, 1.0f, 0.0f};
+	t_quat	p;
+	t_quat	qp;
+	t_quat	qinv;
+	t_quat	res;
 
-	cam->dir = vec_normalize(quat_rotate_vec(f0, cam->orient));
-	cam->up = vec_normalize(quat_rotate_vec(u0, cam->orient));
-	cam->right = vec_normalize(vec_cross(cam->dir, cam->up));
-	cam->up = vec_cross(cam->right, cam->dir);
+	p = (t_quat){.w = 0.0f, .v = vec};
+	qp = quat_mul(q, p);
+	qinv = quat_conj(q);
+	res = quat_mul(qp, qinv);
+	return (res.v);
 }

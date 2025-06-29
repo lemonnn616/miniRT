@@ -2,7 +2,7 @@ NAME := miniRT
 
 SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug sources/rendering/intersection \
 			sources/rendering/surface_interaction sources/rendering/lighting sources/rendering sources/rotation \
-			sources/hooks
+			sources/hooks sources/math/quaternion
 VPATH := $(SRC_DIRS)
 SRCS := \
 	main.c \
@@ -27,7 +27,6 @@ SRCS := \
 	camera_compute_basis.c \
 	degree_to_radian.c \
 	lerp.c \
-	quadratic_equation.c \
 	random.c \
 	vec_add.c \
 	vec_cross.c \
@@ -58,9 +57,15 @@ SRCS := \
 	path_tracing.c \
 	ray_casting.c \
 	window.c \
-	quaternion.c \
 	input.c \
-	rotate_objects.c
+	rotate_objects.c \
+	conjugate.c \
+	create_from_two_vectors.c \
+	create_from_axis_angle.c \
+	multiply.c \
+	normalize.c \
+	rotate_vector.c \
+	solve_quadratic.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)

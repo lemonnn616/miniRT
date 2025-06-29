@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   random.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 12:14:04 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/18 13:34:03 by natallia         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:47:08 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static uint32_t	pcg_random(t_pcg *rng)
 	rng->state = oldstate * 6364136223846793005ull + rng->inc;
 	xorshifted = ((oldstate >> 18u) ^ oldstate) >> 27u;
 	rotate = oldstate >> 59u;
-	return (xorshifted >> rotate) | (xorshifted << ((-rotate) & 31));
+	return ((xorshifted >> rotate) | (xorshifted << ((-rotate) & 31)));
 }
 
 float	pcg_random_float(t_pcg *rng)
