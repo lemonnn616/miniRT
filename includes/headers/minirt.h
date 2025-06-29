@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/20 13:43:13 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/22 20:18:23 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct s_data
 	int				max_bounces;
 	bool			preview_mode;
 	double			last_move_time;
-} t_data;
+}	t_data;
 
 void	exit_error(t_data *data, char *msg);
 void	exit_success(t_data *data);
@@ -136,7 +136,11 @@ void	handle_light_globe_interaction(t_hit *hit, t_vec3 ray_direction);
 void	find_closest_object(t_data *data, t_ray *ray, t_hit *hit);
 void	trace_paths(t_data *data, t_ray *ray, uint32_t y, uint32_t x);
 
-
 void	reset_pixel_buffer(t_data *d);
+void mouse_move(double mx, double my, void *param);
+void rotate_square(t_square *sq, t_quat q_rot);
+void rotate_cone(t_cone *co, t_quat q_rot);
+void rotate_cylinder(t_cylinder *c, t_quat q_rot);
+void rotate_plane(t_plane *p, t_quat q_rot);
 
 #endif

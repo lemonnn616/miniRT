@@ -6,51 +6,11 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:35:30 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/20 15:35:34 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/22 20:19:23 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-static void rotate_plane(t_plane *p, t_quat q_rot)
-{
-	p->orient = quat_normalize(quat_mul(q_rot, p->orient));
-	p->normal = quat_rotate_vec(p->normal0, p->orient);
-}
-
-static void rotate_cylinder(t_cylinder *c, t_quat q_rot)
-{
-	c->orient = quat_normalize(quat_mul(q_rot, c->orient));
-	c->axis   = quat_rotate_vec(c->axis0, c->orient);
-}
-
-static void rotate_cone(t_cone *co, t_quat q_rot)
-{
-	co->orient = quat_normalize(quat_mul(q_rot, co->orient));
-	co->axis   = quat_rotate_vec(co->axis0, co->orient);
-}
-
-static void rotate_square(t_square *sq, t_quat q_rot)
-{
-	sq->orient = quat_normalize(quat_mul(q_rot, sq->orient));
-	sq->normal = quat_rotate_vec(sq->normal0, sq->orient);
-}
-
-void rotate_all_objects(t_data *d, t_quat q_rot)
-{
-	for (t_object *o = d->scene.objects; o; o = o->next)
-	{
-		if (o->type == OBJ_PLANE)
-			rotate_plane   ((t_plane *)	o->obj, q_rot);
-		else if (o->type == OBJ_CYLINDER)
-			rotate_cylinder((t_cylinder *) o->obj, q_rot);
-		else if (o->type == OBJ_CONE)
-			rotate_cone	((t_cone *)	 o->obj, q_rot);
-		else if (o->type == OBJ_SQUARE)
-			rotate_square  ((t_square *)   o->obj, q_rot);
-	}
-}
-
 
 static void loop_hook(void *param)
 {
@@ -106,42 +66,6 @@ static void recalc_rays_with_orientation(t_data *data)
 			data->pixels[y][x].ray_direction = vec_normalize(world);
 		}
 	}
-}
-
-static bool   first_mouse = true;
-static double last_x, last_y;
-
-static void mouse_move(double mx, double my, void *param)
-{
-	t_data   *data = param;
-	t_camera *cam  = data->scene.active_cam;
-
-	const double sens = 0.002;
-	double dx = mx - last_x;
-	double dy = my - last_y;
-
-	if (first_mouse)
-	{
-		first_mouse = false;
-		last_x = mx;
-		last_y = my;
-		return;
-	}
-	last_x = mx;
-	last_y = my;
-	t_quat q_yaw = quat_from_axis_angle((t_vec3){0,1,0}, (float)(dx * sens));
-	t_quat q_pitch = quat_from_axis_angle(cam->right, (float)(dy * sens));
-	t_quat q_rot = quat_mul(q_pitch, q_yaw);
-	cam->orient = quat_normalize(quat_mul(q_rot, cam->orient));
-	camera_compute_basis(cam);
-	data->preview_mode = true;
-	data->max_rays = 1;
-	data->max_bounces = 0;
-	data->last_move_time = mlx_get_time();
-	rotate_all_objects(data, q_rot);
-	recalc_rays_with_orientation(data);
-	reset_pixel_buffer(data);
-	render(data, 0, 0);
 }
 
 int	main(int argc, char **argv)
