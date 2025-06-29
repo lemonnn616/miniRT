@@ -1,7 +1,8 @@
 NAME := miniRT
 
 SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug sources/rendering/intersection \
-			sources/rendering/surface_interaction sources/rendering/lighting sources/rendering sources/rotation
+			sources/rendering/surface_interaction sources/rendering/lighting sources/rendering sources/rotation \
+			sources/hooks
 VPATH := $(SRC_DIRS)
 SRCS := \
 	main.c \
@@ -57,7 +58,9 @@ SRCS := \
 	path_tracing.c \
 	ray_casting.c \
 	window.c \
-	quaternion.c
+	quaternion.c \
+	input.c \
+	rotate_objects.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)

@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:35:30 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/22 20:19:23 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:42:58 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,6 @@ static void loop_hook(void *param)
 	}
 }
 
-void reset_pixel_buffer(t_data *d)
-{
-	for (int y = 0; y < d->scene.height; ++y)
-		for (int x = 0; x < d->scene.width; ++x)
-		{
-			t_pixel *p = &d->pixels[y][x];
-			p->colour_sum = new_colour(0,0,0);
-			p->final_colour = new_colour(0,0,0);
-			p->ambient = new_colour(0,0,0);
-		}
-}
-
 void	rt_close(void *param)
 {
 	t_data	*data;
@@ -48,25 +36,6 @@ void	rt_close(void *param)
 	exit_success(data);
 }
 
-static void recalc_rays_with_orientation(t_data *data)
-{
-	cast_rays(data);
-	t_camera *cam = data->scene.active_cam;
-	for (int y = 0; y < data->scene.height; ++y)
-	{
-		for (int x = 0; x < data->scene.width; ++x)
-		{
-			t_vec3 v = data->pixels[y][x].ray_direction;
-			t_vec3 world =
-				vec_add(
-					vec_add(
-						vec_scale(cam->right, v.x),
-						vec_scale(cam->up,	v.y)),
-					vec_scale(cam->dir,	 v.z));
-			data->pixels[y][x].ray_direction = vec_normalize(world);
-		}
-	}
-}
 
 int	main(int argc, char **argv)
 {
@@ -91,6 +60,8 @@ int	main(int argc, char **argv)
 	data.last_move_time = 0.0;
 	debug_print_scene(&data.scene);
 	initialise_mlx_window(&data);
+	mlx_key_hook(data.mlx, key_cb, &data);
+	mlx_loop_hook(data.mlx, update_cb, &data);
 	recalc_rays_with_orientation(&data);
 	reset_pixel_buffer(&data);
 	render(&data, 0, 0);

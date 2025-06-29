@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/22 20:18:23 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:42:43 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # include "scene.h"
 # include "parser.h"
 # include "utils.h"
+# include "input.h"
 
 # include <math.h>
 
@@ -137,10 +138,11 @@ void	find_closest_object(t_data *data, t_ray *ray, t_hit *hit);
 void	trace_paths(t_data *data, t_ray *ray, uint32_t y, uint32_t x);
 
 void	reset_pixel_buffer(t_data *d);
-void mouse_move(double mx, double my, void *param);
 void rotate_square(t_square *sq, t_quat q_rot);
 void rotate_cone(t_cone *co, t_quat q_rot);
 void rotate_cylinder(t_cylinder *c, t_quat q_rot);
 void rotate_plane(t_plane *p, t_quat q_rot);
+void recalc_rays_with_orientation(t_data *data);
+void rotate_all_objects(t_data *d, t_quat q_rot);
 
 #endif
