@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cylinder.h                                         :+:      :+:    :+:   */
+/*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:21:59 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/20 15:17:29 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/06/29 14:49:11 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/06/29 14:49:20 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CYLINDER_H
-# define CYLINDER_H
+#include "minirt.h"
 
-# include "vec3.h"
-# include "material.h"
-# include "quaternion.h"
-
-typedef struct s_cylinder
+void	loop_hook(void *param)
 {
-	t_vec3		base;
-	t_vec3		axis;
-	float		radius;
-	float		height;
-	t_quat		orient;
-	t_vec3		axis0;
-	t_material	mat;
-}	t_cylinder;
+	t_data	*d;
+	double	now;
 
-#endif
+	d = param;
+	now = mlx_get_time();
+	if (d->preview_mode && now - d->last_move_time > 0.05)
+	{
+		d->preview_mode = false;
+		d->max_rays = MAX_RAYS;
+		d->max_bounces = MAX_BOUNCES;
+		reset_pixel_buffer(d);
+		render(d, 0, 0);
+	}
+}

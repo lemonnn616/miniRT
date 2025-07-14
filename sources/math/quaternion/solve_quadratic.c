@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quadratic_equation.c                               :+:      :+:    :+:   */
+/*   solve_quadratic.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/01 10:17:16 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/01 10:17:28 by natallia         ###   ########.fr       */
+/*   Created: 2025/06/29 14:04:35 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/06/29 14:05:57 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vec3.h"
+#include "quaternion.h"
 
 bool	quadratic_equation(t_vec3 quad_coeff, float *roots)
 {

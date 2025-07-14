@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:22 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 13:47:30 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:55:18 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	setup_camera_basis(t_camera *cam)
 {
 	while (cam)
 	{
+		cam->orient = quat_from_two_vecs((t_vec3){0, 0, -1}, cam->dir);
 		camera_compute_basis(cam);
 		cam = cam->next;
 	}

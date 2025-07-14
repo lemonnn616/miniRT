@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cylinder.h                                         :+:      :+:    :+:   */
+/*   create_from_axis_angle.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:21:59 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/20 15:17:29 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/06/29 14:04:22 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/06/29 14:05:06 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CYLINDER_H
-# define CYLINDER_H
+#include "quaternion.h"
 
-# include "vec3.h"
-# include "material.h"
-# include "quaternion.h"
-
-typedef struct s_cylinder
+t_quat	quat_from_axis_angle(t_vec3 axis, float angle)
 {
-	t_vec3		base;
-	t_vec3		axis;
-	float		radius;
-	float		height;
-	t_quat		orient;
-	t_vec3		axis0;
-	t_material	mat;
-}	t_cylinder;
+	float	half;
+	float	s;
+	t_quat	q;
 
-#endif
+	half = angle * 0.5f;
+	s = sinf(half);
+	q.w = cosf(half);
+	q.v = vec_scale(axis, s);
+	return (q);
+}

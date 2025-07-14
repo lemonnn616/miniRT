@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cylinder.h                                         :+:      :+:    :+:   */
+/*   input.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:21:59 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/20 15:17:29 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/06/29 13:24:43 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/06/29 13:42:40 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CYLINDER_H
-# define CYLINDER_H
+#ifndef INPUT_H
+# define INPUT_H
 
-# include "vec3.h"
-# include "material.h"
-# include "quaternion.h"
+# include <stdbool.h>
+# include "MLX42.h"
 
-typedef struct s_cylinder
+# define CAMERA_SPEED 2.5f
+
+typedef struct s_keys
 {
-	t_vec3		base;
-	t_vec3		axis;
-	float		radius;
-	float		height;
-	t_quat		orient;
-	t_vec3		axis0;
-	t_material	mat;
-}	t_cylinder;
+	bool w;
+	bool a;
+	bool s;
+	bool d;
+}	t_keys;
+
+void	mouse_move(double mx, double my, void *param);
+void	key_cb(mlx_key_data_t key, void *param);
+void	update_cb(void *param);
 
 #endif

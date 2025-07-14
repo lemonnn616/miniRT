@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec3.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:18:27 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/05/18 15:36:52 by natallia         ###   ########.fr       */
+/*   Updated: 2025/06/29 14:13:01 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_vec3	vec_scale(t_vec3 vec, float scalar);
 float	vec_distance(t_vec3 a, t_vec3 b);
 float	vec_length(t_vec3 v);
 float	degree_to_radian(float degree);
-bool	quadratic_equation(t_vec3 quad_coeff, float *roots);
 void	pcg_seed(t_pcg *rng, uint64_t initstate, uint64_t initseq);
 float	pcg_random_float(t_pcg *rng);
 t_color	lerp_colour(t_color c1, t_color c2, float fraction);

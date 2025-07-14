@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:09 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 13:44:35 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:53:00 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ static bool	validate_cy_tokens(char **tokens)
 
 static bool	fill_cylinder_data(t_cylinder *cy, char **tokens)
 {
-	t_vec3		base;
-	t_vec3		axis;
-	float		dia;
-	float		h;
+	t_vec3	base;
+	t_vec3	axis;
+	float	dia;
+	float	h;
 
 	if (!parse_vector(tokens[1], &base) || !parse_vector(tokens[2], &axis))
 		return (false);
@@ -44,7 +44,9 @@ static bool	fill_cylinder_data(t_cylinder *cy, char **tokens)
 		return (false);
 	}
 	cy->base = base;
-	cy->axis = vec_normalize(axis);
+	cy->axis0 = vec_normalize(axis);
+	cy->axis = cy->axis0;
+	cy->orient = (t_quat){1.0f, {0, 0, 0}};
 	cy->radius = dia * 0.5f;
 	cy->height = h;
 	return (true);

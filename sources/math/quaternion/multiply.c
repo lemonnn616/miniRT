@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cylinder.h                                         :+:      :+:    :+:   */
+/*   multiply.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:21:59 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/20 15:17:29 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/06/29 14:04:27 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/06/29 14:06:13 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CYLINDER_H
-# define CYLINDER_H
+#include "quaternion.h"
 
-# include "vec3.h"
-# include "material.h"
-# include "quaternion.h"
-
-typedef struct s_cylinder
+t_quat	quat_mul(t_quat a, t_quat b)
 {
-	t_vec3		base;
-	t_vec3		axis;
-	float		radius;
-	float		height;
-	t_quat		orient;
-	t_vec3		axis0;
-	t_material	mat;
-}	t_cylinder;
+	t_quat	result;
+	t_vec3	term1;
+	t_vec3	term2;
+	t_vec3	term3;
 
-#endif
+	result.w = a.w * b.w - vec_dot(a.v, b.v);
+	term1 = vec_scale(b.v, a.w);
+	term2 = vec_scale(a.v, b.w);
+	term3 = vec_cross(a.v, b.v);
+	result.v = vec_add(vec_add(term1, term2), term3);
+	return (result);
+}

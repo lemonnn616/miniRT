@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:32:03 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 13:04:08 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:55:59 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ bool	parse_camera(char **tokens, t_scene *scene)
 		return (perror("malloc"), false);
 	cam->pos = pos;
 	cam->dir = dir;
+	cam->orient = (t_quat){.w = 1.0f, .v = {0, 0, 0}};
 	cam->fov = fov;
 	cam->next = scene->cameras;
 	scene->cameras = cam;

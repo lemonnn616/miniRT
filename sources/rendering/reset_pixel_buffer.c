@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cylinder.h                                         :+:      :+:    :+:   */
+/*   reset_pixel_buffer.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:21:59 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/20 15:17:29 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/06/29 14:19:03 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/06/29 14:21:14 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CYLINDER_H
-# define CYLINDER_H
+#include "minirt.h"
 
-# include "vec3.h"
-# include "material.h"
-# include "quaternion.h"
-
-typedef struct s_cylinder
+void	reset_pixel_buffer(t_data *d)
 {
-	t_vec3		base;
-	t_vec3		axis;
-	float		radius;
-	float		height;
-	t_quat		orient;
-	t_vec3		axis0;
-	t_material	mat;
-}	t_cylinder;
+	int		y;
+	int		x;
+	t_pixel	*p;
 
-#endif
+	y = 0;
+	while (y < d->scene.height)
+	{
+		x = 0;
+		while (x < d->scene.width)
+		{
+			p = &d->pixels[y][x];
+			p->colour_sum = new_colour(0, 0, 0);
+			p->final_colour = new_colour(0, 0, 0);
+			p->ambient = new_colour(0, 0, 0);
+			x++;
+		}
+		y++;
+	}
+}
