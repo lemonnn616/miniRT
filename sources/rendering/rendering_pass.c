@@ -1,27 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
+/*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:07:27 by natallia          #+#    #+#             */
-/*   Updated: 2025/06/20 13:43:48 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/07/23 13:33:00 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include <float.h>
-
-uint32_t	ft_pixel(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
-{
-	return (r << 24 | g << 16 | b << 8 | a);
-}
-
-uint32_t percentage_to_rgba(const t_color f)
-{
-	return (ft_pixel(f.r * 255, f.g * 255, f.b * 255, 0xff));
-}
 
 void	update_ray(t_data *data, t_ray *ray, int32_t y, int32_t x)
 {
@@ -74,45 +64,20 @@ void	get_first_hit(t_data *data, t_ray *ray, int32_t y, int32_t x)
 		data->pixels[y][x].surface_norm = ray->hit_data->surface_norm;
 		data->pixels[y][x].ambient = blend_ambient_light(ray->hit_data->colour,
 			data->scene.ambient, ray->hit_data->shininess);
-		// data->pixels[y][x].final_colour = combine_colours(
-		// 	data->pixels[y][x].obj_colour, data->pixels[y][x].ambient);
 	}
 }
 
-// void	render(t_data *data, uint32_t y, uint32_t x)
-// {
-// 	t_ray		ray;
-// 	t_hit		hit;
-
-// 	ray.hit_data = &hit;
-// 	while (y < (uint32_t)data->scene.height)
-// 	{
-// 		x = 0;
-// 		while (x < (uint32_t)data->scene.width)
-// 		{
-// 			update_ray(data, &ray, y, x);
-// 			get_first_hit(data, &ray, y, x);
-// 			if (hit.hit_occurred && hit.type != OBJ_LIGHT)
-// 				trace_paths(data, &ray, y, x);
-// 			mlx_put_pixel(data->image_buffer, x, y,
-// 				percentage_to_rgba(data->pixels[y][x].final_colour));
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// }
-
-void	render(t_data *data, uint32_t y, uint32_t x)
+void	render_pass(t_data *data, uint32_t y_start,
+	uint32_t y_stride, t_pcg *rng)
 {
-	t_ray		ray;
-	t_hit		hit;
+	t_ray	ray;
+	t_hit	hit;
 
 	ray.hit_data = &hit;
-	while (y < (uint32_t)data->scene.height)
+	ray.rng = rng;
+	for (uint32_t y = y_start; (int)y < data->scene.height; y += y_stride)
 	{
-		int step = data->preview_mode ? 2 : 1;
-		x = 0;
-		while (x < (uint32_t)data->scene.width)
+		for (uint32_t x = 0; (int)x < data->scene.width; ++x)
 		{
 			update_ray(data, &ray, y, x);
 			get_first_hit(data, &ray, y, x);
@@ -120,8 +85,6 @@ void	render(t_data *data, uint32_t y, uint32_t x)
 				trace_paths(data, &ray, y, x);
 			mlx_put_pixel(data->image_buffer, x, y,
 				percentage_to_rgba(data->pixels[y][x].final_colour));
-			x += step;
 		}
-		y += step;
 	}
 }

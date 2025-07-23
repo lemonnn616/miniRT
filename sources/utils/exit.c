@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:26:24 by natallia          #+#    #+#             */
-/*   Updated: 2025/06/19 18:39:15 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/07/23 12:41:07 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,16 @@ void	exit_error(t_data *data, char *msg)
 	free_data(data);
 	ft_putstr_fd("Error: ", 2);
 	ft_putendl_fd(msg, 2);
+	exit(EXIT_FAILURE);
+}
+
+void	exit_error_errno(t_data *data, char *msg, int errcode)
+{
+	free_data(data);
+	ft_putstr_fd("Error: ", 2);
+	ft_putstr_fd(msg, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putendl_fd(strerror(errcode), 2);
 	exit(EXIT_FAILURE);
 }
 

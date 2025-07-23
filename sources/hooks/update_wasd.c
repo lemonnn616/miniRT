@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_wasd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:40:59 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 14:41:54 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/07/17 13:26:30 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,22 @@ static void	process_movement(t_data *d, t_camera *cam, float speed)
 	camera_compute_basis(cam);
 	reset_pixel_buffer(d);
 	recalc_rays_with_orientation(d);
-	render(d, 0, 0);
+	start_progressive_render(d);
 }
 
 static void	prepare_movement(t_data *d, double delta)
 {
 	t_camera	*cam;
-	t_vec3		forward;
-	t_vec3		right;
+	// t_vec3		forward;
+	// t_vec3		right;
 	float		speed;
 	float		dt;
 
 	cam = d->scene.active_cam;
 	dt = (float)delta;
 	camera_compute_basis(cam);
-	forward = cam->dir;
-	right = cam->right;
+	// forward = cam->dir;
+	// right = cam->right;
 	speed = CAMERA_SPEED * dt;
 	process_movement(d, cam, speed);
 }

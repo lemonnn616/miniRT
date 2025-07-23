@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:35:30 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 14:49:49 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/07/17 13:24:44 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	start_rendering(t_data *data)
 {
 	recalc_rays_with_orientation(data);
 	reset_pixel_buffer(data);
-	render(data, 0, 0);
+	start_progressive_render(data);
 }
 
 int	main(int argc, char **argv)

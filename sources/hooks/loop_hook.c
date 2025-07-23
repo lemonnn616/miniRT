@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:49:11 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 14:49:20 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/07/17 13:26:05 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ void	loop_hook(void *param)
 		d->max_rays = MAX_RAYS;
 		d->max_bounces = MAX_BOUNCES;
 		reset_pixel_buffer(d);
-		render(d, 0, 0);
+		start_progressive_render(d);
 	}
 }

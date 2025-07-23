@@ -1,7 +1,7 @@
 NAME := miniRT
 
 SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug sources/rendering/intersection \
-			sources/rendering/surface_interaction sources/rendering/lighting sources/rendering sources/rotation \
+			sources/rendering/surface_interaction sources/rendering sources/rotation \
 			sources/hooks sources/math/quaternion
 VPATH := $(SRC_DIRS)
 SRCS := \
@@ -46,14 +46,14 @@ SRCS := \
 	intersect_sphere.c \
 	intersection_utils.c \
 	colour_math.c \
-	colours.c \
+	lighting.c \
 	handle_cone.c \
 	handle_cylinder.c \
 	handle_light_globe.c \
 	handle_plane.c \
 	handle_sphere.c \
 	handle_surface_hit.c \
-	draw.c \
+	rendering_pass.c \
 	path_tracing.c \
 	ray_casting.c \
 	window.c \
@@ -70,7 +70,8 @@ SRCS := \
 	recalculate_rays_with_orientation.c \
 	reset_pixel_buffer.c \
 	update_wasd.c \
-	loop_hook.c
+	loop_hook.c \
+	multithreading.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)
