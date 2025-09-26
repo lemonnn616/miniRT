@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wasd.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:15:21 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 14:42:31 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/09/26 18:25:58 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,14 @@ static void	handle_key_press(t_keys *keys, mlx_key_data_t key, t_data *d)
 		keys->a = true;
 	if (key.key == MLX_KEY_D)
 		keys->d = true;
-	if (key.key == MLX_KEY_ESCAPE)
-		mlx_close_window(d->mlx);
+	if (key.key == MLX_KEY_ESCAPE && key.action == MLX_PRESS)
+	{
+		if (!d->exiting)
+		{
+			d->exiting = true;
+			mlx_close_window(d->mlx);
+		}
+	}
 }
 
 static void	handle_key_release(t_keys *keys, mlx_key_data_t key)
@@ -43,6 +49,8 @@ void	key_cb(mlx_key_data_t key, void *param)
 	t_data	*d;
 
 	d = param;
+	if (d->exiting)
+		return ;
 	if (key.action == MLX_PRESS || key.action == MLX_REPEAT)
 		handle_key_press(&d->keys, key, d);
 	else if (key.action == MLX_RELEASE)

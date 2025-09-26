@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/07/23 14:22:27 by natallia         ###   ########.fr       */
+/*   Updated: 2025/09/26 21:29:55 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,13 @@
 
 # define ERR_MEM "Failed to allocate memory"
 # define ERR_THREAD "Failed to create thread"
-# define ERR_DETACH "Failed to detach thread"
+# define ERR_MUTEX "Failed to create mutex"
 # define OFFSET 0.001f
 # define GLOBE_RADIUS 5.0f
 # define MAX_RAYS 200
 # define MAX_BOUNCES 5
 # define SEED_BASE 0x9E3779B97F4A7C15ULL
+# define ETERNITY 1
 
 typedef struct s_hit
 {
@@ -104,27 +105,36 @@ typedef struct s_thread_ctx
 
 typedef struct s_data
 {
-	t_scene			scene;
-	mlx_t			*mlx;
-	mlx_image_t		*image_buffer;
-	t_pixel			**pixels;
-	int				max_rays;
-	int				max_bounces;
-	bool			preview_mode;
-	double			last_move_time;
-	t_keys			keys;
-	bool			first_mouse;
-	double			last_mouse_x;
-	double			last_mouse_y;
-	volatile bool	keep_rendering;
-	int				nthreads;
-	pthread_t		*threads;
-	t_thread_ctx	*thread_ctx;
+	t_scene				scene;
+	mlx_t				*mlx;
+	mlx_image_t			*image_buffer;
+	t_pixel				**pixels;
+	int					max_rays;
+	int					max_bounces;
+	bool				preview_mode;
+	double				last_move_time;
+	t_keys				keys;
+	bool				first_mouse;
+	double				last_mouse_x;
+	double				last_mouse_y;
+	volatile bool		keep_rendering;
+	int					nthreads;
+	int					nthreads_success;
+	pthread_t			*threads;
+	t_thread_ctx		*thread_ctx;
+	pthread_mutex_t		render_lock;
+	pthread_cond_t		render_cond;
+	bool				pool_started;
+	bool				should_stop;
+	bool				rendering_on;
+	bool				exiting;
+	uint32_t			frame_id;
 }	t_data;
 
 void	exit_error(t_data *data, char *msg);
 void	exit_error_errno(t_data *data, char *msg, int errcode);
 void	exit_success(t_data *data);
+void	free_data(t_data *data);
 void	camera_compute_basis(t_camera *cam);
 void	free_scene(t_scene *scene);
 void	initialise_mlx_window(t_data *data);
@@ -132,6 +142,7 @@ void	free_pixels(t_pixel ***pixels, uint32_t y);
 void	cast_rays(t_data *data);
 void	render_pass(t_data *data, uint32_t y_start, uint32_t y_stride, t_pcg *rng);
 void	start_progressive_render(t_data *data);
+void	cleanup_threads(t_data *data);
 bool	valid_intersection(float *low, float *high);
 void	update_hit(t_ray *ray, float distance, t_object *obj);
 void	intersect_sphere(t_hit *hit, t_ray *ray, t_object *obj);
