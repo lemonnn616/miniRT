@@ -82,6 +82,7 @@ MLX42_BUILD:= $(MLX42_DIR)/build
 
 INCLUDES := -Iincludes/headers -I$(MLX42_DIR)/include/MLX42 -I$(LIBFT_DIR)
 CC := cc
+
 CFLAGS := -Wall -Wextra -Werror $(INCLUDES) -O3 -flto
 MLX42_LIB := $(MLX42_BUILD)/libmlx42.a
 LDFLAGS := -L$(MLX42_BUILD) -lmlx42 -lglfw -ldl -pthread -lm \

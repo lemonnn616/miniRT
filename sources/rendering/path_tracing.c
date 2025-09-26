@@ -6,52 +6,99 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:26:40 by natallia          #+#    #+#             */
-/*   Updated: 2025/07/23 15:19:48 by natallia         ###   ########.fr       */
+/*   Updated: 2025/09/26 14:18:24 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_color	sample_direct_light(t_data *data, t_hit *hit)
+// t_color	sample_direct_light(t_data *data, t_hit *hit)
+// {
+// 	t_light	*light;
+// 	t_vec3	to_light;
+// 	t_ray	shadow;
+// 	t_hit	sh;
+// 	float	dist;
+
+// 	light = data->scene.lights;
+// 	if (!light)
+// 		return (new_colour(0.0f, 0.0f, 0.0f));
+// 	to_light = vec_subtract(light->pos, hit->location);
+// 	dist = vec_length(to_light);
+// 	to_light = vec_scale(to_light, 1.0f / dist);
+// 	if (vec_dot(hit->surface_norm, to_light) <= 0.0f)
+// 		return (new_colour(0.0f, 0.0f, 0.0f));
+// 	shadow.origin = vec_add(hit->location,
+// 		vec_scale(hit->surface_norm, 0.001f));
+// 	shadow.direction = to_light;
+// 	shadow.hit_data = &sh;
+// 	ft_memset(&sh, 0, sizeof(sh));
+// 	find_closest_object(data, &shadow, &sh);
+// 	if (sh.hit_occurred && sh.type != OBJ_LIGHT
+// 		&& sh.distance < dist)
+// 		return (new_colour(0.0f, 0.0f, 0.0f));
+// 	return (colour_scale(multiply_colours(light->color,
+// 		hit->obj_colour), vec_dot(hit->surface_norm, to_light)));
+// }
+
+// static void	sample_direct_once(t_data *data, t_ray *ray,
+// 	t_pixel *pxl, t_color *throughput)
+// {
+// 	t_color	direct;
+// 	t_color	contrib;
+
+// 	direct = sample_direct_light(data, ray->hit_data);
+// 	contrib = multiply_colours(*throughput, direct);
+// 	pxl->colour_sum = colour_add(pxl->colour_sum, contrib);
+// }
+
+t_color sample_direct_light(t_data *data, t_hit *hit, t_light *light)
 {
-	t_vec3		to_light;
-	t_ray		shadow_ray;
-	t_hit		shadow_hit;
-	t_light		*light;
-	float		distance;
-	float		n_dot_l;
-	t_color		result;
+	t_vec3 to_light = vec_subtract(light->pos, hit->location);
+	float  dist     = vec_length(to_light);
+	to_light        = vec_scale(to_light, 1.0f / dist);
 
-	light = data->scene.lights;
-	if (!light)
-		return (new_colour(0.0f, 0.0f, 0.0f));
+	float NdotL = vec_dot(hit->surface_norm, to_light);
+	if (NdotL <= 0.0f)
+		return new_colour(0,0,0);
 
-	to_light = vec_subtract(light->pos, hit->location);
-	distance = vec_length(to_light);
-	to_light = vec_normalize(to_light);
+	t_ray  shadow = {
+		.origin    = vec_add(hit->location, vec_scale(hit->surface_norm, 0.001f)),
+		.direction = to_light,
+		.hit_data  = &(t_hit){0}
+	};
+	t_hit sh = {0};
+	shadow.hit_data = &sh;
+	find_closest_object(data, &shadow, &sh);
 
-	n_dot_l = vec_dot(hit->surface_norm, to_light);
-	if (n_dot_l <= 0.0f)
-		return (new_colour(0.0f, 0.0f, 0.0f));
+	if (sh.hit_occurred && sh.type != OBJ_LIGHT && sh.distance < dist)
+		return new_colour(0,0,0);
 
-	shadow_ray.origin = vec_add(hit->location, vec_scale(hit->surface_norm, 0.001f));
-	shadow_ray.direction = to_light;
-	shadow_ray.hit_data = &shadow_hit;
-
-	ft_memset(&shadow_hit, 0, sizeof(t_hit));
-	find_closest_object(data, &shadow_ray, &shadow_hit);
-
-	if (shadow_hit.hit_occurred && shadow_hit.type != OBJ_LIGHT
-		&& shadow_hit.distance < distance)
-		return (new_colour(0.0f, 0.0f, 0.0f));
-
-	result = multiply_colours(light->color, hit->obj_colour);
-	return (colour_scale(result, n_dot_l));
+	return colour_scale(
+		multiply_colours(light->color, hit->obj_colour),
+		NdotL
+	);
 }
 
-float	sum(t_color colour)
+static t_color sample_direct_light_all(t_data *data, t_hit *hit)
 {
-	return (colour.r + colour.g + colour.b);
+	t_light *light = data->scene.lights;
+	t_color  sum   = new_colour(0.0f, 0.0f, 0.0f);
+
+	while (light)
+	{
+		t_color Li = sample_direct_light(data, hit, light);
+		sum = colour_add(sum, Li);
+		light = light->next;
+	}
+	return sum;
+}
+
+static void sample_direct_once(t_data *data, t_ray *ray, t_pixel *pxl, t_color *throughput)
+{
+	t_color sumL = sample_direct_light_all(data, ray->hit_data);
+	t_color contrib = multiply_colours(*throughput, sumL);
+	pxl->colour_sum = colour_add(pxl->colour_sum, contrib);
 }
 
 bool	is_shiny(t_pcg *rng, float shininess)
@@ -71,17 +118,6 @@ t_vec3	reflect_ray(t_vec3 surface_normal, t_vec3 incoming)
 	reflected = vec_subtract(incoming, vec_scale(surface_normal,
 		2.0f * vec_dot(incoming, surface_normal)));
 	return (reflected);
-}
-
-static void	sample_direct_once(t_data *data, t_ray *ray,
-	t_pixel *pxl, t_color *throughput)
-{
-	t_color	direct;
-	t_color	contrib;
-
-	direct = sample_direct_light(data, ray->hit_data);
-	contrib = multiply_colours(*throughput, direct);
-	pxl->colour_sum = colour_add(pxl->colour_sum, contrib);
 }
 
 static void	bounce_ray(t_data *d, t_ray *r, t_hit *hit)
