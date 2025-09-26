@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/09/26 21:29:55 by natallia         ###   ########.fr       */
+/*   Updated: 2025/09/26 22:01:33 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,12 @@
 
 # define ERR_MEM "Failed to allocate memory"
 # define ERR_THREAD "Failed to create thread"
-# define ERR_MUTEX "Failed to create mutex"
+# define ERR_MUTEX "Failed to initialise mutex"
+# define ERR_COND "Failed to initialise condition variable"
 # define OFFSET 0.001f
-# define GLOBE_RADIUS 5.0f
-# define MAX_RAYS 200
-# define MAX_BOUNCES 5
+# define GLOBE_RADIUS 1.0f
+# define MAX_RAYS 20
+# define MAX_BOUNCES 10
 # define SEED_BASE 0x9E3779B97F4A7C15ULL
 # define ETERNITY 1
 
@@ -91,6 +92,7 @@ typedef struct s_pixel
 	float	shininess;
 	t_color	ambient;
 	t_color	colour_sum;
+	uint32_t	spp;
 }	t_pixel;
 
 typedef struct s_data	t_data;

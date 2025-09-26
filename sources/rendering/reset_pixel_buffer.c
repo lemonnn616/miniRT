@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reset_pixel_buffer.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:19:03 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 14:21:14 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/09/26 22:12:02 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	reset_pixel_buffer(t_data *d)
 			p->colour_sum = new_colour(0, 0, 0);
 			p->final_colour = new_colour(0, 0, 0);
 			p->ambient = new_colour(0, 0, 0);
+			p->spp = 0;
 			x++;
 		}
 		y++;

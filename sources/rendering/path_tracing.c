@@ -6,98 +6,49 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:26:40 by natallia          #+#    #+#             */
-/*   Updated: 2025/09/26 14:18:24 by natallia         ###   ########.fr       */
+/*   Updated: 2025/09/26 22:20:45 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-// t_color	sample_direct_light(t_data *data, t_hit *hit)
-// {
-// 	t_light	*light;
-// 	t_vec3	to_light;
-// 	t_ray	shadow;
-// 	t_hit	sh;
-// 	float	dist;
-
-// 	light = data->scene.lights;
-// 	if (!light)
-// 		return (new_colour(0.0f, 0.0f, 0.0f));
-// 	to_light = vec_subtract(light->pos, hit->location);
-// 	dist = vec_length(to_light);
-// 	to_light = vec_scale(to_light, 1.0f / dist);
-// 	if (vec_dot(hit->surface_norm, to_light) <= 0.0f)
-// 		return (new_colour(0.0f, 0.0f, 0.0f));
-// 	shadow.origin = vec_add(hit->location,
-// 		vec_scale(hit->surface_norm, 0.001f));
-// 	shadow.direction = to_light;
-// 	shadow.hit_data = &sh;
-// 	ft_memset(&sh, 0, sizeof(sh));
-// 	find_closest_object(data, &shadow, &sh);
-// 	if (sh.hit_occurred && sh.type != OBJ_LIGHT
-// 		&& sh.distance < dist)
-// 		return (new_colour(0.0f, 0.0f, 0.0f));
-// 	return (colour_scale(multiply_colours(light->color,
-// 		hit->obj_colour), vec_dot(hit->surface_norm, to_light)));
-// }
-
-// static void	sample_direct_once(t_data *data, t_ray *ray,
-// 	t_pixel *pxl, t_color *throughput)
-// {
-// 	t_color	direct;
-// 	t_color	contrib;
-
-// 	direct = sample_direct_light(data, ray->hit_data);
-// 	contrib = multiply_colours(*throughput, direct);
-// 	pxl->colour_sum = colour_add(pxl->colour_sum, contrib);
-// }
-
-t_color sample_direct_light(t_data *data, t_hit *hit, t_light *light)
+t_color	sample_direct_light(t_data *data, t_hit *hit)
 {
-	t_vec3 to_light = vec_subtract(light->pos, hit->location);
-	float  dist     = vec_length(to_light);
-	to_light        = vec_scale(to_light, 1.0f / dist);
+	t_light	*light;
+	t_vec3	to_light;
+	t_ray	shadow;
+	t_hit	sh;
+	float	dist;
 
-	float NdotL = vec_dot(hit->surface_norm, to_light);
-	if (NdotL <= 0.0f)
-		return new_colour(0,0,0);
-
-	t_ray  shadow = {
-		.origin    = vec_add(hit->location, vec_scale(hit->surface_norm, 0.001f)),
-		.direction = to_light,
-		.hit_data  = &(t_hit){0}
-	};
-	t_hit sh = {0};
+	light = data->scene.lights;
+	if (!light)
+		return (new_colour(0.0f, 0.0f, 0.0f));
+	to_light = vec_subtract(light->pos, hit->location);
+	dist = vec_length(to_light);
+	to_light = vec_scale(to_light, 1.0f / dist);
+	if (vec_dot(hit->surface_norm, to_light) <= 0.0f)
+		return (new_colour(0.0f, 0.0f, 0.0f));
+	shadow.origin = vec_add(hit->location,
+		vec_scale(hit->surface_norm, 0.001f));
+	shadow.direction = to_light;
 	shadow.hit_data = &sh;
+	ft_memset(&sh, 0, sizeof(sh));
 	find_closest_object(data, &shadow, &sh);
-
-	if (sh.hit_occurred && sh.type != OBJ_LIGHT && sh.distance < dist)
-		return new_colour(0,0,0);
-
-	return colour_scale(
-		multiply_colours(light->color, hit->obj_colour),
-		NdotL
-	);
+	if (sh.hit_occurred && sh.type != OBJ_LIGHT
+		&& sh.distance < dist)
+		return (new_colour(0.0f, 0.0f, 0.0f));
+	return (colour_scale(multiply_colours(light->color,
+		hit->obj_colour), vec_dot(hit->surface_norm, to_light)));
 }
 
-static t_color sample_direct_light_all(t_data *data, t_hit *hit)
+static void	sample_direct_once(t_data *data, t_ray *ray,
+	t_pixel *pxl, t_color *throughput)
 {
-	t_light *light = data->scene.lights;
-	t_color  sum   = new_colour(0.0f, 0.0f, 0.0f);
+	t_color	direct;
+	t_color	contrib;
 
-	while (light)
-	{
-		t_color Li = sample_direct_light(data, hit, light);
-		sum = colour_add(sum, Li);
-		light = light->next;
-	}
-	return sum;
-}
-
-static void sample_direct_once(t_data *data, t_ray *ray, t_pixel *pxl, t_color *throughput)
-{
-	t_color sumL = sample_direct_light_all(data, ray->hit_data);
-	t_color contrib = multiply_colours(*throughput, sumL);
+	direct = sample_direct_light(data, ray->hit_data);
+	contrib = multiply_colours(*throughput, direct);
 	pxl->colour_sum = colour_add(pxl->colour_sum, contrib);
 }
 
@@ -189,22 +140,21 @@ static void	prepare_ray(t_data *d, t_ray *r, uint32_t y, uint32_t x)
 	r->hit_data->type = OBJ_NONE;
 }
 
-void	trace_paths(t_data *data, t_ray *ray, uint32_t y, uint32_t x)
+void	trace_paths(t_data *d, t_ray *ray, uint32_t y, uint32_t x)
 {
-	t_pixel	*pxl;
+	t_pixel	*px;
 	int		rays;
 
-	pxl = &data->pixels[y][x];
-	pxl->colour_sum = new_colour(0.0f, 0.0f, 0.0f);
+	px = &d->pixels[y][x];
 	rays = 0;
-	while (rays < data->max_rays)
+	while (rays < d->max_rays)
 	{
-		prepare_ray(data, ray, y, x);
-		process_bounces(data, ray, pxl);
+		prepare_ray(d, ray, y, x);
+		process_bounces(d, ray, px);
 		rays++;
 	}
-	pxl->final_colour = colour_scale(pxl->colour_sum,
-		1.0f / (float)(MAX_RAYS));
-	gamma_adjust(&pxl->final_colour);
-	pxl->final_colour = combine_colours(pxl->final_colour, pxl->ambient);
+	px->spp += d->max_rays;
+	t_color avg = colour_scale(px->colour_sum, 1.0f / (float)px->spp);
+	gamma_adjust(&avg);
+	px->final_colour = combine_colours(avg, px->ambient);
 }
