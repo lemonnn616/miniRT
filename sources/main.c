@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:35:30 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 14:49:49 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/09/26 19:35:06 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ void	rt_close(void *param)
 	t_data	*data;
 
 	data = (t_data *)param;
-	exit_success(data);
+	if (data->exiting)
+		return ;
+	data->exiting = true;
 }
 
 static void	setup_data(t_data *data, char **argv)
@@ -52,7 +54,7 @@ static void	start_rendering(t_data *data)
 {
 	recalc_rays_with_orientation(data);
 	reset_pixel_buffer(data);
-	render(data, 0, 0);
+	start_progressive_render(data);
 }
 
 int	main(int argc, char **argv)
@@ -68,5 +70,6 @@ int	main(int argc, char **argv)
 	setup_hooks(&data);
 	start_rendering(&data);
 	mlx_loop(data.mlx);
+	exit_success(&data);
 	return (EXIT_SUCCESS);
 }

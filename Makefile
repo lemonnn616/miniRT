@@ -1,7 +1,7 @@
 NAME := miniRT
 
 SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug sources/rendering/intersection \
-			sources/rendering/surface_interaction sources/rendering/lighting sources/rendering sources/rotation \
+			sources/rendering/surface_interaction sources/rendering sources/rotation \
 			sources/hooks sources/math/quaternion
 VPATH := $(SRC_DIRS)
 SRCS := \
@@ -20,6 +20,7 @@ SRCS := \
 	parse_sphere.c \
 	parse_vector.c \
 	free_tokens.c \
+	cleanup.c \
 	ft_strtol.c \
 	ft_strtof.c \
 	ft_strtok.c \
@@ -46,14 +47,14 @@ SRCS := \
 	intersect_sphere.c \
 	intersection_utils.c \
 	colour_math.c \
-	colours.c \
+	lighting.c \
 	handle_cone.c \
 	handle_cylinder.c \
 	handle_light_globe.c \
 	handle_plane.c \
 	handle_sphere.c \
 	handle_surface_hit.c \
-	draw.c \
+	rendering_pass.c \
 	path_tracing.c \
 	ray_casting.c \
 	window.c \
@@ -70,21 +71,44 @@ SRCS := \
 	recalculate_rays_with_orientation.c \
 	reset_pixel_buffer.c \
 	update_wasd.c \
-	loop_hook.c
+	loop_hook.c \
+	multithreading.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
-LIBFT_DIR := includes/libft
-MLX42_DIR := includes/MLX42
-MLX42_BUILD:= $(MLX42_DIR)/build
+LIBFT_DIR	:= includes/libft
+MLX42_DIR	:= includes/MLX42
+MLX42_BUILD	:= $(MLX42_DIR)/build
 
-INCLUDES := -Iincludes/headers -I$(MLX42_DIR)/include/MLX42 -I$(LIBFT_DIR)
-CC := cc
-CFLAGS := -Wall -Wextra -Werror $(INCLUDES) -O3 -flto
-MLX42_LIB := $(MLX42_BUILD)/libmlx42.a
-LDFLAGS := -L$(MLX42_BUILD) -lmlx42 -lglfw -ldl -pthread -lm \
-				$(LIBFT_DIR)/libft.a
+INCLUDES	:= -Iincludes/headers -I$(MLX42_DIR)/include/MLX42 -I$(LIBFT_DIR)
+CC			:= cc
+
+CFLAGS		:= -Wall -Wextra -Werror -O3 -flto $(INCLUDES)
+MLX42_LIB	:= $(MLX42_BUILD)/libmlx42.a
+
+LDFLAGS		:= $(LIBFT_DIR)/libft.a
+
+UNAME_S		:= $(shell uname -s)
+UNAME_M		:= $(shell uname -m)
+
+ifeq ($(UNAME_S),Darwin)
+	ifeq ($(UNAME_M),arm64)
+		CFLAGS  += -arch arm64
+		LDFLAGS += -arch arm64 \
+					-L$(MLX42_BUILD) -lmlx42 \
+					-L/opt/homebrew/lib -lglfw \
+					-framework Cocoa -framework IOKit -framework CoreVideo \
+					-pthread -lm
+	else
+		LDFLAGS += -L$(MLX42_BUILD) -lmlx42 \
+				-lglfw \
+				-framework Cocoa -framework IOKit -framework CoreVideo \
+				-pthread -lm
+	endif
+else
+	LDFLAGS += -L$(MLX42_BUILD) -lmlx42 -lglfw -ldl -pthread -lm
+endif
 
 all: git-submodule MLX42 $(NAME)
 

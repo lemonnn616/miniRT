@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:55:04 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 13:49:21 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/09/26 19:27:52 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	free_objects(t_object *obj)
 	while (obj)
 	{
 		next = obj->next;
-		if (obj->obj)
+		if (obj->obj && obj->type != OBJ_LIGHT)
 			free(obj->obj);
 		free(obj);
 		obj = next;

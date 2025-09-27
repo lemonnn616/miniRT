@@ -1,36 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   colours.c                                          :+:      :+:    :+:   */
+/*   lighting.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:02:45 by natallia          #+#    #+#             */
-/*   Updated: 2025/06/06 11:26:31 by natallia         ###   ########.fr       */
+/*   Updated: 2025/07/23 14:23:45 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-void	gamma_adjust(t_color *c)
-{
-	float	gamma;
-
-	gamma = 2.2f;
-	c->r = powf(c->r, 1.0f / gamma);
-	c->g = powf(c->g, 1.0f / gamma);
-	c->b = powf(c->b, 1.0f / gamma);
-}
-
-t_color	tint_reflected_light(t_color base_colour, t_color incoming_light)
-{
-	t_color	result;
-
-	result.r = base_colour.r * incoming_light.r;
-	result.g = base_colour.g * incoming_light.g;
-	result.b = base_colour.b * incoming_light.b;
-	return (result);
-}
 
 t_color	blend_ambient_light(t_color base, t_ambient amb, float shininess)
 {
@@ -46,13 +26,26 @@ t_color	blend_ambient_light(t_color base, t_ambient amb, float shininess)
 	return (result);
 }
 
-t_color	combine_colours(t_color c1, t_color c2)
+uint32_t	percentage_to_rgba(const t_color f)
 {
-	t_color result;
+	uint8_t	r;
+	uint8_t	g;
+	uint8_t	b;
+	uint8_t	a;
 
-	result.r = c1.r + (1.0f - c1.r) * c2.r;
-	result.g = c1.g + (1.0f - c1.g) * c2.g;
-	result.b = c1.b + (1.0f - c1.b) * c2.b;
+	r = (uint8_t)(f.r * 255.0f);
+	g = (uint8_t)(f.g * 255.0f);
+	b = (uint8_t)(f.b * 255.0f);
+	a = 0xFF;
+	return (r << 24 | g << 16 | b <<  8 | a);
+}
 
-	return (result);
+void	gamma_adjust(t_color *c)
+{
+	float	gamma;
+
+	gamma = 2.2f;
+	c->r = powf(c->r, 1.0f / gamma);
+	c->g = powf(c->g, 1.0f / gamma);
+	c->b = powf(c->b, 1.0f / gamma);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 14:49:40 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/09/26 22:01:33 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,22 @@
 # include "parser.h"
 # include "utils.h"
 # include "input.h"
+# include <pthread.h>
 
 # include <math.h>
 
 # include "debug.h"
 
 # define ERR_MEM "Failed to allocate memory"
+# define ERR_THREAD "Failed to create thread"
+# define ERR_MUTEX "Failed to initialise mutex"
+# define ERR_COND "Failed to initialise condition variable"
 # define OFFSET 0.001f
-# define GLOBE_RADIUS 5.0f
-# define MAX_RAYS 4
-# define MAX_BOUNCES 5
-# define SEED_BASE 16045690984833335038ULL
+# define GLOBE_RADIUS 1.0f
+# define MAX_RAYS 20
+# define MAX_BOUNCES 10
+# define SEED_BASE 0x9E3779B97F4A7C15ULL
+# define ETERNITY 1
 
 typedef struct s_hit
 {
@@ -73,7 +78,7 @@ typedef struct s_ray
 	t_vec3	origin;
 	t_vec3	direction;
 	t_hit	*hit_data;
-	t_pcg	rng;
+	t_pcg	*rng;
 }	t_ray;
 
 typedef struct s_pixel
@@ -87,32 +92,59 @@ typedef struct s_pixel
 	float	shininess;
 	t_color	ambient;
 	t_color	colour_sum;
+	uint32_t	spp;
 }	t_pixel;
+
+typedef struct s_data	t_data;
+
+typedef struct s_thread_ctx
+{
+	t_data		*data;
+	uint32_t	y_start;
+	uint32_t	y_stride;
+	t_pcg		rng;
+}	t_thread_ctx;
 
 typedef struct s_data
 {
-	t_scene			scene;
-	mlx_t			*mlx;
-	mlx_image_t		*image_buffer;
-	t_pixel			**pixels;
-	int				max_rays;
-	int				max_bounces;
-	bool			preview_mode;
-	double			last_move_time;
-	t_keys			keys;
-	bool			first_mouse;
-	double			last_mouse_x;
-	double			last_mouse_y;
+	t_scene				scene;
+	mlx_t				*mlx;
+	mlx_image_t			*image_buffer;
+	t_pixel				**pixels;
+	int					max_rays;
+	int					max_bounces;
+	bool				preview_mode;
+	double				last_move_time;
+	t_keys				keys;
+	bool				first_mouse;
+	double				last_mouse_x;
+	double				last_mouse_y;
+	volatile bool		keep_rendering;
+	int					nthreads;
+	int					nthreads_success;
+	pthread_t			*threads;
+	t_thread_ctx		*thread_ctx;
+	pthread_mutex_t		render_lock;
+	pthread_cond_t		render_cond;
+	bool				pool_started;
+	bool				should_stop;
+	bool				rendering_on;
+	bool				exiting;
+	uint32_t			frame_id;
 }	t_data;
 
 void	exit_error(t_data *data, char *msg);
+void	exit_error_errno(t_data *data, char *msg, int errcode);
 void	exit_success(t_data *data);
+void	free_data(t_data *data);
 void	camera_compute_basis(t_camera *cam);
 void	free_scene(t_scene *scene);
 void	initialise_mlx_window(t_data *data);
 void	free_pixels(t_pixel ***pixels, uint32_t y);
 void	cast_rays(t_data *data);
-void	render(t_data *data, uint32_t y, uint32_t x);
+void	render_pass(t_data *data, uint32_t y_start, uint32_t y_stride, t_pcg *rng);
+void	start_progressive_render(t_data *data);
+void	cleanup_threads(t_data *data);
 bool	valid_intersection(float *low, float *high);
 void	update_hit(t_ray *ray, float distance, t_object *obj);
 void	intersect_sphere(t_hit *hit, t_ray *ray, t_object *obj);
@@ -124,12 +156,13 @@ void	intersect_cone(t_hit *hit, t_ray *ray, t_object *obj);
 void	intersect_plane(t_hit *hit, t_ray *ray, t_object *obj);
 void	intersect_cylinder(t_hit *hit, t_ray *ray, t_object *obj);
 void	intersect_light_globe(t_hit *hit, t_ray *ray, t_object *obj);
-t_color	tint_reflected_light(t_color base_colour, t_color incoming_light);
 t_color	blend_ambient_light(t_color base, t_ambient amb, float shininess);
 t_color	new_colour(float r, float g, float b);
 t_color	colour_scale(t_color c, float s);
 t_color	colour_add(t_color a, t_color b);
 t_color	combine_colours(t_color c1, t_color c2);
+t_color	multiply_colours(t_color a, t_color b);
+uint32_t	percentage_to_rgba(const t_color f);
 void	gamma_adjust(t_color *c);
 void	compute_surface_interaction(t_hit *hit, t_vec3 ray_direction);
 void	handle_cone_surface_interaction(t_hit *hit);
