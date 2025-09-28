@@ -17,7 +17,12 @@
 
 static bool	validate_plane_tokens(char **tokens)
 {
-	if (!tokens[1] || !tokens[2] || !tokens[3] || tokens[4])
+	if (!tokens[1] || !tokens[2] || !tokens[3])
+	{
+		printf("Error\nInvalid plane format\n");
+		return (false);
+	}
+	if (tokens[4] && tokens[5])
 	{
 		printf("Error\nInvalid plane format\n");
 		return (false);
@@ -41,12 +46,12 @@ static bool	fill_plane_data(t_plane *pl, char **tokens)
 	return (true);
 }
 
-static void	set_plane_material(t_plane *pl, t_color col)
+static void	set_plane_material(t_plane *pl, t_color col, float shininess)
 {
 	pl->mat.color = col;
 	pl->mat.diffuse = 1.0f;
 	pl->mat.specular = 0.0f;
-	pl->mat.shininess = 0.0f;
+	pl->mat.shininess = shininess;
 	pl->mat.reflectivity = 0.0f;
 }
 
@@ -55,6 +60,7 @@ bool	parse_plane(char **tokens, t_scene *scene)
 	t_plane		*pl;
 	t_object	*obj;
 	t_color		col;
+	float		shininess;
 
 	if (!validate_plane_tokens(tokens))
 		return (false);
@@ -65,7 +71,13 @@ bool	parse_plane(char **tokens, t_scene *scene)
 		return (free(pl), false);
 	if (!parse_color(tokens[3], &col))
 		return (free(pl), false);
-	set_plane_material(pl, col);
+	shininess = 0.0f;
+	if (tokens[4])
+	{
+		if (!parse_shininess(tokens[4], &shininess))
+			return (free(pl), false);
+	}
+	set_plane_material(pl, col, shininess);
 	obj = malloc(sizeof(*obj));
 	if (!obj)
 		return (perror("malloc"), free(pl), false);

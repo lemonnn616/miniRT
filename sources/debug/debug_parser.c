@@ -45,45 +45,62 @@ void	debug_print_scene(const t_scene *scene)
 	{
 		switch (obj->type)
 		{
-		case OBJ_SPHERE: {
-			t_sphere *s = obj->obj;
-			printf("Obj %d: Sphere center=(%.2f,%.2f,%.2f) radius=%.2f color=(%.2f,%.2f,%.2f)\n",
+		case OBJ_SPHERE:
+		{
+			t_sphere        *s;
+
+			s = obj->obj;
+			printf("Obj %d: Sphere center=(%.2f,%.2f,%.2f) radius=%.2f "
+				"color=(%.2f,%.2f,%.2f) shininess=%.2f\n",
 				idx++,
 				s->center.x, s->center.y, s->center.z,
 				s->radius,
-				s->mat.color.r, s->mat.color.g, s->mat.color.b);
+				s->mat.color.r, s->mat.color.g, s->mat.color.b,
+				s->mat.shininess);
 			break;
 		}
 		case OBJ_PLANE:
 		{
-			t_plane *p = obj->obj;
-			printf("Obj %d: Plane point=(%.2f,%.2f,%.2f) normal=(%.2f,%.2f,%.2f) color=(%.2f,%.2f,%.2f)\n",
+			t_plane         *p;
+
+			p = obj->obj;
+			printf("Obj %d: Plane point=(%.2f,%.2f,%.2f) normal=(%.2f,%.2f,%.2f) "
+				"color=(%.2f,%.2f,%.2f) shininess=%.2f\n",
 				idx++,
 				p->point.x, p->point.y, p->point.z,
 				p->normal.x, p->normal.y, p->normal.z,
-				p->mat.color.r, p->mat.color.g, p->mat.color.b);
+				p->mat.color.r, p->mat.color.g, p->mat.color.b,
+				p->mat.shininess);
 			break;
 		}
 		case OBJ_CYLINDER:
 		{
-			t_cylinder *c = obj->obj;
-			printf("Obj %d: Cylinder base=(%.2f,%.2f,%.2f) axis=(%.2f,%.2f,%.2f) radius=%.2f height=%.2f color=(%.2f,%.2f,%.2f)\n",
+			t_cylinder      *c;
+
+			c = obj->obj;
+			printf("Obj %d: Cylinder base=(%.2f,%.2f,%.2f) axis=(%.2f,%.2f,%.2f) "
+				"radius=%.2f height=%.2f color=(%.2f,%.2f,%.2f) shininess=%.2f\n",
 				idx++,
 				c->base.x, c->base.y, c->base.z,
 				c->axis.x, c->axis.y, c->axis.z,
 				c->radius, c->height,
-				c->mat.color.r, c->mat.color.g, c->mat.color.b);
+				c->mat.color.r, c->mat.color.g, c->mat.color.b,
+				c->mat.shininess);
 			break;
 		}
 		case OBJ_CONE:
 		{
-			t_cone *cn = obj->obj;
-			printf("Obj %d: Cone apex=(%.2f,%.2f,%.2f) axis=(%.2f,%.2f,%.2f) angle=%.2f height=%.2f color=(%.2f,%.2f,%.2f)\n",
+			t_cone          *cn;
+
+			cn = obj->obj;
+			printf("Obj %d: Cone apex=(%.2f,%.2f,%.2f) axis=(%.2f,%.2f,%.2f) "
+				"angle=%.2f height=%.2f color=(%.2f,%.2f,%.2f) shininess=%.2f\n",
 				idx++,
 				cn->apex.x, cn->apex.y, cn->apex.z,
 				cn->axis.x, cn->axis.y, cn->axis.z,
 				cn->angle, cn->height,
-				cn->mat.color.r, cn->mat.color.g, cn->mat.color.b);
+				cn->mat.color.r, cn->mat.color.g, cn->mat.color.b,
+				cn->mat.shininess);
 			break;
 		}
 		case OBJ_LIGHT:
