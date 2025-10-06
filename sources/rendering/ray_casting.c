@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:20:17 by natallia          #+#    #+#             */
-/*   Updated: 2025/06/19 18:39:06 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/06 16:11:32 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,27 @@
 
 static t_vec3	get_ray_direction(t_data *data, float y, float x)
 {
-	float	w;
-	float	h;
-	float	aspect_ratio;
-	float	fov_correction;
+	float	w = (float)data->scene.width;
+	float	h = (float)data->scene.height;
+	float	aspect = w / h;
+	float	fov;
+	if (data->scene.active_cam)
+	{
+		fov = data->scene.active_cam->fov;
+	}
+	else
+	{
+		fov = data->scene.cameras[0].fov;
+	}
+	float	half_w = tanf(degree_to_radian(fov) * 0.5f);
+	float	half_h = half_w / aspect;
+	float	nx = (2.0f * (x + 0.5f) / w) - 1.0f;
+	float	ny = 1.0f - (2.0f * (y + 0.5f) / h);
 	t_vec3	ray;
-
-	w = (float)data->scene.width;
-	h = (float)data->scene.height;
-	aspect_ratio = w / h;
-	fov_correction = tan(degree_to_radian(data->scene.cameras[0].fov) / 2.0f);
-	ray.x = (2.0f * (x + 0.5f) / w - 1.0f) * fov_correction;
-	ray.y = (1.0f - 2.0f * (y + 0.5f) / h) * fov_correction / aspect_ratio;
+	ray.x = nx * half_w;
+	ray.y = ny * half_h;
 	ray.z = 1.0f;
-	return (vec_normalize(ray));
+	return vec_normalize(ray);
 }
 
 static void	allocate_pixels(t_data *data)

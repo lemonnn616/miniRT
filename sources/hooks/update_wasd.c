@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_wasd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:40:59 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/07/17 13:26:30 by natallia         ###   ########.fr       */
+/*   Updated: 2025/10/06 15:41:45 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,12 @@ void	update_cb(void *param)
 
 	d = param;
 	now = mlx_get_time();
-	delta = now - d->last_move_time;
-	if ((d->keys.w || d->keys.a || d->keys.s || d->keys.d) && delta > 0)
-		prepare_movement(d, delta);
+	delta = now - d->last_frame_time;
+	if (delta < 0.0)
+		delta = 0.0;
+	if (delta > 0.05)
+		delta = 0.05;
+	d->last_frame_time = now;
+	if ((d->keys.w || d->keys.a || d->keys.s || d->keys.d) && delta > 0.0)
+		prepare_movement(d, (float)delta);
 }

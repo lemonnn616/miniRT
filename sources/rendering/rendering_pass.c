@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
+/*   rendering_pass.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:07:27 by natallia          #+#    #+#             */
-/*   Updated: 2025/07/23 13:33:00 by natallia         ###   ########.fr       */
+/*   Updated: 2025/10/06 16:10:50 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,14 @@
 void	update_ray(t_data *data, t_ray *ray, int32_t y, int32_t x)
 {
 	ft_memset(ray->hit_data, 0, sizeof(t_hit));
-	ray->origin = data->scene.cameras[0].pos;
+	if (data->scene.active_cam)
+	{
+		ray->origin = data->scene.active_cam->pos;
+	}
+	else
+	{
+		ray->origin = data->scene.cameras[0].pos;
+	}
 	ray->direction = data->pixels[y][x].ray_direction;
 	ray->hit_data->colour = new_colour(1.0f, 1.0f, 1.0f);
 }
