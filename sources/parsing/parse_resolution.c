@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:43:59 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 13:46:24 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/06 15:06:37 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@ bool	parse_resolution(char **tokens, t_scene *scene)
 		printf("Error\nInvalid resolution format\n");
 		return (false);
 	}
+	if (scene->resolution_set)
+		return (printf("Error\nResolution already defined\n"), false);
 	w = ft_strtol(tokens[1], NULL, 10);
 	h = ft_strtol(tokens[2], NULL, 10);
 	if (w <= 0 || h <= 0)
 	{
-		printf("Error\nResolution must be >0\n");
+		printf("Error\nResolution must be > 0\n");
 		return (false);
 	}
 	scene->width = w;

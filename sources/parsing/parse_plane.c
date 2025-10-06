@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:16 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 13:54:31 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/06 15:04:58 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,12 @@ static bool	fill_plane_data(t_plane *pl, char **tokens)
 		return (false);
 	if (!parse_vector(tokens[2], &normal))
 		return (false);
+	if (normal.x < -1.0f || normal.x > 1.0f
+			|| normal.y < -1.0f || normal.y > 1.0f
+			|| normal.z < -1.0f || normal.z > 1.0f)
+		return (printf("Error\nPlane normal components must be in [-1,1]\n"), false);
+	if (vec_length(normal) < 1e-6f)
+		return (printf("Error\nPlane normal vector is zero\n"), false);
 	pl->point = point;
 	pl->normal0 = vec_normalize(normal);
 	pl->normal = pl->normal0;

@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:09 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 13:53:00 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/06 15:05:44 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,17 @@ static bool	fill_cylinder_data(t_cylinder *cy, char **tokens)
 
 	if (!parse_vector(tokens[1], &base) || !parse_vector(tokens[2], &axis))
 		return (false);
+	if (axis.x < -1.0f || axis.x > 1.0f
+			|| axis.y < -1.0f || axis.y > 1.0f
+			|| axis.z < -1.0f || axis.z > 1.0f)
+		return (printf("Error\nCylinder axis components must be in [-1,1]\n"), false);
+	if (vec_length(axis) < 1e-6f)
+		return (printf("Error\nCylinder axis vector is zero\n"), false);
 	dia = ft_strtof(tokens[3], NULL);
 	h = ft_strtof(tokens[4], NULL);
 	if (dia <= 0.0f || h <= 0.0f)
 	{
-		printf("Error\nCylinder size <= 0\n");
+		printf("Error\nCylinder size must be > 0\n");
 		return (false);
 	}
 	cy->base = base;

@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:44:46 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 13:52:11 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/06 15:06:11 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ static bool	parse_cone_data(t_cone *co, char **tokens)
 		return (false);
 	if (!parse_vector(tokens[2], &co->axis))
 		return (false);
+	if (co->axis.x < -1.0f || co->axis.x > 1.0f
+			|| co->axis.y < -1.0f || co->axis.y > 1.0f
+			|| co->axis.z < -1.0f || co->axis.z > 1.0f)
+		return (printf("Error\nCone axis components must be in [-1,1]\n"), false);
+	if (vec_length(co->axis) < 1e-6f)
+		return (printf("Error\nCone axis vector is zero\n"), false);
 	co->axis0 = vec_normalize(co->axis);
 	co->axis = co->axis0;
 	co->orient = (t_quat){1.0f, {0, 0, 0}};
