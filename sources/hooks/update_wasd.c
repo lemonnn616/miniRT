@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:40:59 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/06 15:41:45 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/06 16:32:16 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static void	process_movement(t_data *d, t_camera *cam, float speed)
 	d->last_move_time = mlx_get_time();
 	camera_compute_basis(cam);
 	reset_pixel_buffer(d);
-	recalc_rays_with_orientation(d);
 	start_progressive_render(d);
 }
 

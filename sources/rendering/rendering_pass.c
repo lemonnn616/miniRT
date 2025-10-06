@@ -6,25 +6,56 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:07:27 by natallia          #+#    #+#             */
-/*   Updated: 2025/10/06 16:10:50 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/06 17:36:44 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include <float.h>
 
+// void	update_ray(t_data *data, t_ray *ray, int32_t y, int32_t x)
+// {
+// 	ft_memset(ray->hit_data, 0, sizeof(t_hit));
+// 	if (data->scene.active_cam)
+// 	{
+// 		ray->origin = data->scene.active_cam->pos;
+// 	}
+// 	else
+// 	{
+// 		ray->origin = data->scene.cameras[0].pos;
+// 	}
+// 	ray->direction = data->pixels[y][x].ray_direction;
+// 	ray->hit_data->colour = new_colour(1.0f, 1.0f, 1.0f);
+// }
+
 void	update_ray(t_data *data, t_ray *ray, int32_t y, int32_t x)
 {
 	ft_memset(ray->hit_data, 0, sizeof(t_hit));
-	if (data->scene.active_cam)
-	{
-		ray->origin = data->scene.active_cam->pos;
-	}
-	else
-	{
-		ray->origin = data->scene.cameras[0].pos;
-	}
+	ray->origin = data->scene.cameras[0].pos;
 	ray->direction = data->pixels[y][x].ray_direction;
+	ray->hit_data->colour = new_colour(1.0f, 1.0f, 1.0f);
+	ft_memset(ray->hit_data, 0, sizeof(t_hit));
+	t_camera *cam;
+	if (data->scene.active_cam)
+		cam = data->scene.active_cam;
+	else
+		cam = data->scene.cameras;
+	ray->origin = cam->pos;
+	float	w = (float)data->scene.width;
+	float	h = (float)data->scene.height;
+	float	aspect = w / h;
+	float	fov = cam->fov;
+	float	half_w = tanf(degree_to_radian(fov) * 0.5f);
+	float	half_h = half_w / aspect;
+	float	nx = (2.0f * (x + 0.5f) / w) - 1.0f;
+	float	ny = 1.0f - (2.0f * (y + 0.5f) / h);
+	t_vec3	vlocal = { nx * half_w, ny * half_h, 1.0f };
+	t_vec3	world  = vec_add(
+					vec_add(vec_scale(cam->right, vlocal.x),
+					vec_scale(cam->up, vlocal.y)),
+					vec_scale(cam->dir, vlocal.z));
+	ray->direction = vec_normalize(world);
+	data->pixels[y][x].ray_direction = ray->direction;
 	ray->hit_data->colour = new_colour(1.0f, 1.0f, 1.0f);
 }
 
@@ -74,6 +105,28 @@ void	get_first_hit(t_data *data, t_ray *ray, int32_t y, int32_t x)
 	}
 }
 
+// void	render_pass(t_data *data, uint32_t y_start,
+// 	uint32_t y_stride, t_pcg *rng)
+// {
+// 	t_ray	ray;
+// 	t_hit	hit;
+
+// 	ray.hit_data = &hit;
+// 	ray.rng = rng;
+// 	for (uint32_t y = y_start; (int)y < data->scene.height; y += y_stride)
+// 	{
+// 		for (uint32_t x = 0; (int)x < data->scene.width; ++x)
+// 		{
+// 			update_ray(data, &ray, y, x);
+// 			get_first_hit(data, &ray, y, x);
+// 			if (hit.hit_occurred && hit.type != OBJ_LIGHT)
+// 				trace_paths(data, &ray, y, x);
+// 			mlx_put_pixel(data->image_buffer, x, y,
+// 				percentage_to_rgba(data->pixels[y][x].final_colour));
+// 		}
+// 	}
+// }
+
 void	render_pass(t_data *data, uint32_t y_start,
 	uint32_t y_stride, t_pcg *rng)
 {
@@ -89,7 +142,20 @@ void	render_pass(t_data *data, uint32_t y_start,
 			update_ray(data, &ray, y, x);
 			get_first_hit(data, &ray, y, x);
 			if (hit.hit_occurred && hit.type != OBJ_LIGHT)
-				trace_paths(data, &ray, y, x);
+			{
+				if (data->preview_mode)
+				{
+					t_color direct  = sample_direct_light(data, &hit);
+					t_color preview = colour_add(direct, data->pixels[y][x].ambient);
+					gamma_adjust(&preview);
+					data->pixels[y][x].final_colour = preview;
+				}
+				else
+				{
+					trace_paths(data, &ray, y, x);
+				}
+			}
+
 			mlx_put_pixel(data->image_buffer, x, y,
 				percentage_to_rgba(data->pixels[y][x].final_colour));
 		}

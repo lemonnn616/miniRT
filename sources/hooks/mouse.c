@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mouse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:15:28 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/07/17 13:26:17 by natallia         ###   ########.fr       */
+/*   Updated: 2025/10/06 16:31:58 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ static void	apply_mouse_rotation(t_data *d, t_camera *cam, double dx, double dy)
 	d->max_rays = 1;
 	d->max_bounces = 0;
 	d->last_move_time = mlx_get_time();
-	rotate_all_objects(d, q_rot);
-	recalc_rays_with_orientation(d);
 	reset_pixel_buffer(d);
 	start_progressive_render(d);
 }

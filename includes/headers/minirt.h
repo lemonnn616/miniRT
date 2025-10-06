@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/06 15:39:11 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/06 17:36:33 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,5 +182,7 @@ void	rotate_plane(t_plane *p, t_quat q_rot);
 void	recalc_rays_with_orientation(t_data *data);
 void	rotate_all_objects(t_data *d, t_quat q_rot);
 void	loop_hook(void *param);
+t_color	sample_direct_light(t_data *data, t_hit *hit);
+
 
 #endif
