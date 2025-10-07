@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/06 17:36:33 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/07 16:38:24 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ typedef struct s_data
 	bool				first_mouse;
 	double				last_mouse_x;
 	double				last_mouse_y;
+	double				mouse_block_until;
+	bool				suppress_next_mouse;
 	volatile bool		keep_rendering;
 	int					nthreads;
 	int					nthreads_success;

@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:15:28 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/06 19:02:01 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/07 16:37:10 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,23 @@ void	mouse_move(double mx, double my, void *param)
 		d->last_mouse_y = my;
 		return ;
 	}
+	if (mlx_get_time() < d->mouse_block_until)
+	{
+		d->last_mouse_x = mx;
+		d->last_mouse_y = my;
+		return ;
+	}
+	if (d->suppress_next_mouse)
+	{
+		d->suppress_next_mouse = false;
+		d->last_mouse_x = mx;
+		d->last_mouse_y = my;
+		return ;
+	}
 	dx = mx - d->last_mouse_x;
 	dy = my - d->last_mouse_y;
 	{
-		double max_jump_x = d->scene.width  * 0.10;
+		double max_jump_x = d->scene.width * 0.10;
 		double max_jump_y = d->scene.height * 0.10;
 		if (fabs(dx) > max_jump_x || fabs(dy) > max_jump_y)
 		{
@@ -84,6 +97,13 @@ void	mouse_move(double mx, double my, void *param)
 			d->last_mouse_y = my;
 			return ;
 		}
+	}
+	{
+		const double max_px = 24.0;
+		if (dx >  max_px) dx =  max_px;
+		if (dx < -max_px) dx = -max_px;
+		if (dy >  max_px) dy =  max_px;
+		if (dy < -max_px) dy = -max_px;
 	}
 	d->last_mouse_x = mx;
 	d->last_mouse_y = my;

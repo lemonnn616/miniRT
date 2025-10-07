@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:40:59 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/06 16:32:16 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/07 16:36:41 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,12 @@ static void	process_movement(t_data *d, t_camera *cam, float speed)
 static void	prepare_movement(t_data *d, double delta)
 {
 	t_camera	*cam;
-	// t_vec3		forward;
-	// t_vec3		right;
 	float		speed;
 	float		dt;
 
 	cam = d->scene.active_cam;
 	dt = (float)delta;
 	camera_compute_basis(cam);
-	// forward = cam->dir;
-	// right = cam->right;
 	speed = CAMERA_SPEED * dt;
 	process_movement(d, cam, speed);
 }
