@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/09/26 22:01:33 by natallia         ###   ########.fr       */
+/*   Updated: 2025/10/07 16:38:24 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,13 @@ typedef struct s_data
 	int					max_bounces;
 	bool				preview_mode;
 	double				last_move_time;
+	double				last_frame_time;
 	t_keys				keys;
 	bool				first_mouse;
 	double				last_mouse_x;
 	double				last_mouse_y;
+	double				mouse_block_until;
+	bool				suppress_next_mouse;
 	volatile bool		keep_rendering;
 	int					nthreads;
 	int					nthreads_success;
@@ -181,5 +184,7 @@ void	rotate_plane(t_plane *p, t_quat q_rot);
 void	recalc_rays_with_orientation(t_data *data);
 void	rotate_all_objects(t_data *d, t_quat q_rot);
 void	loop_hook(void *param);
+t_color	sample_direct_light(t_data *data, t_hit *hit);
+
 
 #endif
