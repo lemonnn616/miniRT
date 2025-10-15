@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
+/*   rendering_pass.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:07:27 by natallia          #+#    #+#             */
-/*   Updated: 2025/07/23 13:33:00 by natallia         ###   ########.fr       */
+/*   Updated: 2025/10/03 12:12:29 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,11 @@ void	get_first_hit(t_data *data, t_ray *ray, int32_t y, int32_t x)
 	compute_surface_interaction(ray->hit_data, ray->direction);
 	if (ray->hit_data->type == OBJ_LIGHT)
 	{
-		data->pixels[y][x].final_colour = ray->hit_data->colour;
+		data->pixels[y][x].final_colour = new_colour(0.0f, 0.0f, 0.0f);
 		gamma_adjust(&data->pixels[y][x].final_colour);
+		return ;
 	}
-	else if (ray->hit_data->hit_occurred)
+	if (ray->hit_data->hit_occurred)
 	{
 		data->pixels[y][x].obj_colour = ray->hit_data->obj_colour;
 		data->pixels[y][x].specular = ray->hit_data->specular;
@@ -64,7 +65,10 @@ void	get_first_hit(t_data *data, t_ray *ray, int32_t y, int32_t x)
 		data->pixels[y][x].surface_norm = ray->hit_data->surface_norm;
 		data->pixels[y][x].ambient = blend_ambient_light(ray->hit_data->colour,
 			data->scene.ambient, ray->hit_data->shininess);
+		return ;
 	}
+	data->pixels[y][x].final_colour = new_colour(0.0f, 0.0f, 0.0f);
+	gamma_adjust(&data->pixels[y][x].final_colour);
 }
 
 void	render_pass(t_data *data, uint32_t y_start,

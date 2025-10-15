@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/09/26 22:01:33 by natallia         ###   ########.fr       */
+/*   Updated: 2025/10/03 10:58:23 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,5 +181,7 @@ void	rotate_plane(t_plane *p, t_quat q_rot);
 void	recalc_rays_with_orientation(t_data *data);
 void	rotate_all_objects(t_data *d, t_quat q_rot);
 void	loop_hook(void *param);
+
+t_vec3	cosine_weighted_hemisphere(t_pcg *rng, const t_vec3 normal);
 
 #endif
