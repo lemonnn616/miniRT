@@ -18,7 +18,12 @@
 
 static bool	validate_sphere_tokens(char **tokens)
 {
-	if (!tokens[1] || !tokens[2] || !tokens[3] || tokens[4])
+	if (!tokens[1] || !tokens[2] || !tokens[3])
+	{
+		printf("Error\nInvalid sphere format\n");
+		return (false);
+	}
+	if (tokens[4] && tokens[5])
 	{
 		printf("Error\nInvalid sphere format\n");
 		return (false);
@@ -44,12 +49,12 @@ static bool	fill_sphere_data(t_sphere *sp, char **tokens)
 	return (true);
 }
 
-static void	set_sphere_material(t_sphere *sp, t_color col)
+static void	set_sphere_material(t_sphere *sp, t_color col, float shininess)
 {
 	sp->mat.color = col;
 	sp->mat.diffuse = 0.8f;
 	sp->mat.specular = 0.2f;
-	sp->mat.shininess = 0.5f;
+	sp->mat.shininess = shininess;
 	sp->mat.reflectivity = 0.1f;
 }
 
@@ -58,6 +63,7 @@ bool	parse_sphere(char **tokens, t_scene *scene)
 	t_sphere	*sp;
 	t_object	*obj;
 	t_color		col;
+	float		shininess;
 
 	if (!validate_sphere_tokens(tokens))
 		return (false);
@@ -68,7 +74,13 @@ bool	parse_sphere(char **tokens, t_scene *scene)
 		return (free(sp), false);
 	if (!parse_color(tokens[3], &col))
 		return (free(sp), false);
-	set_sphere_material(sp, col);
+	shininess = 0.5f;
+	if (tokens[4])
+	{
+		if (!parse_shininess(tokens[4], &shininess))
+			return (free(sp), false);
+	}
+	set_sphere_material(sp, col, shininess);
 	obj = malloc(sizeof(*obj));
 	if (!obj)
 		return (perror("malloc"), free(sp), false);

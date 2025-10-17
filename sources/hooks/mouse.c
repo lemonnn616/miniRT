@@ -3,35 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   mouse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:15:28 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/07/17 13:26:17 by natallia         ###   ########.fr       */
+/*   Updated: 2025/10/07 16:37:10 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-static void	apply_mouse_rotation(t_data *d, t_camera *cam, double dx, double dy)
+static void apply_mouse_rotation(t_data *d, t_camera *cam, double dx, double dy)
 {
-	const double	sens = 0.002;
-	t_quat			q_yaw;
-	t_quat			q_pitch;
-	t_quat			q_rot;
+	const float	yaw_sens = 0.002f;
+	const float	pitch_sens = 0.002f;
+	const float	PITCH_MAX = degree_to_radian(89.0f);
+	const t_vec3	WORLD_UP = (t_vec3){0.0f, 1.0f, 0.0f};
+	const t_vec3	FWD0 = (t_vec3){0.0f, 0.0f, -1.0f};
+	const t_vec3	UP0 = (t_vec3){0.0f, 1.0f,  0.0f};
+	static bool		s_init = false;
+	static t_camera	*s_cam = NULL;
+	static float	s_yaw = 0.0f;
+	static float	s_pitch = 0.0f;
 
-	q_yaw = quat_from_axis_angle(
-			(t_vec3){0.0f, 1.0f, 0.0f},
-			(float)(dx * sens));
-	q_pitch = quat_from_axis_angle(cam->right, (float)(dy * sens));
-	q_rot = quat_mul(q_pitch, q_yaw);
-	cam->orient = quat_normalize(quat_mul(q_rot, cam->orient));
+	if (!s_init || s_cam != cam)
+	{
+		s_yaw = atan2f(cam->dir.x, -cam->dir.z);
+		s_pitch = asinf(fmaxf(-1.0f, fminf(1.0f, cam->dir.y)));
+		s_cam = cam;
+		s_init  = true;
+	}
+	s_yaw += (float)dx * yaw_sens;
+	s_pitch += (float)dy * pitch_sens;
+	if (s_pitch > PITCH_MAX)
+		s_pitch = PITCH_MAX;
+	if (s_pitch < -PITCH_MAX)
+		s_pitch = -PITCH_MAX;
+	if (s_yaw > (float)M_PI)
+		s_yaw -= (float)(2.0 * M_PI);
+	if (s_yaw < -(float)M_PI)
+		s_yaw += (float)(2.0 * M_PI);
+	t_quat q_yaw = quat_from_axis_angle(WORLD_UP, s_yaw);
+	t_vec3 dir_yaw = vec_normalize(quat_rotate_vec(FWD0, q_yaw));
+	t_vec3 up_yaw = vec_normalize(quat_rotate_vec(UP0, q_yaw));
+	t_vec3 right_yaw = vec_normalize(vec_cross(up_yaw, dir_yaw));
+	t_quat q_pitch = quat_from_axis_angle(right_yaw, s_pitch);
+	cam->orient = quat_normalize(quat_mul(q_pitch, q_yaw));
 	camera_compute_basis(cam);
 	d->preview_mode = true;
 	d->max_rays = 1;
 	d->max_bounces = 0;
 	d->last_move_time = mlx_get_time();
-	rotate_all_objects(d, q_rot);
-	recalc_rays_with_orientation(d);
 	reset_pixel_buffer(d);
 	start_progressive_render(d);
 }
@@ -45,8 +66,6 @@ void	mouse_move(double mx, double my, void *param)
 
 	d = param;
 	cam = d->scene.active_cam;
-	dx = mx - d->last_mouse_x;
-	dy = my - d->last_mouse_y;
 	if (d->first_mouse)
 	{
 		d->first_mouse = false;
@@ -54,7 +73,40 @@ void	mouse_move(double mx, double my, void *param)
 		d->last_mouse_y = my;
 		return ;
 	}
+	if (mlx_get_time() < d->mouse_block_until)
+	{
+		d->last_mouse_x = mx;
+		d->last_mouse_y = my;
+		return ;
+	}
+	if (d->suppress_next_mouse)
+	{
+		d->suppress_next_mouse = false;
+		d->last_mouse_x = mx;
+		d->last_mouse_y = my;
+		return ;
+	}
+	dx = mx - d->last_mouse_x;
+	dy = my - d->last_mouse_y;
+	{
+		double max_jump_x = d->scene.width * 0.10;
+		double max_jump_y = d->scene.height * 0.10;
+		if (fabs(dx) > max_jump_x || fabs(dy) > max_jump_y)
+		{
+			d->last_mouse_x = mx;
+			d->last_mouse_y = my;
+			return ;
+		}
+	}
+	{
+		const double max_px = 24.0;
+		if (dx >  max_px) dx =  max_px;
+		if (dx < -max_px) dx = -max_px;
+		if (dy >  max_px) dy =  max_px;
+		if (dy < -max_px) dy = -max_px;
+	}
 	d->last_mouse_x = mx;
 	d->last_mouse_y = my;
 	apply_mouse_rotation(d, cam, dx, dy);
 }
+

@@ -8,6 +8,7 @@ SRCS := \
 	main.c \
 	free_scene.c \
 	parse_ambient.c \
+	parse_shininess.c \
 	parse_camera.c \
 	parse_color.c \
 	parse_cone.c \

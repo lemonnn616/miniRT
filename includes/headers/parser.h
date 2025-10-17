@@ -28,5 +28,6 @@ bool	parse_vector(const char *str, t_vec3 *out);
 bool	parse_color(const char *str, t_color *out);
 bool	parse_cone(char **tokens, t_scene *scene);
 bool	parse_resolution(char **tokens, t_scene *scene);
+bool	parse_shininess(const char *str, float *out);
 
 #endif

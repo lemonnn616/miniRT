@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:35:30 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/09/26 19:35:06 by natallia         ###   ########.fr       */
+/*   Updated: 2025/10/07 16:38:16 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,16 @@ static void	setup_data(t_data *data, char **argv)
 	data->max_rays = MAX_RAYS;
 	data->max_bounces = MAX_BOUNCES;
 	data->preview_mode = false;
-	data->last_move_time = 0.0;
 	data->first_mouse = true;
+	data->mouse_block_until = 0.0;
+	data->suppress_next_mouse = false;
 	debug_print_scene(&data->scene);
 	initialise_mlx_window(data);
+	{
+		double now = mlx_get_time();
+		data->last_move_time  = now;
+		data->last_frame_time = now;
+	}
 }
 
 static void	setup_hooks(t_data *data)

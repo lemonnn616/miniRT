@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:09 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 13:53:00 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/06 15:05:44 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,12 @@
 static bool	validate_cy_tokens(char **tokens)
 {
 	if (!tokens[1] || !tokens[2] || !tokens[3]
-		|| !tokens[4] || !tokens[5] || tokens[6])
+		|| !tokens[4] || !tokens[5])
+	{
+		printf("Error\nInvalid cylinder format\n");
+		return (false);
+	}
+	if (tokens[6] && tokens[7])
 	{
 		printf("Error\nInvalid cylinder format\n");
 		return (false);
@@ -36,11 +41,17 @@ static bool	fill_cylinder_data(t_cylinder *cy, char **tokens)
 
 	if (!parse_vector(tokens[1], &base) || !parse_vector(tokens[2], &axis))
 		return (false);
+	if (axis.x < -1.0f || axis.x > 1.0f
+			|| axis.y < -1.0f || axis.y > 1.0f
+			|| axis.z < -1.0f || axis.z > 1.0f)
+		return (printf("Error\nCylinder axis components must be in [-1,1]\n"), false);
+	if (vec_length(axis) < 1e-6f)
+		return (printf("Error\nCylinder axis vector is zero\n"), false);
 	dia = ft_strtof(tokens[3], NULL);
 	h = ft_strtof(tokens[4], NULL);
 	if (dia <= 0.0f || h <= 0.0f)
 	{
-		printf("Error\nCylinder size <= 0\n");
+		printf("Error\nCylinder size must be > 0\n");
 		return (false);
 	}
 	cy->base = base;
@@ -52,12 +63,12 @@ static bool	fill_cylinder_data(t_cylinder *cy, char **tokens)
 	return (true);
 }
 
-static void	set_cylinder_material(t_cylinder *cy, t_color col)
+static void	set_cylinder_material(t_cylinder *cy, t_color col, float shininess)
 {
 	cy->mat.color = col;
 	cy->mat.diffuse = 1.0f;
 	cy->mat.specular = 0.0f;
-	cy->mat.shininess = 0.0f;
+	cy->mat.shininess = shininess;
 	cy->mat.reflectivity = 0.0f;
 }
 
@@ -66,6 +77,7 @@ bool	parse_cylinder(char **tokens, t_scene *scene)
 	t_cylinder	*cy;
 	t_object	*obj;
 	t_color		col;
+	float		shininess;
 
 	if (!validate_cy_tokens(tokens))
 		return (false);
@@ -76,7 +88,13 @@ bool	parse_cylinder(char **tokens, t_scene *scene)
 		return (free(cy), false);
 	if (!parse_color(tokens[5], &col))
 		return (free(cy), false);
-	set_cylinder_material(cy, col);
+	shininess = 0.0f;
+	if (tokens[6])
+	{
+		if (!parse_shininess(tokens[6], &shininess))
+			return (free(cy), false);
+	}
+	set_cylinder_material(cy, col, shininess);
 	obj = malloc(sizeof(*obj));
 	if (!obj)
 		return (perror("malloc"), free(cy), false);

@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:32:07 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/05/28 16:11:04 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/06 15:01:52 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,28 @@ static bool	color_range_valid(long r, long g, long b)
 static bool	extract_components(char *copy, long *r, long *g, long *b)
 {
 	char	*tok;
+	char	*end;
 
 	tok = ft_strtok(copy, ",");
 	if (!tok)
 		return (false);
-	*r = ft_strtol(tok, NULL, 10);
+	*r = ft_strtol(tok, &end, 10);
+	if (*end != '\0')
+		return (printf("Error\nInvalid R component format\n"), false);
 	tok = ft_strtok(NULL, ",");
 	if (!tok)
 		return (false);
-	*g = ft_strtol(tok, NULL, 10);
+	*g = ft_strtol(tok, &end, 10);
+	if (*end != '\0')
+		return (printf("Error\nInvalid G component format\n"), false);
 	tok = ft_strtok(NULL, ",");
 	if (!tok)
 		return (false);
-	*b = ft_strtol(tok, NULL, 10);
+	*b = ft_strtol(tok, &end, 10);
+	if (*end != '\0')
+		return (printf("Error\nInvalid B component format\n"), false);
+	if (ft_strtok(NULL, ",") != NULL)
+		return (printf("Error\nToo many color components\n"), false);
 	return (true);
 }
 
