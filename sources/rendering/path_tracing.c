@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:26:40 by natallia          #+#    #+#             */
-/*   Updated: 2025/10/03 12:21:30 by natallia         ###   ########.fr       */
+/*   Updated: 2025/10/17 13:30:01 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,44 +22,18 @@ bool	is_shiny(t_pcg *rng, float shininess)
 	return (false);
 }
 
-static inline void offset_ray_origin(const t_vec3 p, const t_vec3 n, t_vec3 *origin_out)
+static inline void offset_ray(const t_vec3 p, const t_vec3 n, t_vec3 *origin_out)
 {
-	/* Small push along the normal to avoid self-intersections */
-	const float eps = 2e-3f;
-	*origin_out = vec_add(p, vec_scale(n, eps));
+	float	eps_n;
+	float	eps_p;
+	float	m;
+
+	eps_n = 1e-3f;
+	eps_p = 1e-4f;
+	m = vec_length(p);
+	*origin_out = vec_add(p, vec_scale(n, eps_n + eps_p * m));
 }
 
-// t_color	sample_direct_light(t_data *data, t_hit *hit)
-// {
-// 	t_light	*light;
-// 	t_vec3	to_light;
-// 	t_ray	shadow;
-// 	t_hit	sh;
-// 	float	dist;
-
-// 	light = data->scene.lights;
-// 	if (!light)
-// 		return (new_colour(0.0f, 0.0f, 0.0f));
-// 	to_light = vec_subtract(light->pos, hit->location);
-// 	dist = vec_length(to_light);
-// 	if (dist <= 0.0f)
-// 		return (new_colour(0.0f, 0.0f, 0.0f));
-// 	to_light = vec_scale(to_light, 1.0f / dist);
-
-// 	if (vec_dot(hit->surface_norm, to_light) <= 0.0f)
-// 		return (new_colour(0.0f, 0.0f, 0.0f));
-// 	shadow.direction = to_light;
-// 	shadow.hit_data = &sh;
-// 	ft_memset(&sh, 0, sizeof(sh));
-// 	offset_ray_origin(hit->location, hit->surface_norm, &shadow.origin);
-// 	find_closest_object(data, &shadow, &sh);
-// 	if (sh.hit_occurred && sh.type != OBJ_LIGHT && sh.distance < dist)
-// 		return (new_colour(0.0f, 0.0f, 0.0f));
-// 	return colour_scale(multiply_colours(light->color, hit->obj_colour),
-// 		vec_dot(hit->surface_norm, to_light));
-// }
-
-/* Evaluate one light's direct contribution with a shadow test */
 static t_color	eval_light_contrib(t_data *data, t_hit *hit, t_light *light)
 {
 	t_vec3	to_light;
@@ -73,23 +47,31 @@ static t_color	eval_light_contrib(t_data *data, t_hit *hit, t_light *light)
 	distance_to_light = vec_length(to_light);
 	if (distance_to_light <= 0.0f)
 		return (new_colour(0.0f, 0.0f, 0.0f));
+
 	to_light = vec_scale(to_light, 1.0f / distance_to_light);
 	n_dot_l = vec_dot(hit->surface_norm, to_light);
 	if (n_dot_l <= 0.0f)
 		return (new_colour(0.0f, 0.0f, 0.0f));
+
 	shadow_ray.direction = to_light;
 	shadow_ray.hit_data = &shadow_hit;
-	ft_memset(&shadow_hit, 0, sizeof(shadow_hit));
-	offset_ray_origin(hit->location, hit->surface_norm, &shadow_ray.origin);
+	ft_memset(&shadow_hit, 0, sizeof(t_hit));
+
+	offset_ray(hit->location, hit->surface_norm, &shadow_ray.origin);
 	find_closest_object(data, &shadow_ray, &shadow_hit);
-	if (shadow_hit.hit_occurred && shadow_hit.type != OBJ_LIGHT
+
+	if (shadow_hit.hit_occurred
+		&& shadow_hit.type != OBJ_LIGHT
+		&& shadow_hit.distance > 1e-3f
 		&& shadow_hit.distance < distance_to_light)
-		return (new_colour(0.0f, 0.0f, 0.0f));
+	{
+		return new_colour(0.0f, 0.0f, 0.0f);
+	}
 	contribution = multiply_colours(light->color, hit->obj_colour);
-	return (colour_scale(contribution, n_dot_l));
+	contribution = colour_scale(contribution, n_dot_l * light->intensity);
+	return (contribution);
 }
 
-/* Now supports multiple lights by summing each visible light's term */
 t_color	sample_direct_light(t_data *data, t_hit *hit)
 {
 	t_light	*light;
@@ -136,7 +118,7 @@ static void	bounce_ray(t_data *d, t_ray *r, t_hit *hit)
 	}
 	else
 		r->direction = diffuse_dir;
-	offset_ray_origin(hit->location, hit->surface_norm, &r->origin);
+	offset_ray(hit->location, hit->surface_norm, &r->origin);
 	find_closest_object(d, r, hit);
 	compute_surface_interaction(hit, r->direction);
 }
@@ -220,6 +202,7 @@ void	trace_paths(t_data *d, t_ray *ray, uint32_t y, uint32_t x)
 		ray->hit_data->surface_norm = (*px).surface_norm;
 		ray->hit_data->inside_obj = false;
 		ray->hit_data->type = OBJ_NONE;
+		offset_ray(ray->origin, ray->hit_data->surface_norm, &ray->origin);
 		process_bounces(d, ray, px);
 		rays++;
 	}
