@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/17 12:03:15 by natallia         ###   ########.fr       */
+/*   Updated: 2025/10/17 16:22:57 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,9 +184,12 @@ void	rotate_plane(t_plane *p, t_quat q_rot);
 void	recalc_rays_with_orientation(t_data *data);
 void	rotate_all_objects(t_data *d, t_quat q_rot);
 void	loop_hook(void *param);
-t_color	sample_direct_light(t_data *data, t_hit *hit);
 
-
+t_color	sample_direct_lights(t_data *data, t_hit *hit, t_vec3 view_dir);
 t_vec3	cosine_weighted_hemisphere(t_pcg *rng, const t_vec3 normal);
+void	offset_ray_origin(const t_vec3 p, const t_vec3 n, t_vec3 *origin_out);
+bool	random_is_specular(t_pcg *rng, float shininess);
+void	integrate_direct_lighting(t_data *d, t_ray *r,
+		t_pixel *pxl, t_color *throughput);
 
 #endif

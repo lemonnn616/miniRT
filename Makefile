@@ -48,7 +48,8 @@ SRCS := \
 	intersect_sphere.c \
 	intersection_utils.c \
 	colour_math.c \
-	lighting.c \
+	light_utils.c \
+	light_sampling.c \
 	handle_cone.c \
 	handle_cylinder.c \
 	handle_light_globe.c \

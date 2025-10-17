@@ -6,12 +6,24 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:07:27 by natallia          #+#    #+#             */
-/*   Updated: 2025/10/17 12:07:33 by natallia         ###   ########.fr       */
+/*   Updated: 2025/10/17 16:11:50 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include <float.h>
+
+void	offset_ray_origin(const t_vec3 p, const t_vec3 n, t_vec3 *origin_out)
+{
+	float	eps_n;
+	float	eps_p;
+	float	m;
+
+	eps_n = 1e-3f;
+	eps_p = 1e-4f;
+	m = vec_length(p);
+	*origin_out = vec_add(p, vec_scale(n, eps_n + eps_p * m));
+}
 
 // void	update_ray(t_data *data, t_ray *ray, int32_t y, int32_t x)
 // {
@@ -147,7 +159,7 @@ void	render_pass(t_data *data, uint32_t y_start,
 			{
 				if (data->preview_mode)
 				{
-					t_color direct  = sample_direct_light(data, &hit);
+					t_color direct  = sample_direct_lights(data, &hit, vec_scale(ray.direction, -1.0f));
 					t_color preview = colour_add(direct, data->pixels[y][x].ambient);
 					gamma_adjust(&preview);
 					data->pixels[y][x].final_colour = preview;

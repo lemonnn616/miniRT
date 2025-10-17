@@ -1,16 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lighting.c                                         :+:      :+:    :+:   */
+/*   light_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:02:45 by natallia          #+#    #+#             */
-/*   Updated: 2025/07/23 14:23:45 by natallia         ###   ########.fr       */
+/*   Updated: 2025/10/17 16:22:23 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+void	integrate_direct_lighting(t_data *d, t_ray *r,
+	t_pixel *pxl, t_color *throughput)
+{
+	t_color	direct;
+	t_color	contrib;
+	t_vec3	view_dir;
+
+	view_dir = vec_scale(r->direction, -1.0f);
+	direct = sample_direct_lights(d, r->hit_data, view_dir);
+	contrib = multiply_colours(*throughput, direct);
+	pxl->colour_sum = colour_add(pxl->colour_sum, contrib);
+}
+
+bool	random_is_specular(t_pcg *rng, float shininess)
+{
+	float	random;
+
+	random = pcg_random_float(rng);
+	if (random <= shininess)
+		return (true);
+	return (false);
+}
 
 t_color	blend_ambient_light(t_color base, t_ambient amb, float shininess)
 {

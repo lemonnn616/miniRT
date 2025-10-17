@@ -6,97 +6,11 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:26:40 by natallia          #+#    #+#             */
-/*   Updated: 2025/10/17 13:30:01 by natallia         ###   ########.fr       */
+/*   Updated: 2025/10/17 16:22:14 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-bool	is_shiny(t_pcg *rng, float shininess)
-{
-	float	random;
-
-	random = pcg_random_float(rng);
-	if (random <= shininess)
-		return (true);
-	return (false);
-}
-
-static inline void offset_ray(const t_vec3 p, const t_vec3 n, t_vec3 *origin_out)
-{
-	float	eps_n;
-	float	eps_p;
-	float	m;
-
-	eps_n = 1e-3f;
-	eps_p = 1e-4f;
-	m = vec_length(p);
-	*origin_out = vec_add(p, vec_scale(n, eps_n + eps_p * m));
-}
-
-static t_color	eval_light_contrib(t_data *data, t_hit *hit, t_light *light)
-{
-	t_vec3	to_light;
-	float	distance_to_light;
-	float	n_dot_l;
-	t_ray	shadow_ray;
-	t_hit	shadow_hit;
-	t_color	contribution;
-
-	to_light = vec_subtract(light->pos, hit->location);
-	distance_to_light = vec_length(to_light);
-	if (distance_to_light <= 0.0f)
-		return (new_colour(0.0f, 0.0f, 0.0f));
-
-	to_light = vec_scale(to_light, 1.0f / distance_to_light);
-	n_dot_l = vec_dot(hit->surface_norm, to_light);
-	if (n_dot_l <= 0.0f)
-		return (new_colour(0.0f, 0.0f, 0.0f));
-
-	shadow_ray.direction = to_light;
-	shadow_ray.hit_data = &shadow_hit;
-	ft_memset(&shadow_hit, 0, sizeof(t_hit));
-
-	offset_ray(hit->location, hit->surface_norm, &shadow_ray.origin);
-	find_closest_object(data, &shadow_ray, &shadow_hit);
-
-	if (shadow_hit.hit_occurred
-		&& shadow_hit.type != OBJ_LIGHT
-		&& shadow_hit.distance > 1e-3f
-		&& shadow_hit.distance < distance_to_light)
-	{
-		return new_colour(0.0f, 0.0f, 0.0f);
-	}
-	contribution = multiply_colours(light->color, hit->obj_colour);
-	contribution = colour_scale(contribution, n_dot_l * light->intensity);
-	return (contribution);
-}
-
-t_color	sample_direct_light(t_data *data, t_hit *hit)
-{
-	t_light	*light;
-	t_color	total;
-
-	total = new_colour(0.0f, 0.0f, 0.0f);
-	light = data->scene.lights;
-	while (light)
-	{
-		total = colour_add(total, eval_light_contrib(data, hit, light));
-		light = light->next;
-	}
-	return (total);
-}
-
-static void	sample_direct_once(t_data *data, t_ray *ray,
-	t_pixel *pxl, t_color *throughput)
-{
-	t_color	direct;
-	t_color	contrib;
-
-	direct = sample_direct_light(data, ray->hit_data);
-	contrib = multiply_colours(*throughput, direct);
-	pxl->colour_sum = colour_add(pxl->colour_sum, contrib);
-}
 
 static void	bounce_ray(t_data *d, t_ray *r, t_hit *hit)
 {
@@ -118,40 +32,41 @@ static void	bounce_ray(t_data *d, t_ray *r, t_hit *hit)
 	}
 	else
 		r->direction = diffuse_dir;
-	offset_ray(hit->location, hit->surface_norm, &r->origin);
+	offset_ray_origin(hit->location, hit->surface_norm, &r->origin);
 	find_closest_object(d, r, hit);
 	compute_surface_interaction(hit, r->direction);
 }
 
-static int	apply_russian_roulette(t_ray *ray, t_color *throughput, int bounces)
+static bool	apply_russian_roulette(t_ray *r, t_color *throughput, int bounces)
 {
-	float	p;
-	float	r;
-	float	colour_luminance;
+	float	path_luminance;
+	float	survival_prob;
+	float	random_value;
 
 	if (bounces < 2)
-		return (1);
-	colour_luminance = 0.2126f * (*throughput).r
-		+ 0.7152f * (*throughput).g + 0.0722f * (*throughput).b;
-	p = fminf(0.95f, fmaxf(0.05f, colour_luminance));
-	r = pcg_random_float(ray->rng);
-	if (r > p)
-		return (0);
-	*throughput = colour_scale(*throughput, 1.0f / p);
-	return (1);
+		return (true);
+	path_luminance = 0.2126f * (*throughput).r
+		+ 0.7152f * (*throughput).g
+		+ 0.0722f * (*throughput).b;
+	survival_prob = fminf(0.95f, fmaxf(0.05f, path_luminance));
+	random_value = pcg_random_float(r->rng);
+	if (random_value > survival_prob)
+		return (false);
+	*throughput = colour_scale(*throughput, 1.0f / survival_prob);
+	return (true);
 }
 
-static int	accumulate_if_light(t_ray *ray, t_pixel *pxl, t_color *throughput)
+static bool	accumulate_emission(t_ray *ray, t_pixel *pxl, t_color *throughput)
 {
 	t_color	inc;
 	t_color	contrib;
 
 	if (ray->hit_data->type != OBJ_LIGHT)
-		return (0);
+		return (false);
 	inc = ray->hit_data->colour;
 	contrib = multiply_colours(inc, *throughput);
 	pxl->colour_sum = colour_add(pxl->colour_sum, contrib);
-	return (1);
+	return (true);
 }
 
 static void	process_bounces(t_data *data, t_ray *ray, t_pixel *pxl)
@@ -169,8 +84,8 @@ static void	process_bounces(t_data *data, t_ray *ray, t_pixel *pxl)
 		if (ray->hit_data->hit_occurred == false)
 			break ;
 		if (bounces == 0 && ray->hit_data->type != OBJ_LIGHT)
-			sample_direct_once(data, ray, pxl, &throughput);
-		if (accumulate_if_light(ray, pxl, &throughput))
+			integrate_direct_lighting(data, ray, pxl, &throughput);
+		if (accumulate_emission(ray, pxl, &throughput))
 			break ;
 		throughput = multiply_colours(throughput, ray->hit_data->obj_colour);
 		if (!apply_russian_roulette(ray, &throughput, bounces))
@@ -183,7 +98,7 @@ static void	process_bounces(t_data *data, t_ray *ray, t_pixel *pxl)
 	}
 }
 
-void	trace_paths(t_data *d, t_ray *ray, uint32_t y, uint32_t x)
+void	trace_paths(t_data *d, t_ray *r, uint32_t y, uint32_t x)
 {
 	int		rays;
 	t_pixel	*px;
@@ -193,17 +108,17 @@ void	trace_paths(t_data *d, t_ray *ray, uint32_t y, uint32_t x)
 	px = &d->pixels[y][x];
 	while (rays < d->max_rays)
 	{
-		ray->hit_data->is_shiny = is_shiny(ray->rng, (*px).shininess);
-		ray->hit_data->specular = (*px).specular;
-		ray->hit_data->colour = lerp_colour((*px).obj_colour,
-			new_colour(1.0f, 1.0f, 1.0f), ray->hit_data->is_shiny);
-		ray->origin = (*px).location;
-		ray->direction = (*px).ray_direction;
-		ray->hit_data->surface_norm = (*px).surface_norm;
-		ray->hit_data->inside_obj = false;
-		ray->hit_data->type = OBJ_NONE;
-		offset_ray(ray->origin, ray->hit_data->surface_norm, &ray->origin);
-		process_bounces(d, ray, px);
+		r->hit_data->is_shiny = random_is_specular(r->rng, (*px).shininess);
+		r->hit_data->specular = (*px).specular;
+		r->hit_data->colour = lerp_colour((*px).obj_colour,
+			new_colour(1.0f, 1.0f, 1.0f), r->hit_data->is_shiny);
+		r->origin = (*px).location;
+		r->direction = (*px).ray_direction;
+		r->hit_data->surface_norm = (*px).surface_norm;
+		r->hit_data->inside_obj = false;
+		r->hit_data->type = OBJ_NONE;
+		offset_ray_origin(r->origin, r->hit_data->surface_norm, &r->origin);
+		process_bounces(d, r, px);
 		rays++;
 	}
 	px->spp += d->max_rays;
