@@ -48,7 +48,8 @@ SRCS := \
 	intersect_sphere.c \
 	intersection_utils.c \
 	colour_math.c \
-	lighting.c \
+	light_utils.c \
+	light_sampling.c \
 	handle_cone.c \
 	handle_cylinder.c \
 	handle_light_globe.c \
@@ -73,7 +74,8 @@ SRCS := \
 	reset_pixel_buffer.c \
 	update_wasd.c \
 	loop_hook.c \
-	multithreading.c
+	multithreading.c \
+	cosine_hemisphere.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)
