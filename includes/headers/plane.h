@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:21:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/20 15:17:33 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/22 17:41:41 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ typedef struct s_plane
 	t_quat		orient;
 	t_vec3		normal0;
 	t_material	mat;
+	bool		use_checker;
+	float		checker_size;
+	t_color		checker_alt;
+	t_vec3		u_axis;
+	t_vec3		v_axis;
 }	t_plane;
 
 #endif
