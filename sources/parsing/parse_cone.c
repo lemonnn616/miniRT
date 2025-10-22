@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:44:46 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/06 15:06:11 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/22 13:17:43 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static bool	validate_cone_tokens(char **tokens)
 		printf("Error\nInvalid cone format\n");
 		return (false);
 	}
-	if (tokens[6] && tokens[7])
+	if (tokens[8])
 	{
 		printf("Error\nInvalid cone format\n");
 		return (false);
@@ -57,7 +57,8 @@ static bool	parse_cone_data(t_cone *co, char **tokens)
 	return (true);
 }
 
-static bool	set_cone_material(t_cone *co, const char *str, float shininess)
+static bool	set_cone_material(t_cone *co, const char *str,
+	float shininess, float reflectivity)
 {
 	t_color	col;
 
@@ -67,15 +68,15 @@ static bool	set_cone_material(t_cone *co, const char *str, float shininess)
 	co->mat.diffuse = 1.0f;
 	co->mat.specular = 0.0f;
 	co->mat.shininess = shininess;
-	co->mat.reflectivity = 0.0f;
+	co->mat.reflectivity = reflectivity;
 	return (true);
 }
-
 bool	parse_cone(char **tokens, t_scene *scene)
 {
 	t_cone		*co;
 	t_object	*obj;
-	float		shininess;
+	float	shininess = 0.0f;
+	float	reflectivity = 0.0f;
 
 	if (!validate_cone_tokens(tokens))
 		return (false);
@@ -84,13 +85,11 @@ bool	parse_cone(char **tokens, t_scene *scene)
 		return (perror("malloc"), false);
 	if (!parse_cone_data(co, tokens))
 		return (free(co), false);
-	shininess = 0.0f;
-	if (tokens[6])
-	{
-		if (!parse_shininess(tokens[6], &shininess))
-			return (free(co), false);
-	}
-	if (!set_cone_material(co, tokens[5], shininess))
+	if (tokens[6] && !parse_shininess(tokens[6], &shininess))
+		return (free(co), false);
+	if (tokens[7] && !parse_reflectivity(tokens[7], &reflectivity))
+		return (free(co), false);
+	if (!set_cone_material(co, tokens[5], shininess, reflectivity))
 		return (free(co), false);
 	obj = malloc(sizeof(*obj));
 	if (!obj)

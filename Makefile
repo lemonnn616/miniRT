@@ -75,7 +75,8 @@ SRCS := \
 	update_wasd.c \
 	loop_hook.c \
 	multithreading.c \
-	cosine_hemisphere.c
+	cosine_hemisphere.c \
+	parse_reflectivity.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)

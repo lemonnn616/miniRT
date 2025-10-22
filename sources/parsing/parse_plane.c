@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:16 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/06 15:04:58 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/22 13:16:13 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static bool	validate_plane_tokens(char **tokens)
 		printf("Error\nInvalid plane format\n");
 		return (false);
 	}
-	if (tokens[4] && tokens[5])
+	if (tokens[6])
 	{
 		printf("Error\nInvalid plane format\n");
 		return (false);
@@ -52,13 +52,14 @@ static bool	fill_plane_data(t_plane *pl, char **tokens)
 	return (true);
 }
 
-static void	set_plane_material(t_plane *pl, t_color col, float shininess)
+static void	set_plane_material(t_plane *pl, t_color col,
+	float shininess, float reflectivity)
 {
 	pl->mat.color = col;
 	pl->mat.diffuse = 1.0f;
 	pl->mat.specular = 0.0f;
 	pl->mat.shininess = shininess;
-	pl->mat.reflectivity = 0.0f;
+	pl->mat.reflectivity = reflectivity;
 }
 
 bool	parse_plane(char **tokens, t_scene *scene)
@@ -66,7 +67,9 @@ bool	parse_plane(char **tokens, t_scene *scene)
 	t_plane		*pl;
 	t_object	*obj;
 	t_color		col;
-	float		shininess;
+	float		shininess = 0.0f;
+	float		reflectivity = 0.0f;
+
 
 	if (!validate_plane_tokens(tokens))
 		return (false);
@@ -77,13 +80,11 @@ bool	parse_plane(char **tokens, t_scene *scene)
 		return (free(pl), false);
 	if (!parse_color(tokens[3], &col))
 		return (free(pl), false);
-	shininess = 0.0f;
-	if (tokens[4])
-	{
-		if (!parse_shininess(tokens[4], &shininess))
-			return (free(pl), false);
-	}
-	set_plane_material(pl, col, shininess);
+	if (tokens[4] && !parse_shininess(tokens[4], &shininess))
+		return (free(pl), false);
+	if (tokens[5] && !parse_reflectivity(tokens[5], &reflectivity))
+		return (free(pl), false);
+	set_plane_material(pl, col, shininess, reflectivity);
 	obj = malloc(sizeof(*obj));
 	if (!obj)
 		return (perror("malloc"), free(pl), false);
