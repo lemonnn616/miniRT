@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:32:03 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/06 15:04:18 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:57:03 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ bool	parse_camera(char **tokens, t_scene *scene)
 	t_vec3		pos;
 	t_vec3		dir;
 	float		fov;
+	char		*end = NULL;
 
 	if (!tokens[1] || !tokens[2] || !tokens[3] || tokens[4])
 		return (printf("Error\nInvalid camera format\n"), false);
@@ -33,7 +34,9 @@ bool	parse_camera(char **tokens, t_scene *scene)
 	if (vec_length(dir) < 1e-6f)
 		return (printf("Error\nCamera direction vector is zero\n"), false);
 	dir = vec_normalize(dir);
-	fov = ft_strtof(tokens[3], NULL);
+	fov = ft_strtof(tokens[3], &end);
+	if (*tokens[3] == '\0' || *end != '\0')
+		return (printf("Error\nInvalid FOV format\n"), false);
 	if (fov <= 0.0f || fov >= 180.0f)
 		return (printf("Error\nFOV out of range (0,180)\n"), false);
 	cam = malloc(sizeof(*cam));

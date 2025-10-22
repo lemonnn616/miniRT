@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:22 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 13:55:18 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:49:52 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,13 @@ static bool	process_line(char *line, t_scene *scene)
 
 	trimmed = ft_strtrim(line, " \t\n\r\v\f");
 	free(line);
-	if (trimmed[0] == '\0' || trimmed[0] == '#')
+	char *hash = ft_strchr(trimmed, '#');
+	if (hash)
+		*hash = '\0';
+	char *retrim = ft_strtrim(trimmed, " \t\n\r\v\f");
+	free(trimmed);
+	trimmed = retrim;
+	if (trimmed[0] == '\0')
 		return (free(trimmed), true);
 	ok = parse_line(trimmed, scene);
 	return (free(trimmed), ok);

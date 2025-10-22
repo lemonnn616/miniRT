@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:26 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/22 18:16:56 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:51:07 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,13 @@ static bool	fill_sphere_data(t_sphere *sp, char **tokens)
 {
 	t_vec3	center;
 	float	dia;
+	char	*end = NULL;
 
 	if (!parse_vector(tokens[1], &center))
 		return (false);
-	dia = ft_strtof(tokens[2], NULL);
+	dia = ft_strtof(tokens[2], &end);
+	if (*tokens[2] == '\0' || *end != '\0')
+		return (printf("Error\nInvalid sphere diameter format\n"), false);
 	if (dia <= 0.0f)
 	{
 		printf("Error\nSphere diameter <= 0\n");

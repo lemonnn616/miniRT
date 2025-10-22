@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:09 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/22 13:16:53 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:58:13 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static bool	fill_cylinder_data(t_cylinder *cy, char **tokens)
 	t_vec3	axis;
 	float	dia;
 	float	h;
+	char	*end = NULL;
+	char	*end2 = NULL;
 
 	if (!parse_vector(tokens[1], &base) || !parse_vector(tokens[2], &axis))
 		return (false);
@@ -47,8 +49,12 @@ static bool	fill_cylinder_data(t_cylinder *cy, char **tokens)
 		return (printf("Error\nCylinder axis components must be in [-1,1]\n"), false);
 	if (vec_length(axis) < 1e-6f)
 		return (printf("Error\nCylinder axis vector is zero\n"), false);
-	dia = ft_strtof(tokens[3], NULL);
-	h = ft_strtof(tokens[4], NULL);
+	dia = ft_strtof(tokens[3], &end);
+	h = ft_strtof(tokens[4], &end2);
+	if (*tokens[3] == '\0' || *end != '\0')
+		return (printf("Error\nInvalid cylinder diameter format\n"), false);
+	if (*tokens[4] == '\0' || *end2 != '\0')
+		return (printf("Error\nInvalid cylinder height format\n"), false);
 	if (dia <= 0.0f || h <= 0.0f)
 	{
 		printf("Error\nCylinder size must be > 0\n");

@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:44:46 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/22 13:17:43 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:58:56 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,14 @@ static bool	parse_cone_data(t_cone *co, char **tokens)
 	co->axis0 = vec_normalize(co->axis);
 	co->axis = co->axis0;
 	co->orient = (t_quat){1.0f, {0, 0, 0}};
-	co->angle = ft_strtof(tokens[3], NULL);
-	co->height = ft_strtof(tokens[4], NULL);
+	char *end = NULL;
+	char *end2 = NULL;
+	co->angle = ft_strtof(tokens[3], &end);
+	co->height = ft_strtof(tokens[4], &end2);
+	if (*tokens[3] == '\0' || *end != '\0')
+		return (printf("Error\nInvalid cone angle format\n"), false);
+	if (*tokens[4] == '\0' || *end2 != '\0')
+		return (printf("Error\nInvalid cone height format\n"), false);
 	if (co->angle <= 0.0f || co->angle >= 180.0f || co->height <= 0.0f)
 	{
 		printf("Error\nCone parameters out of range\n");
