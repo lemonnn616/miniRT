@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:26 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/22 18:51:07 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/23 13:55:17 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static bool	validate_sphere_tokens(char **tokens)
+static int	count_tokens(char **t)
 {
-	if (!tokens[1] || !tokens[2] || !tokens[3])
-	{
-		printf("Error\nInvalid sphere format\n");
-		return (false);
-	}
-	if (tokens[6])
-	{
-		printf("Error\nInvalid sphere format\n");
-		return (false);
-	}
-	return (true);
+	int n = 0;
+	while (t && t[n])
+		n++;
+	return n;
 }
 
+static bool	validate_sphere_tokens(char **tokens)
+{
+	int n = count_tokens(tokens);
+	if (n < 4)
+		return (printf("Error\nInvalid sphere format (need center, diameter, color)\n"), false);
+	if (n > 6)
+		return (printf("Error\nInvalid sphere format (extra tokens)\n"), false);
+	return (true);
+}
 
 static bool	fill_sphere_data(t_sphere *sp, char **tokens)
 {
