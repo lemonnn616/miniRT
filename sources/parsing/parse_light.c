@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:11 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/22 18:54:57 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/29 13:04:28 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@
 
 static bool	validate_light_tokens(char **tokens)
 {
-	if (!tokens[1] || !tokens[2])
-		return (printf("Error\nInvalid light format\n"), false);
-	if (tokens[4])
+	int	n;
+
+	n = count_tokens(tokens);
+	if (n < 3 || n > 4)
 		return (printf("Error\nInvalid light format\n"), false);
 	return (true);
 }
+
 
 static bool	fill_light_data(t_light *l, char **tokens)
 {

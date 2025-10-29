@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:09 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/22 18:58:13 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/29 18:00:33 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,10 @@
 
 static bool	validate_cy_tokens(char **tokens)
 {
-	if (!tokens[1] || !tokens[2] || !tokens[3]
-		|| !tokens[4] || !tokens[5])
-	{
-		printf("Error\nInvalid cylinder format\n");
-		return (false);
-	}
-	if (tokens[8])
+	int	n;
+
+	n = count_tokens(tokens);
+	if (n < 6 || n > 8)
 	{
 		printf("Error\nInvalid cylinder format\n");
 		return (false);
@@ -84,8 +81,9 @@ bool	parse_cylinder(char **tokens, t_scene *scene)
 	t_cylinder	*cy;
 	t_object	*obj;
 	t_color		col;
-	float		shininess = 0.0f;
-	float		reflectivity = 0.0f;
+	float		shininess;
+	float		reflectivity;
+	int			n;
 
 	if (!validate_cy_tokens(tokens))
 		return (false);
@@ -96,9 +94,12 @@ bool	parse_cylinder(char **tokens, t_scene *scene)
 		return (free(cy), false);
 	if (!parse_color(tokens[5], &col))
 		return (free(cy), false);
-	if (tokens[6] && !parse_shininess(tokens[6], &shininess))
+	shininess = 0.0f;
+	reflectivity = 0.0f;
+	n = count_tokens(tokens);
+	if (n > 6 && !parse_shininess(tokens[6], &shininess))
 		return (free(cy), false);
-	if (tokens[7] && !parse_reflectivity(tokens[7], &reflectivity))
+	if (n > 7 && !parse_reflectivity(tokens[7], &reflectivity))
 		return (free(cy), false);
 	set_cylinder_material(cy, col, shininess, reflectivity);
 	obj = malloc(sizeof(*obj));

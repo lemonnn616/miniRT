@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:44:46 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/22 18:58:56 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/29 18:00:56 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,17 @@
 
 static bool	validate_cone_tokens(char **tokens)
 {
-	if (!tokens[1] || !tokens[2] || !tokens[3]
-		|| !tokens[4] || !tokens[5])
-	{
-		printf("Error\nInvalid cone format\n");
-		return (false);
-	}
-	if (tokens[8])
+	int	n;
+
+	n = count_tokens(tokens);
+	if (n < 6 || n > 8)
 	{
 		printf("Error\nInvalid cone format\n");
 		return (false);
 	}
 	return (true);
 }
+
 
 static bool	parse_cone_data(t_cone *co, char **tokens)
 {
@@ -81,8 +79,9 @@ bool	parse_cone(char **tokens, t_scene *scene)
 {
 	t_cone		*co;
 	t_object	*obj;
-	float	shininess = 0.0f;
-	float	reflectivity = 0.0f;
+	float		shininess;
+	float		reflectivity;
+	int			n;
 
 	if (!validate_cone_tokens(tokens))
 		return (false);
@@ -91,9 +90,12 @@ bool	parse_cone(char **tokens, t_scene *scene)
 		return (perror("malloc"), false);
 	if (!parse_cone_data(co, tokens))
 		return (free(co), false);
-	if (tokens[6] && !parse_shininess(tokens[6], &shininess))
+	shininess = 0.0f;
+	reflectivity = 0.0f;
+	n = count_tokens(tokens);
+	if (n > 6 && !parse_shininess(tokens[6], &shininess))
 		return (free(co), false);
-	if (tokens[7] && !parse_reflectivity(tokens[7], &reflectivity))
+	if (n > 7 && !parse_reflectivity(tokens[7], &reflectivity))
 		return (free(co), false);
 	if (!set_cone_material(co, tokens[5], shininess, reflectivity))
 		return (free(co), false);
