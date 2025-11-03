@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_light_globe.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:45:02 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/16 09:46:19 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/03 15:32:28 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,19 @@
 void	handle_light_globe_interaction(t_hit *hit, t_vec3 ray_direction)
 {
 	t_light	*l;
-	t_color	c;
+	t_color	emission;
+	float	ndotv;
 	float	brightness;
 
 	l = (t_light *)hit->obj_ptr;
-	c = l->color;
 	hit->surface_norm = vec_normalize(vec_subtract(hit->location, l->pos));
 	if (hit->inside_obj == true)
 		hit->surface_norm = vec_scale(hit->surface_norm, -1.0f);
-	brightness = vec_dot(ray_direction, vec_scale(hit->surface_norm, -1.0f));
-	if (brightness < 0.1f)
-		brightness = 0.1f;
-	hit->colour = colour_scale(c, brightness);
+	ndotv = vec_dot(ray_direction, vec_scale(hit->surface_norm, -1.0f));
+	if (ndotv < 0.0f)
+		ndotv = 0.0f;
+	brightness = 0.1f + 0.9f * ndotv;
+	emission = colour_scale(l->color, l->intensity * brightness);
+	hit->colour = emission;
+	hit->obj_colour = emission;
 }
