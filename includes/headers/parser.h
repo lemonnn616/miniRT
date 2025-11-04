@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:26:55 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 12:34:27 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/22 13:11:39 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ bool	parse_color(const char *str, t_color *out);
 bool	parse_cone(char **tokens, t_scene *scene);
 bool	parse_resolution(char **tokens, t_scene *scene);
 bool	parse_shininess(const char *str, float *out);
+bool	parse_reflectivity(const char *str, float *out);
 
 #endif

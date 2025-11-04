@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:26 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/20 15:35:42 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/29 18:00:08 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,11 @@
 
 static bool	validate_sphere_tokens(char **tokens)
 {
-	if (!tokens[1] || !tokens[2] || !tokens[3])
-	{
-		printf("Error\nInvalid sphere format\n");
-		return (false);
-	}
-	if (tokens[4] && tokens[5])
-	{
-		printf("Error\nInvalid sphere format\n");
-		return (false);
-	}
+	int	n;
+
+	n = count_tokens(tokens);
+	if (n < 4 || n > 6)
+		return (printf("Error\nInvalid sphere format\n"), false);
 	return (true);
 }
 
@@ -35,10 +30,13 @@ static bool	fill_sphere_data(t_sphere *sp, char **tokens)
 {
 	t_vec3	center;
 	float	dia;
+	char	*end = NULL;
 
 	if (!parse_vector(tokens[1], &center))
 		return (false);
-	dia = ft_strtof(tokens[2], NULL);
+	dia = ft_strtof(tokens[2], &end);
+	if (*tokens[2] == '\0' || *end != '\0')
+		return (printf("Error\nInvalid sphere diameter format\n"), false);
 	if (dia <= 0.0f)
 	{
 		printf("Error\nSphere diameter <= 0\n");
@@ -49,13 +47,14 @@ static bool	fill_sphere_data(t_sphere *sp, char **tokens)
 	return (true);
 }
 
-static void	set_sphere_material(t_sphere *sp, t_color col, float shininess)
+static void	set_sphere_material(t_sphere *sp, t_color col,
+	float shininess, float reflectivity)
 {
 	sp->mat.color = col;
 	sp->mat.diffuse = 0.8f;
 	sp->mat.specular = 0.2f;
 	sp->mat.shininess = shininess;
-	sp->mat.reflectivity = 0.1f;
+	sp->mat.reflectivity = reflectivity;
 }
 
 bool	parse_sphere(char **tokens, t_scene *scene)
@@ -64,6 +63,8 @@ bool	parse_sphere(char **tokens, t_scene *scene)
 	t_object	*obj;
 	t_color		col;
 	float		shininess;
+	float		reflectivity;
+	int			n;
 
 	if (!validate_sphere_tokens(tokens))
 		return (false);
@@ -74,13 +75,15 @@ bool	parse_sphere(char **tokens, t_scene *scene)
 		return (free(sp), false);
 	if (!parse_color(tokens[3], &col))
 		return (free(sp), false);
+
 	shininess = 0.5f;
-	if (tokens[4])
-	{
-		if (!parse_shininess(tokens[4], &shininess))
-			return (free(sp), false);
-	}
-	set_sphere_material(sp, col, shininess);
+	reflectivity = 0.1f;
+	n = count_tokens(tokens);
+	if (n > 4 && !parse_shininess(tokens[4], &shininess))
+		return (free(sp), false);
+	if (n > 5 && !parse_reflectivity(tokens[5], &reflectivity))
+		return (free(sp), false);
+	set_sphere_material(sp, col, shininess, reflectivity);
 	obj = malloc(sizeof(*obj));
 	if (!obj)
 		return (perror("malloc"), free(sp), false);

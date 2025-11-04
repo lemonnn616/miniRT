@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendering_pass.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:07:27 by natallia          #+#    #+#             */
-/*   Updated: 2025/10/17 16:11:50 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/03 15:30:22 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,6 @@ void	offset_ray_origin(const t_vec3 p, const t_vec3 n, t_vec3 *origin_out)
 	m = vec_length(p);
 	*origin_out = vec_add(p, vec_scale(n, eps_n + eps_p * m));
 }
-
-// void	update_ray(t_data *data, t_ray *ray, int32_t y, int32_t x)
-// {
-// 	ft_memset(ray->hit_data, 0, sizeof(t_hit));
-// 	if (data->scene.active_cam)
-// 	{
-// 		ray->origin = data->scene.active_cam->pos;
-// 	}
-// 	else
-// 	{
-// 		ray->origin = data->scene.cameras[0].pos;
-// 	}
-// 	ray->direction = data->pixels[y][x].ray_direction;
-// 	ray->hit_data->colour = new_colour(1.0f, 1.0f, 1.0f);
-// }
 
 void	update_ray(t_data *data, t_ray *ray, int32_t y, int32_t x)
 {
@@ -101,7 +86,7 @@ void	get_first_hit(t_data *data, t_ray *ray, int32_t y, int32_t x)
 	compute_surface_interaction(ray->hit_data, ray->direction);
 	if (ray->hit_data->type == OBJ_LIGHT)
 	{
-		data->pixels[y][x].final_colour = new_colour(0.0f, 0.0f, 0.0f);
+		data->pixels[y][x].final_colour = ray->hit_data->colour;
 		gamma_adjust(&data->pixels[y][x].final_colour);
 		return ;
 	}
@@ -118,28 +103,6 @@ void	get_first_hit(t_data *data, t_ray *ray, int32_t y, int32_t x)
 		return ;
 	}
 }
-
-// void	render_pass(t_data *data, uint32_t y_start,
-// 	uint32_t y_stride, t_pcg *rng)
-// {
-// 	t_ray	ray;
-// 	t_hit	hit;
-
-// 	ray.hit_data = &hit;
-// 	ray.rng = rng;
-// 	for (uint32_t y = y_start; (int)y < data->scene.height; y += y_stride)
-// 	{
-// 		for (uint32_t x = 0; (int)x < data->scene.width; ++x)
-// 		{
-// 			update_ray(data, &ray, y, x);
-// 			get_first_hit(data, &ray, y, x);
-// 			if (hit.hit_occurred && hit.type != OBJ_LIGHT)
-// 				trace_paths(data, &ray, y, x);
-// 			mlx_put_pixel(data->image_buffer, x, y,
-// 				percentage_to_rgba(data->pixels[y][x].final_colour));
-// 		}
-// 	}
-// }
 
 void	render_pass(t_data *data, uint32_t y_start,
 	uint32_t y_stride, t_pcg *rng)

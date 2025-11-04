@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   plane.h                                            :+:      :+:    :+:   */
+/*   count_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 17:21:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/22 17:41:41 by iriadyns         ###   ########.fr       */
+/*   Created: 2025/10/29 13:02:40 by iriadyns          #+#    #+#             */
+/*   Updated: 2025/10/29 13:03:51 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PLANE_H
-# define PLANE_H
+#include "utils.h"
 
-# include "vec3.h"
-# include "material.h"
-# include "quaternion.h"
-
-typedef struct s_plane
+int	count_tokens(char **t)
 {
-	t_vec3		point;
-	t_vec3		normal;
-	t_quat		orient;
-	t_vec3		normal0;
-	t_material	mat;
-	bool		use_checker;
-	float		checker_size;
-	t_color		checker_alt;
-	t_vec3		u_axis;
-	t_vec3		v_axis;
-}	t_plane;
+	int	n;
 
-#endif
+	n = 0;
+	while (t && t[n])
+		n++;
+	return (n);
+}

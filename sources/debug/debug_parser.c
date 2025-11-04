@@ -1,116 +1,129 @@
 #include "debug.h"
 #include <stdio.h>
 
+static const char	*obj_type_str(t_obj_type t)
+{
+	if (t == OBJ_SPHERE) return "Sphere";
+	else if (t == OBJ_PLANE) return "Plane";
+	else if (t == OBJ_CYLINDER) return "Cylinder";
+	else if (t == OBJ_TRIANGLE) return "Triangle";
+	else if (t == OBJ_SQUARE) return "Square";
+	else if (t == OBJ_CONE) return "Cone";
+	else if (t == OBJ_LIGHT) return "Light";
+	else return "Unknown";
+}
+
+static void	print_vec(const char *label, t_vec3 v)
+{
+	printf("%s=(%.2f,%.2f,%.2f)", label, v.x, v.y, v.z);
+}
+
+static void	print_col(const char *label, t_color c)
+{
+	printf("%s=(%.2f,%.2f,%.2f)", label, c.r, c.g, c.b);
+}
+
 void	debug_print_scene(const t_scene *scene)
 {
-	int	idx;
+	int			idx;
+	t_camera	*cam;
+	t_light		*l;
+	t_object	*obj;
 
 	printf("Resolution: %d x %d%s\n",
-		scene->width,
-		scene->height,
+		scene->width, scene->height,
 		scene->resolution_set ? "" : " (default)");
-	printf("Ambient: intensity=%.2f color=(%.2f,%.2f,%.2f)\n",
-		scene->ambient.intensity,
-		scene->ambient.color.r,
-		scene->ambient.color.g,
-		scene->ambient.color.b);
+	printf("Ambient: intensity=%.2f ", scene->ambient.intensity);
+	print_col("color", scene->ambient.color);
+	printf("\n");
+
 	idx = 0;
-	t_camera *cam = scene->cameras;
+	cam = scene->cameras;
 	while (cam)
 	{
-		printf("Camera %d: pos=(%.2f,%.2f,%.2f) dir=(%.2f,%.2f,%.2f) "
-				"right=(%.2f,%.2f,%.2f) up=(%.2f,%.2f,%.2f) fov=%.2f\n",
-				idx++,
-				cam->pos.x, cam->pos.y, cam->pos.z,
-				cam->dir.x, cam->dir.y, cam->dir.z,
-				cam->right.x, cam->right.y, cam->right.z,
-				cam->up.x, cam->up.y, cam->up.z,
-				cam->fov);
+		printf("Camera %d: ", idx);
+		print_vec("pos", cam->pos);
+		printf(" ");
+		print_vec("dir", cam->dir);
+		printf(" ");
+		print_vec("right", cam->right);
+		printf(" ");
+		print_vec("up", cam->up);
+		printf(" fov=%.2f\n", cam->fov);
+		idx++;
 		cam = cam->next;
 	}
+
 	idx = 0;
-	t_light *l = scene->lights;
+	l = scene->lights;
 	while (l)
 	{
-		printf("Light %d: pos=(%.2f,%.2f,%.2f) intensity=%.2f color=(%.2f,%.2f,%.2f)\n",
-			idx++,
-			l->pos.x, l->pos.y, l->pos.z,
-			l->intensity,
-			l->color.r, l->color.g, l->color.b);
+		printf("Light %d: ", idx);
+		print_vec("pos", l->pos);
+		printf(" intensity=%.2f ", l->intensity);
+		print_col("color", l->color);
+		printf("\n");
+		idx++;
 		l = l->next;
 	}
+
 	idx = 0;
-	t_object *obj = scene->objects;
+	obj = scene->objects;
 	while (obj)
 	{
-		switch (obj->type)
+		printf("Obj %d: %s", idx, obj_type_str(obj->type));
+		if (!obj->obj)
 		{
-		case OBJ_SPHERE:
+			printf(" (null)\n");
+			idx++;
+			obj = obj->next;
+			continue ;
+		}
+		if (obj->type == OBJ_SPHERE)
 		{
-			t_sphere        *s;
-
-			s = obj->obj;
-			printf("Obj %d: Sphere center=(%.2f,%.2f,%.2f) radius=%.2f "
-				"color=(%.2f,%.2f,%.2f) shininess=%.2f\n",
-				idx++,
-				s->center.x, s->center.y, s->center.z,
-				s->radius,
-				s->mat.color.r, s->mat.color.g, s->mat.color.b,
-				s->mat.shininess);
-			break;
+			t_sphere *s = (t_sphere *)obj->obj;
+			printf(" ");
+			print_vec("center", s->center);
+			printf(" radius=%.2f ", s->radius);
+			print_col("color", s->mat.color);
+			printf(" shininess=%.2f\n", s->mat.shininess);
 		}
-		case OBJ_PLANE:
+		else if (obj->type == OBJ_PLANE)
 		{
-			t_plane         *p;
-
-			p = obj->obj;
-			printf("Obj %d: Plane point=(%.2f,%.2f,%.2f) normal=(%.2f,%.2f,%.2f) "
-				"color=(%.2f,%.2f,%.2f) shininess=%.2f\n",
-				idx++,
-				p->point.x, p->point.y, p->point.z,
-				p->normal.x, p->normal.y, p->normal.z,
-				p->mat.color.r, p->mat.color.g, p->mat.color.b,
-				p->mat.shininess);
-			break;
+			t_plane *p = (t_plane *)obj->obj;
+			printf(" ");
+			print_vec("point", p->point);
+			printf(" ");
+			print_vec("normal", p->normal);
+			printf(" ");
+			print_col("color", p->mat.color);
+			printf(" shininess=%.2f\n", p->mat.shininess);
 		}
-		case OBJ_CYLINDER:
+		else if (obj->type == OBJ_CYLINDER)
 		{
-			t_cylinder      *c;
-
-			c = obj->obj;
-			printf("Obj %d: Cylinder base=(%.2f,%.2f,%.2f) axis=(%.2f,%.2f,%.2f) "
-				"radius=%.2f height=%.2f color=(%.2f,%.2f,%.2f) shininess=%.2f\n",
-				idx++,
-				c->base.x, c->base.y, c->base.z,
-				c->axis.x, c->axis.y, c->axis.z,
-				c->radius, c->height,
-				c->mat.color.r, c->mat.color.g, c->mat.color.b,
-				c->mat.shininess);
-			break;
+			t_cylinder *c = (t_cylinder *)obj->obj;
+			printf(" ");
+			print_vec("base", c->base);
+			printf(" ");
+			print_vec("axis", c->axis);
+			printf(" radius=%.2f height=%.2f ", c->radius, c->height);
+			print_col("color", c->mat.color);
+			printf(" shininess=%.2f\n", c->mat.shininess);
 		}
-		case OBJ_CONE:
+		else if (obj->type == OBJ_CONE)
 		{
-			t_cone          *cn;
-
-			cn = obj->obj;
-			printf("Obj %d: Cone apex=(%.2f,%.2f,%.2f) axis=(%.2f,%.2f,%.2f) "
-				"angle=%.2f height=%.2f color=(%.2f,%.2f,%.2f) shininess=%.2f\n",
-				idx++,
-				cn->apex.x, cn->apex.y, cn->apex.z,
-				cn->axis.x, cn->axis.y, cn->axis.z,
-				cn->angle, cn->height,
-				cn->mat.color.r, cn->mat.color.g, cn->mat.color.b,
-				cn->mat.shininess);
-			break;
+			t_cone *cn = (t_cone *)obj->obj;
+			printf(" ");
+			print_vec("apex", cn->apex);
+			printf(" ");
+			print_vec("axis", cn->axis);
+			printf(" angle=%.2f height=%.2f ", cn->angle, cn->height);
+			print_col("color", cn->mat.color);
+			printf(" shininess=%.2f\n", cn->mat.shininess);
 		}
-		case OBJ_LIGHT:
-		{
-			printf("Obj %d: Light\n", idx++);
-			break;
-		}
-		default:
-			printf("Obj %d: Unknown type %d\n", idx++, obj->type);
-		}
+		else
+			printf("\n");
+		idx++;
 		obj = obj->next;
 	}
 }

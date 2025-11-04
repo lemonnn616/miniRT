@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:11 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 13:53:55 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/10/29 13:04:28 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,34 @@
 
 static bool	validate_light_tokens(char **tokens)
 {
-	if (!tokens[1] || !tokens[2] || !tokens[3] || tokens[4])
+	int	n;
+
+	n = count_tokens(tokens);
+	if (n < 3 || n > 4)
 		return (printf("Error\nInvalid light format\n"), false);
 	return (true);
 }
+
 
 static bool	fill_light_data(t_light *l, char **tokens)
 {
 	if (!parse_vector(tokens[1], &l->pos))
 		return (false);
-	l->intensity = ft_strtof(tokens[2], NULL);
+	char *end = NULL;
+	l->intensity = ft_strtof(tokens[2], &end);
+	if (*tokens[2] == '\0' || *end != '\0')
+		return (printf("Error\nInvalid light intensity format\n"), false);
 	if (l->intensity < 0.0f || l->intensity > 1.0f)
 		return (printf("Error\nLight intensity out of range [0,1]\n"), false);
-	if (!parse_color(tokens[3], &l->color))
-		return (false);
+	if (tokens[3])
+	{
+		if (!parse_color(tokens[3], &l->color))
+			return (false);
+	}
+	else
+	{
+		l->color = (t_color){1.0f, 1.0f, 1.0f};
+	}
 	return (true);
 }
 
