@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:48:17 by natallia          #+#    #+#             */
-/*   Updated: 2025/07/23 13:24:24 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:34:22 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static t_vec3	get_cylinder_normal(t_hit *hit, t_cylinder *c)
 
 	center_to_point = vec_subtract(hit->location, c->base);
 	axis_projection = vec_add(c->base, vec_scale(c->axis,
-		vec_dot(center_to_point, c->axis)));
+				vec_dot(center_to_point, c->axis)));
 	surface_normal = vec_subtract(hit->location, axis_projection);
 	return (vec_normalize(surface_normal));
 }

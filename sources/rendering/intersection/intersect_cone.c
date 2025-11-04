@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cone.c                                             :+:      :+:    :+:   */
+/*   intersect_cone.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:06:21 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/15 15:02:45 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 21:51:04 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static	t_vec3	get_cone_coefficients(t_ray *ray, t_cone *c)
 	quad_coeff.x = vec_dot(d, v) * vec_dot(d, v)
 		- vec_dot(d, d) * cos_theta_squared;
 	quad_coeff.y = 2 * (vec_dot(origin_to_apex, v) * vec_dot(d, v)
-		- vec_dot(origin_to_apex, d) * cos_theta_squared);
+			- vec_dot(origin_to_apex, d) * cos_theta_squared);
 	quad_coeff.z = vec_dot(origin_to_apex, v) * vec_dot(origin_to_apex, v)
 		- vec_dot(origin_to_apex, origin_to_apex) * cos_theta_squared;
 	return (quad_coeff);
@@ -80,9 +80,9 @@ static void	intersect_base(t_hit *hit, t_ray *ray,
 	if (fabs(denominator) < EPSILON)
 		return ;
 	origin_to_base = vec_subtract(ray->origin, base_center);
-	distance = - vec_dot(origin_to_base, c->axis) / denominator;
+	distance = -vec_dot(origin_to_base, c->axis) / denominator;
 	if (is_within_circular_area(ray,
-		c->height * tan(c->angle / 2), c->axis, distance))
+			c->height * tan(c->angle / 2), c->axis, distance))
 	{
 		*base_hit = distance;
 		if (distance > 0 && distance < hit->distance)
@@ -109,6 +109,7 @@ void	intersect_cone(t_hit *hit, t_ray *ray, t_object *obj)
 	{
 		hit->specular = c->mat.specular;
 		hit->shininess = c->mat.shininess;
+		hit->reflectivity = c->mat.reflectivity;
 		hit->obj_colour = c->mat.color;
 		if (base_hit < 0 || body_hits[0] < 0 || body_hits[1] < 0)
 			hit->inside_obj = true;

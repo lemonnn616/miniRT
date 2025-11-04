@@ -77,7 +77,8 @@ SRCS := \
 	multithreading.c \
 	cosine_hemisphere.c \
 	parse_reflectivity.c \
-	count_tokens.c
+	count_tokens.c \
+	preview_mode.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)

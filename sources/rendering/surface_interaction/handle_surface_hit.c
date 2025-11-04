@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:50:21 by natallia          #+#    #+#             */
-/*   Updated: 2025/07/16 13:03:02 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:28:42 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ void	compute_surface_interaction(t_hit *hit, t_vec3 ray_direction)
 		handle_cone_surface_interaction(hit);
 	else if (hit->type == OBJ_LIGHT)
 		handle_light_globe_interaction(hit, ray_direction);
-	hit->location = vec_add(hit->location, vec_scale(hit->surface_norm, OFFSET));
+	hit->location = vec_add(hit->location,
+			vec_scale(hit->surface_norm, OFFSET));
 }
