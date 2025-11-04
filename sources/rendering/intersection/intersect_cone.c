@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:06:21 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 21:51:04 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 22:41:46 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	intersect_body(t_hit *hit, t_ray *ray, t_object *obj, float *roots)
 	t_cone	*c;
 	t_vec3	quad_coeff;
 
-	c = obj->obj;
+	c = (t_cone *)obj->obj;
 	quad_coeff = get_cone_coefficients(ray, c);
 	if (quadratic_equation(quad_coeff, roots) == true
 		&& valid_intersection(&roots[0], &roots[1]) == true
@@ -64,7 +64,7 @@ static void	intersect_body(t_hit *hit, t_ray *ray, t_object *obj, float *roots)
 	}
 }
 
-static void	intersect_base(t_hit *hit, t_ray *ray,
+void	intersect_base(t_hit *hit, t_ray *ray,
 	t_object *obj, float *base_hit)
 {
 	t_cone	*c;
@@ -73,19 +73,18 @@ static void	intersect_base(t_hit *hit, t_ray *ray,
 	float	denominator;
 	float	distance;
 
-	c = obj->obj;
-	base_center = vec_add(c->apex,
-			vec_scale(vec_scale(c->axis, -1), c->height));
+	c = (t_cone *)obj->obj;
+	base_center = vec_add(c->apex, vec_scale(c->axis, c->height));
 	denominator = vec_dot(ray->direction, c->axis);
-	if (fabs(denominator) < EPSILON)
+	if (fabsf(denominator) < EPSILON)
 		return ;
 	origin_to_base = vec_subtract(ray->origin, base_center);
 	distance = -vec_dot(origin_to_base, c->axis) / denominator;
 	if (is_within_circular_area(ray,
-			c->height * tan(c->angle / 2), c->axis, distance))
+			c->height * tanf(c->angle * 0.5f), c->axis, distance))
 	{
 		*base_hit = distance;
-		if (distance > 0 && distance < hit->distance)
+		if (distance > EPSILON && distance < hit->distance)
 		{
 			update_hit(ray, distance, obj);
 			update_orientation(hit, c->axis, denominator);
@@ -100,20 +99,22 @@ void	intersect_cone(t_hit *hit, t_ray *ray, t_object *obj)
 	float	base_hit;
 	float	body_hits[2];
 
-	c = obj->obj;
+	c = (t_cone *)obj->obj;
 	base_hit = 0.0f;
-	ft_memset(body_hits, 0, 2 * sizeof(float));
+	ft_memset(body_hits, 0, sizeof(body_hits));
 	intersect_base(hit, ray, obj, &base_hit);
 	intersect_body(hit, ray, obj, body_hits);
-	if ((t_cone *)ray->hit_data->obj_ptr == c)
-	{
-		hit->specular = c->mat.specular;
-		hit->shininess = c->mat.shininess;
-		hit->reflectivity = c->mat.reflectivity;
-		hit->obj_colour = c->mat.color;
-		if (base_hit < 0 || body_hits[0] < 0 || body_hits[1] < 0)
-			hit->inside_obj = true;
-		else
-			hit->inside_obj = false;
-	}
+	if ((t_cone *)ray->hit_data->obj_ptr != c)
+		return ;
+	hit->obj_colour = c->mat.color;
+	hit->reflectivity = fminf(1.0f, fmaxf(0.0f, c->mat.reflectivity));
+	hit->shininess = fminf(1.0f, fmaxf(0.0f, c->mat.shininess));
+	if (c->mat.specular <= 0.0f)
+		hit->specular = hit->reflectivity;
+	else
+		hit->specular = fminf(1.0f, c->mat.specular);
+	if (base_hit < 0.0f || body_hits[0] < 0.0f || body_hits[1] < 0.0f)
+		hit->inside_obj = true;
+	else
+		hit->inside_obj = false;
 }
