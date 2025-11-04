@@ -6,12 +6,20 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:15:21 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/07 16:38:09 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/04 19:00:35 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+/**
+ * @brief Cycle to the next camera and restart preview rendering.
+ * @param d Global runtime data.
+ * @return None.
+ * @details Advances active_cam to its next node (or wraps to head), recomputes
+ * basis, synchronizes last mouse position with current cursor, temporarily
+ * suppresses the next mouse event, and switches to preview render (1 spp, 0 bounces).
+ */
 static void switch_to_next_camera(t_data *d)
 {
 	if (!d || !d->scene.cameras || !d->scene.active_cam)
@@ -37,6 +45,14 @@ static void switch_to_next_camera(t_data *d)
 	start_progressive_render(d);
 }
 
+/**
+ * @brief Handle key press/repeat events (WASD, TAB, ESC).
+ * @param keys Key state structure to mutate.
+ * @param key MLX key event.
+ * @param d Global runtime data (for camera switch and exit).
+ * @return None.
+ * @details Sets movement booleans, switches camera on TAB, closes window on ESC.
+ */
 static void	handle_key_press(t_keys *keys, mlx_key_data_t key, t_data *d)
 {
 	if (key.key == MLX_KEY_W)
@@ -62,6 +78,12 @@ static void	handle_key_press(t_keys *keys, mlx_key_data_t key, t_data *d)
 	}
 }
 
+/**
+ * @brief Handle key release events (WASD).
+ * @param keys Key state structure to mutate.
+ * @param key MLX key event.
+ * @return None.
+ */
 static void	handle_key_release(t_keys *keys, mlx_key_data_t key)
 {
 	if (key.key == MLX_KEY_W)
@@ -74,6 +96,13 @@ static void	handle_key_release(t_keys *keys, mlx_key_data_t key)
 		keys->d = false;
 }
 
+/**
+ * @brief MLX keyboard callback: dispatch press/repeat/release.
+ * @param key MLX key event.
+ * @param param Opaque pointer to t_data.
+ * @return None.
+ * @details Ignores events if an exit is already in progress.
+ */
 void	key_cb(mlx_key_data_t key, void *param)
 {
 	t_data	*d;

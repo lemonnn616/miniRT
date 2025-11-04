@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:11 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/29 13:04:28 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:54:17 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 #include <stdlib.h>
 #include "utils.h"
 
+/**
+ * @brief Validate token count for a light line.
+ * @param tokens Token array.
+ * @return true if token count in [3,4]; false otherwise with error.
+ * @details Syntax: "L <pos> <intensity> [R,G,B]". Color defaults to white.
+ */
 static bool	validate_light_tokens(char **tokens)
 {
 	int	n;
@@ -26,12 +32,20 @@ static bool	validate_light_tokens(char **tokens)
 	return (true);
 }
 
-
+/**
+ * @brief Parse required/optional parameters for a point light.
+ * @param l Output light struct to fill.
+ * @param tokens Light tokens.
+ * @return true on success; false on format/range errors.
+ * @details Validates intensity in [0,1]; default color = white if unspecified.
+ */
 static bool	fill_light_data(t_light *l, char **tokens)
 {
+	char	*end;
+
+	end = NULL;
 	if (!parse_vector(tokens[1], &l->pos))
 		return (false);
-	char *end = NULL;
 	l->intensity = ft_strtof(tokens[2], &end);
 	if (*tokens[2] == '\0' || *end != '\0')
 		return (printf("Error\nInvalid light intensity format\n"), false);
@@ -49,6 +63,12 @@ static bool	fill_light_data(t_light *l, char **tokens)
 	return (true);
 }
 
+/**
+ * @brief Parse a light line and append both to scene->lights and scene->objects.
+ * @param tokens Token array.
+ * @param scene Target scene.
+ * @return true on success; false otherwise.
+ */
 bool	parse_light(char **tokens, t_scene *scene)
 {
 	t_light		*l;

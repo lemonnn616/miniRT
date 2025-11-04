@@ -1,7 +1,7 @@
 NAME := miniRT
 
 SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug sources/rendering/intersection \
-			sources/rendering/surface_interaction sources/rendering sources/rotation \
+			sources/rendering/surface_interaction sources/rendering \
 			sources/hooks sources/math/quaternion
 VPATH := $(SRC_DIRS)
 SRCS := \
@@ -60,7 +60,6 @@ SRCS := \
 	path_tracing.c \
 	ray_casting.c \
 	window.c \
-	rotate_objects.c \
 	conjugate.c \
 	create_from_two_vectors.c \
 	create_from_axis_angle.c \

@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 13:20:05 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 12:55:31 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:24:52 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,14 @@ static int	fill_words(char **res, const char *s)
 	return (1);
 }
 
+/**
+ * @brief Splits a string into tokens separated by ASCII whitespace.
+ * @param s Input C-string to split.
+ * @return NULL-terminated array of newly allocated C-strings,
+ * or NULL on allocation failure.
+ * @details Caller must free with free_tokens().
+ * Uses count_words() and fill_words() internally.
+ */
 char	**split_whitespace(const char *s)
 {
 	char	**res;

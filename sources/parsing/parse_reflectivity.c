@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 13:10:24 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/22 13:11:54 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:30:38 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #include "utils.h"
 #include <stdio.h>
 
+/**
+ * @brief Parse a normalized reflectivity scalar in [0,1].
+ * @param str Input C-string.
+ * @param out Output float.
+ * @return true on success; false on format/range error.
+ */
 bool	parse_reflectivity(const char *str, float *out)
 {
 	char	*end;

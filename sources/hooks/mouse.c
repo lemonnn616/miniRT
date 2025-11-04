@@ -6,12 +6,26 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:15:28 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/07 16:37:10 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/04 18:59:26 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+/**
+ * @brief Apply yaw/pitch rotation to the active camera from mouse deltas.
+ * @param d Global runtime data (used to toggle preview and restart rendering).
+ * @param cam Camera to rotate.
+ * @param dx Mouse delta X (pixels).
+ * @param dy Mouse delta Y (pixels).
+ * @return None.
+ * @details Keeps a persistent yaw/pitch accumulator per-camera. Yaw wraps to
+ * (-π, π]; pitch is clamped to ±89°. Orientation is composed as:
+ *   R = R_pitch(right_yaw, pitch) * R_yaw(world_up, yaw),
+ * then the camera basis is recomputed. Switches to preview mode (1 spp, 0 bounces),
+ * clears the pixel buffer and restarts progressive rendering.
+ * @note Sensitivity is fixed; extremely large deltas are clamped before use.
+ */
 static void apply_mouse_rotation(t_data *d, t_camera *cam, double dx, double dy)
 {
 	const float	yaw_sens = 0.002f;
@@ -57,6 +71,16 @@ static void apply_mouse_rotation(t_data *d, t_camera *cam, double dx, double dy)
 	start_progressive_render(d);
 }
 
+/**
+ * @brief Mouse cursor callback: filters jumps, computes deltas and rotates camera.
+ * @param mx Current mouse X (pixels).
+ * @param my Current mouse Y (pixels).
+ * @param param Opaque pointer to t_data.
+ * @return None.
+ * @details Ignores the very first event, respects temporary suppression/window
+ * block, clamps deltas by both percentage-of-screen and absolute pixel caps,
+ * then forwards to apply_mouse_rotation().
+ */
 void	mouse_move(double mx, double my, void *param)
 {
 	t_data		*d;
@@ -109,4 +133,3 @@ void	mouse_move(double mx, double my, void *param)
 	d->last_mouse_y = my;
 	apply_mouse_rotation(d, cam, dx, dy);
 }
-

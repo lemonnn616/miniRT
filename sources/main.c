@@ -6,12 +6,17 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:35:30 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/29 18:01:46 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/04 19:00:58 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+/**
+ * @brief MLX window close hook: marks the app as exiting.
+ * @param param Opaque pointer to t_data.
+ * @return None.
+ */
 void	rt_close(void *param)
 {
 	t_data	*data;
@@ -22,6 +27,14 @@ void	rt_close(void *param)
 	data->exiting = true;
 }
 
+/**
+ * @brief Initialize runtime, parse scene, create window and set timing baselines.
+ * @param data Out runtime structure to fill.
+ * @param argv Command-line arguments (expects argv[1] to hold scene path).
+ * @return None (terminates on failure).
+ * @details On parse failure prints message, frees the partial scene and exits.
+ * Sets active_cam, quality parameters, and initial timestamps.
+ */
 static void	setup_data(t_data *data, char **argv)
 {
 	ft_memset(data, 0, sizeof(t_data));
@@ -47,6 +60,11 @@ static void	setup_data(t_data *data, char **argv)
 	}
 }
 
+/**
+ * @brief Register all MLX callbacks (keys, loop, cursor, close).
+ * @param data Runtime data (holds MLX handle).
+ * @return None.
+ */
 static void	setup_hooks(t_data *data)
 {
 	mlx_key_hook(data->mlx, key_cb, data);
@@ -56,6 +74,11 @@ static void	setup_hooks(t_data *data)
 	mlx_close_hook(data->mlx, rt_close, data);
 }
 
+/**
+ * @brief Rebuild rays for current camera, clear buffers and kick off rendering.
+ * @param data Runtime data.
+ * @return None.
+ */
 static void	start_rendering(t_data *data)
 {
 	recalc_rays_with_orientation(data);

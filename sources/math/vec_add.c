@@ -3,15 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   vec_add.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:06:34 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/18 15:36:59 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 15:36:57 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec3.h"
 
+/**
+ * @brief Component-wise addition of two vectors.
+ * @param a First vector.
+ * @param b Second vector.
+ * @return Sum vector (a + b).
+ * @details Math: result = (ax+bx, ay+by, az+bz).
+ */
 t_vec3	vec_add(t_vec3 a, t_vec3 b)
 {
 	t_vec3	result;

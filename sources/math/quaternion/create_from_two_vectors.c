@@ -6,12 +6,19 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:04:25 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 14:12:20 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:22:22 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "quaternion.h"
 
+/**
+ * @brief Builds a 180-degree rotation quaternion for vectors that are opposite.
+ * @param from Unit vector to define an orthogonal axis.
+ * @return Quaternion representing rotation
+ * by π around an axis orthogonal to @p from.
+ * @details Used as a fallback when to ≈ -from in quat_from_two_vecs.
+ */
 static t_quat	handle_opposite_vectors(t_vec3 from)
 {
 	t_vec3	axis;
@@ -24,6 +31,14 @@ static t_quat	handle_opposite_vectors(t_vec3 from)
 	return (quat_from_axis_angle(axis, (float)M_PI));
 }
 
+/**
+ * @brief Constructs a quaternion that rotates one vector into another.
+ * @param from Source vector (will be normalized internally).
+ * @param to Target vector (will be normalized internally).
+ * @return Rotation quaternion mapping @p from to @p to.
+ * @details Handles near-parallel (identity)
+ * and near-opposite (π-rotation) cases.
+ */
 t_quat	quat_from_two_vecs(t_vec3 from, t_vec3 to)
 {
 	t_vec3	axis;

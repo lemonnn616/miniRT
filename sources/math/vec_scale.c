@@ -3,15 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   vec_scale.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:26:47 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/18 15:36:16 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 15:34:09 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec3.h"
 
+/**
+ * @brief Scales a vector by a scalar factor.
+ * @param vec Input vector.
+ * @param scalar Scale factor.
+ * @return Scaled vector.
+ * @details Math: result = scalar * vec.
+ */
 t_vec3	vec_scale(t_vec3 vec, float scalar)
 {
 	t_vec3	result;
