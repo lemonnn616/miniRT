@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:05:20 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 13:18:45 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 22:14:31 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	intersect_sphere(t_hit *hit, t_ray *ray, t_object *obj)
 	t_vec3		quad_coeff;
 	float		roots[2];
 
-	s = obj->obj;
+	s = (t_sphere *)obj->obj;
 	oc = vec_subtract(ray->origin, s->center);
 	quad_coeff.x = vec_dot(ray->direction, ray->direction);
 	quad_coeff.y = 2.0f * vec_dot(oc, ray->direction);
@@ -29,10 +29,13 @@ void	intersect_sphere(t_hit *hit, t_ray *ray, t_object *obj)
 		&& roots[0] < hit->distance)
 	{
 		update_hit(ray, roots[0], obj);
-		hit->specular = s->mat.specular;
-		hit->shininess = s->mat.shininess;
-		hit->reflectivity = s->mat.reflectivity;
 		hit->obj_colour = s->mat.color;
+		hit->reflectivity = fminf(1.0f, fmaxf(0.0f, s->mat.reflectivity));
+		hit->shininess = fminf(1.0f, fmaxf(0.0f, s->mat.shininess));
+		if (s->mat.specular > 0.0f)
+			hit->specular = fminf(1.0f, s->mat.specular);
+		else
+			hit->specular = hit->reflectivity;
 		if (roots[1] <= 0.0f)
 			hit->inside_obj = true;
 	}

@@ -6,11 +6,22 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:05:44 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 17:27:08 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 22:09:24 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+static void	apply_plane_material(t_hit *hit, t_plane *p)
+{
+	hit->obj_colour = p->mat.color;
+	hit->reflectivity = fminf(1.0f, fmaxf(0.0f, p->mat.reflectivity));
+	hit->shininess = fminf(1.0f, fmaxf(0.0f, p->mat.shininess));
+	if (p->mat.specular > 0.0f)
+		hit->specular = fminf(1.0f, p->mat.specular);
+	else
+		hit->specular = hit->reflectivity;
+}
 
 void	intersect_plane(t_hit *hit, t_ray *ray, t_object *obj)
 {
@@ -19,21 +30,18 @@ void	intersect_plane(t_hit *hit, t_ray *ray, t_object *obj)
 	float	denominator;
 	float	distance;
 
-	p = obj->obj;
+	p = (t_plane *)obj->obj;
 	denominator = vec_dot(ray->direction, p->normal);
-	if (fabs(denominator) < EPSILON)
+	if (fabsf(denominator) < EPSILON)
 		return ;
 	op = vec_subtract(ray->origin, p->point);
 	distance = -vec_dot(op, p->normal) / denominator;
 	if (distance > 0.0f && distance < hit->distance)
 	{
 		update_hit(ray, distance, obj);
-		hit->specular = p->mat.specular;
-		hit->shininess = p->mat.shininess;
-		hit->reflectivity = p->mat.reflectivity;
-		hit->obj_colour = p->mat.color;
-		if (denominator > 0)
-			hit->surface_norm = vec_scale(p->normal, -1);
+		apply_plane_material(hit, p);
+		if (denominator > 0.0f)
+			hit->surface_norm = vec_scale(p->normal, -1.0f);
 		else
 			hit->surface_norm = p->normal;
 	}
