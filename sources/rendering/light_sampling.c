@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 15:40:16 by natallia          #+#    #+#             */
-/*   Updated: 2025/10/17 16:17:06 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:12:21 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static t_color	compute_specular(t_light *l, t_hit *h,
 	if (spec_angle < 0.0f)
 		spec_angle = 0.0f;
 	spec_power = 8.0f + h->shininess * h->shininess * 1016.0f;
-	spec_strength = fmaxf(h->specular, 0.04f);
+	spec_strength = fmaxf(h->reflectivity, 0.04f);
 	specular = colour_scale(l->color,
-		l->intensity * spec_strength * powf(spec_angle, spec_power));
+			l->intensity * spec_strength * powf(spec_angle, spec_power));
 	return (specular);
 }
 
@@ -39,7 +39,7 @@ static t_color	compute_diffuse(t_light *l, t_hit *h, float n_dot_l)
 	float	ks;
 	float	kd;
 
-	ks = fmaxf(h->specular, 0.04f);
+	ks = fminf(1.0f, fmaxf(0.0f, h->reflectivity));
 	kd = 1.0f - ks;
 	diffuse = multiply_colours(l->color, h->obj_colour);
 	diffuse = colour_scale(diffuse, l->intensity * n_dot_l * kd);
@@ -97,7 +97,7 @@ t_color	sample_direct_lights(t_data *data, t_hit *hit, t_vec3 view_dir)
 	while (light)
 	{
 		total = colour_add(total,
-			eval_light_contrib(data, hit, light, view_dir));
+				eval_light_contrib(data, hit, light, view_dir));
 		light = light->next;
 	}
 	return (total);

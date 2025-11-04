@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sphere.c                                           :+:      :+:    :+:   */
+/*   intersect_sphere.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:05:20 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/02 12:09:38 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 13:18:45 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	intersect_sphere(t_hit *hit, t_ray *ray, t_object *obj)
 		update_hit(ray, roots[0], obj);
 		hit->specular = s->mat.specular;
 		hit->shininess = s->mat.shininess;
+		hit->reflectivity = s->mat.reflectivity;
 		hit->obj_colour = s->mat.color;
 		if (roots[1] <= 0.0f)
 			hit->inside_obj = true;
