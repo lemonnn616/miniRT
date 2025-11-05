@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/17 16:22:57 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 20:20:19 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct s_pixel
 	t_vec3	surface_norm;
 	float	specular;
 	float	shininess;
+	float	reflectivity;
 	t_color	ambient;
 	t_color	colour_sum;
 	uint32_t	spp;
@@ -146,6 +147,7 @@ void	initialise_mlx_window(t_data *data);
 void	free_pixels(t_pixel ***pixels, uint32_t y);
 void	cast_rays(t_data *data);
 void	render_pass(t_data *data, uint32_t y_start, uint32_t y_stride, t_pcg *rng);
+void	prepare_preview(t_data *data, t_ray *ray, uint32_t y_start, uint32_t x);
 void	start_progressive_render(t_data *data);
 void	cleanup_threads(t_data *data);
 bool	valid_intersection(float *low, float *high);
@@ -188,7 +190,7 @@ void	loop_hook(void *param);
 t_color	sample_direct_lights(t_data *data, t_hit *hit, t_vec3 view_dir);
 t_vec3	cosine_weighted_hemisphere(t_pcg *rng, const t_vec3 normal);
 void	offset_ray_origin(const t_vec3 p, const t_vec3 n, t_vec3 *origin_out);
-bool	random_is_specular(t_pcg *rng, float shininess);
+bool	random_is_specular(t_pcg *rng, float reflectivity);
 void	integrate_direct_lighting(t_data *d, t_ray *r,
 		t_pixel *pxl, t_color *throughput);
 

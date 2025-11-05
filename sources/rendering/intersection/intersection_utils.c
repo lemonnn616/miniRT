@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   intersection_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:02:26 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/07 16:03:03 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:27:24 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	update_hit(t_ray *ray, float distance, t_object *obj)
 	ray->hit_data->type = obj->type;
 	ray->hit_data->obj_ptr = obj->obj;
 	ray->hit_data->location = vec_add(ray->origin,
-		vec_scale(ray->direction, distance));
+			vec_scale(ray->direction, distance));
 }
 
 void	update_orientation(t_hit *hit, t_vec3 normal, float denominator)

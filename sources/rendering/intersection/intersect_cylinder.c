@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cylinder.c                                         :+:      :+:    :+:   */
+/*   intersect_cylinder.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:06:03 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/08 11:29:35 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 22:41:30 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ static void	intersect_top_cap(t_hit *hit, t_ray *ray,
 	float		denominator;
 	float		distance;
 
-	c = obj->obj;
+	c = (t_cylinder *)obj->obj;
 	top_center = vec_add(c->base, vec_scale(c->axis, c->height / 2.0f));
 	denominator = vec_dot(ray->direction, c->axis);
 	if (fabs(denominator) < EPSILON)
 		return ;
 	origin_to_top = vec_subtract(ray->origin, top_center);
-	distance = - vec_dot(origin_to_top, c->axis) / denominator;
+	distance = -vec_dot(origin_to_top, c->axis) / denominator;
 	if (is_within_circular_area(ray, c->radius, top_center, distance))
 	{
 		*top_hit = distance;
@@ -49,14 +49,14 @@ static void	intersect_bottom_cap(t_hit *hit, t_ray *ray,
 	float		denominator;
 	float		distance;
 
-	c = obj->obj;
+	c = (t_cylinder *)obj->obj;
 	bottom_center = vec_subtract(c->base,
-		vec_scale(c->axis, c->height / 2.0f));
+			vec_scale(c->axis, c->height / 2.0f));
 	denominator = vec_dot(ray->direction, c->axis);
 	if (fabs(denominator) < EPSILON)
 		return ;
 	origin_to_bottom = vec_subtract(ray->origin, bottom_center);
-	distance = - vec_dot(origin_to_bottom, c->axis) / denominator;
+	distance = -vec_dot(origin_to_bottom, c->axis) / denominator;
 	if (is_within_circular_area(ray, c->radius, bottom_center, distance))
 	{
 		*bottom_hit = distance;
@@ -77,7 +77,7 @@ static void	intersect_body(t_hit *hit, t_ray *ray, t_object *obj, float *roots)
 	t_vec3		origin_axis_offset;
 	t_vec3		quad_coeff;
 
-	c = obj->obj;
+	c = (t_cylinder *)obj->obj;
 	origin_to_center = vec_subtract(ray->origin, c->base);
 	ray_axis_skew = vec_cross(c->axis, ray->direction);
 	origin_axis_offset = vec_cross(c->axis, origin_to_center);
@@ -98,27 +98,28 @@ static void	intersect_body(t_hit *hit, t_ray *ray, t_object *obj, float *roots)
 void	intersect_cylinder(t_hit *hit, t_ray *ray, t_object *obj)
 {
 	t_cylinder	*c;
-	float		top_hit;
-	float		bottom_hit;
-	float		body_hits[2];
+	float		top;
+	float		bottom;
+	float		body[2];
 
-	c = obj->obj;
-	top_hit = 0;
-	bottom_hit = 0;
-	ft_memset(body_hits, 0, 2 * sizeof(float));
-	intersect_body(hit, ray, obj, body_hits);
-	intersect_top_cap(hit, ray, obj, &top_hit);
-	intersect_bottom_cap(hit, ray, obj, &bottom_hit);
-	if ((t_cylinder *)ray->hit_data->obj_ptr == c)
-	{
-		hit->specular = c->mat.specular;
-		hit->shininess = c->mat.shininess;
-		hit->obj_colour = c->mat.color;
-		if (top_hit < 0 || bottom_hit < 0
-			|| body_hits[0] < 0 || body_hits[1] < 0)
-				hit->inside_obj = true;
-		else
-			hit->inside_obj = false;
-	}
-
+	c = (t_cylinder *)obj->obj;
+	top = 0.0f;
+	bottom = 0.0f;
+	ft_memset(body, 0, sizeof(body));
+	intersect_body(hit, ray, obj, body);
+	intersect_top_cap(hit, ray, obj, &top);
+	intersect_bottom_cap(hit, ray, obj, &bottom);
+	if ((t_cylinder *)ray->hit_data->obj_ptr != c)
+		return ;
+	hit->obj_colour = c->mat.color;
+	hit->reflectivity = fminf(1.0f, fmaxf(0.0f, c->mat.reflectivity));
+	hit->shininess = fminf(1.0f, fmaxf(0.0f, c->mat.shininess));
+	if (c->mat.specular <= 0.0f)
+		hit->specular = hit->reflectivity;
+	else
+		hit->specular = fminf(1.0f, c->mat.specular);
+	if (top < 0.0f || bottom < 0.0f || body[0] < 0.0f || body[1] < 0.0f)
+		hit->inside_obj = true;
+	else
+		hit->inside_obj = false;
 }

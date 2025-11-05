@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:32:27 by natallia          #+#    #+#             */
-/*   Updated: 2025/05/15 21:41:33 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 22:42:09 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	intersect_light_globe(t_hit *hit, t_ray *ray, t_object *obj)
 	t_vec3		quad_coeff;
 	float		roots[2];
 
-	l = obj->obj;
+	l = (t_light *)obj->obj;
 	oc = vec_subtract(ray->origin, l->pos);
 	quad_coeff.x = vec_dot(ray->direction, ray->direction);
 	quad_coeff.y = 2.0f * vec_dot(oc, ray->direction);

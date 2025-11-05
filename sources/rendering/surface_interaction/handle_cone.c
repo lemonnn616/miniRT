@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:47:49 by natallia          #+#    #+#             */
-/*   Updated: 2025/07/23 13:24:21 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:28:54 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static t_vec3	get_cone_normal(t_hit *hit, t_cone *c)
 	axis_projection = vec_scale(c->axis, vec_dot(apex_to_point, c->axis));
 	radius_projection = vec_subtract(apex_to_point, axis_projection);
 	surface_normal = vec_add(vec_scale(radius_projection, cosf(c->angle)),
-		vec_scale(c->axis, sinf(c->angle)));
+			vec_scale(c->axis, sinf(c->angle)));
 	return (vec_normalize(surface_normal));
 }
 

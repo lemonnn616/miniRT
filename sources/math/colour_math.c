@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 15:37:10 by natallia          #+#    #+#             */
-/*   Updated: 2025/07/23 14:22:16 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:21:13 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_color	new_colour(float r, float g, float b)
 
 t_color	combine_colours(t_color c1, t_color c2)
 {
-	t_color result;
+	t_color	result;
 
 	result.r = c1.r + (1.0f - c1.r) * c2.r;
 	result.g = c1.g + (1.0f - c1.g) * c2.g;
