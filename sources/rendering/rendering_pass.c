@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendering_pass.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:07:27 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 20:19:46 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/07 17:41:26 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,30 +78,25 @@ void	find_closest_object(t_data *data, t_ray *ray, t_hit *hit)
 
 void	get_first_hit(t_data *data, t_ray *ray, int32_t y, int32_t x)
 {
-	int	tries;
-
-	tries = 2;
-	while (tries-- > 0)
+	find_closest_object(data, ray, ray->hit_data);
+	compute_surface_interaction(ray->hit_data, ray->direction);
+	if (!ray->hit_data->hit_occurred)
+		return ;
+	if (ray->hit_data->type == OBJ_LIGHT)
 	{
-		find_closest_object(data, ray, ray->hit_data);
-		compute_surface_interaction(ray->hit_data, ray->direction);
-		if (ray->hit_data->type != OBJ_LIGHT)
-			break ;
-		offset_ray_origin(ray->hit_data->location,
-			ray->direction, &ray->origin);
-		ray->hit_data->hit_occurred = false;
+		data->pixels[y][x].final_colour = ray->hit_data->colour;
+		gamma_adjust(&data->pixels[y][x].final_colour);
+		return ;
 	}
-	if (ray->hit_data->hit_occurred)
-	{
-		data->pixels[y][x].obj_colour = ray->hit_data->obj_colour;
-		data->pixels[y][x].specular = ray->hit_data->specular;
-		data->pixels[y][x].shininess = ray->hit_data->shininess;
-		data->pixels[y][x].location = ray->hit_data->location;
-		data->pixels[y][x].ray_direction = ray->direction;
-		data->pixels[y][x].surface_norm = ray->hit_data->surface_norm;
-		data->pixels[y][x].ambient = blend_ambient_light(ray->hit_data->colour,
-				data->scene.ambient, ray->hit_data->shininess);
-	}
+	data->pixels[y][x].obj_colour = ray->hit_data->obj_colour;
+	data->pixels[y][x].specular = ray->hit_data->specular;
+	data->pixels[y][x].shininess = ray->hit_data->shininess;
+	data->pixels[y][x].location = ray->hit_data->location;
+	data->pixels[y][x].ray_direction = ray->direction;
+	data->pixels[y][x].surface_norm = ray->hit_data->surface_norm;
+	data->pixels[y][x].ambient = blend_ambient_light(
+			ray->hit_data->colour, data->scene.ambient,
+			ray->hit_data->reflectivity);
 }
 
 void	render_pass(t_data *data, uint32_t y_start,
