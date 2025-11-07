@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:32:03 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/11/04 17:39:58 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/07 16:45:01 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,28 @@ static int	parse_fov(const char *tok, float *out_fov)
 }
 
 /**
+ * @brief Initialize a camera node with identity orientation and defaults.
+ * @param cam Camera to initialize.
+ * @param pos Position.
+ * @param dir Forward direction (normalized).
+ * @param fov Field of view in degrees.
+ * @return None.
+ */
+static void	camera_init_node(t_camera *cam, t_vec3 pos, t_vec3 dir, float fov)
+{
+	cam->pos = pos;
+	cam->dir = dir;
+	cam->orient.w = 1.0f;
+	cam->orient.v.x = 0.0f;
+	cam->orient.v.y = 0.0f;
+	cam->orient.v.z = 0.0f;
+	cam->yaw = 0.0f;
+	cam->pitch = 0.0f;
+	cam->angles_set = false;
+	cam->fov = fov;
+}
+
+/**
  * @brief Parse and push a camera definition.
  * @param tokens Token array.
  * @param scene Target scene.
@@ -101,13 +123,7 @@ bool	parse_camera(char **tokens, t_scene *scene)
 	cam = (t_camera *)malloc(sizeof(*cam));
 	if (!cam)
 		return (perror("malloc"), false);
-	cam->pos = pos;
-	cam->dir = dir;
-	cam->orient.w = 1.0f;
-	cam->orient.v.x = 0.0f;
-	cam->orient.v.y = 0.0f;
-	cam->orient.v.z = 0.0f;
-	cam->fov = fov;
+	camera_init_node(cam, pos, dir, fov);
 	cam->next = scene->cameras;
 	scene->cameras = cam;
 	return (true);

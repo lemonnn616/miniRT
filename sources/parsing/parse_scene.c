@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:22 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/11/04 18:37:48 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/07 15:27:35 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
-
-#define DEFAULT_WIDTH 800
-#define DEFAULT_HEIGHT 600
-
-/**
- * @brief Initializes the orientation and orthonormal basis for every camera.
- * @param cam Head of the camera linked list.
- * @return None.
- * @details Computes quaternion mapping (0,0,-1) to cam->dir, then derives
- * (dir, up, right) orthonormal basis via camera_compute_basis().
- */
-static void	setup_camera_basis(t_camera *cam)
-{
-	while (cam)
-	{
-		cam->orient = quat_from_two_vecs((t_vec3){0, 0, -1}, cam->dir);
-		camera_compute_basis(cam);
-		cam = cam->next;
-	}
-}
 
 /**
  * @brief Preprocess a raw line: trim,

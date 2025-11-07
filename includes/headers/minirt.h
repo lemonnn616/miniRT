@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/11/04 20:20:19 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/07 17:05:22 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@
 # define MAX_BOUNCES 10
 # define SEED_BASE 0x9E3779B97F4A7C15ULL
 # define ETERNITY 1
+# define TAU				6.2831854f
+# define PITCH_MAX_RAD	1.5533430f
+# define YAW_SENS		0.002f
+# define PITCH_SENS		0.002f
+# define MOUSE_MAX_PERC	0.10f
+# define MOUSE_MAX_PX	24.0
 
 typedef struct s_hit
 {
@@ -83,16 +89,16 @@ typedef struct s_ray
 
 typedef struct s_pixel
 {
-	t_vec3	ray_direction;
-	t_color	obj_colour;
-	t_color	final_colour;
-	t_vec3	location;
-	t_vec3	surface_norm;
-	float	specular;
-	float	shininess;
-	float	reflectivity;
-	t_color	ambient;
-	t_color	colour_sum;
+	t_vec3		ray_direction;
+	t_color		obj_colour;
+	t_color		final_colour;
+	t_vec3		location;
+	t_vec3		surface_norm;
+	float		specular;
+	float		shininess;
+	float		reflectivity;
+	t_color		ambient;
+	t_color		colour_sum;
 	uint32_t	spp;
 }	t_pixel;
 
@@ -137,61 +143,67 @@ typedef struct s_data
 	uint32_t			frame_id;
 }	t_data;
 
-void	exit_error(t_data *data, char *msg);
-void	exit_error_errno(t_data *data, char *msg, int errcode);
-void	exit_success(t_data *data);
-void	free_data(t_data *data);
-void	camera_compute_basis(t_camera *cam);
-void	free_scene(t_scene *scene);
-void	initialise_mlx_window(t_data *data);
-void	free_pixels(t_pixel ***pixels, uint32_t y);
-void	cast_rays(t_data *data);
-void	render_pass(t_data *data, uint32_t y_start, uint32_t y_stride, t_pcg *rng);
-void	prepare_preview(t_data *data, t_ray *ray, uint32_t y_start, uint32_t x);
-void	start_progressive_render(t_data *data);
-void	cleanup_threads(t_data *data);
-bool	valid_intersection(float *low, float *high);
-void	update_hit(t_ray *ray, float distance, t_object *obj);
-void	intersect_sphere(t_hit *hit, t_ray *ray, t_object *obj);
-void	update_orientation(t_hit *hit, t_vec3 normal, float denominator);
-bool	is_within_cylinder_height(t_ray *ray, t_cylinder *c, float root);
-bool	is_within_circular_area(t_ray *ray, float radius,
-			t_vec3 top_center, float distance);
-void	intersect_cone(t_hit *hit, t_ray *ray, t_object *obj);
-void	intersect_plane(t_hit *hit, t_ray *ray, t_object *obj);
-void	intersect_cylinder(t_hit *hit, t_ray *ray, t_object *obj);
-void	intersect_light_globe(t_hit *hit, t_ray *ray, t_object *obj);
-t_color	blend_ambient_light(t_color base, t_ambient amb, float shininess);
-t_color	new_colour(float r, float g, float b);
-t_color	colour_scale(t_color c, float s);
-t_color	colour_add(t_color a, t_color b);
-t_color	combine_colours(t_color c1, t_color c2);
-t_color	multiply_colours(t_color a, t_color b);
+void		exit_error(t_data *data, char *msg);
+void		exit_error_errno(t_data *data, char *msg, int errcode);
+void		exit_success(t_data *data);
+void		free_data(t_data *data);
+void		camera_compute_basis(t_camera *cam);
+void		free_scene(t_scene *scene);
+void		initialise_mlx_window(t_data *data);
+void		free_pixels(t_pixel ***pixels, uint32_t y);
+void		cast_rays(t_data *data);
+void		render_pass(t_data *data, uint32_t y_start,
+				uint32_t y_stride, t_pcg *rng);
+void		prepare_preview(t_data *data, t_ray *ray,
+				uint32_t y_start, uint32_t x);
+void		start_progressive_render(t_data *data);
+void		cleanup_threads(t_data *data);
+bool		valid_intersection(float *low, float *high);
+void		update_hit(t_ray *ray, float distance, t_object *obj);
+void		intersect_sphere(t_hit *hit, t_ray *ray, t_object *obj);
+void		update_orientation(t_hit *hit, t_vec3 normal, float denominator);
+bool		is_within_cylinder_height(t_ray *ray, t_cylinder *c, float root);
+bool		is_within_circular_area(t_ray *ray, float radius,
+				t_vec3 top_center, float distance);
+void		intersect_cone(t_hit *hit, t_ray *ray, t_object *obj);
+void		intersect_plane(t_hit *hit, t_ray *ray, t_object *obj);
+void		intersect_cylinder(t_hit *hit, t_ray *ray, t_object *obj);
+void		intersect_light_globe(t_hit *hit, t_ray *ray, t_object *obj);
+t_color		blend_ambient_light(t_color base, t_ambient amb, float shininess);
+t_color		new_colour(float r, float g, float b);
+t_color		colour_scale(t_color c, float s);
+t_color		colour_add(t_color a, t_color b);
+t_color		combine_colours(t_color c1, t_color c2);
+t_color		multiply_colours(t_color a, t_color b);
 uint32_t	percentage_to_rgba(const t_color f);
-void	gamma_adjust(t_color *c);
-void	compute_surface_interaction(t_hit *hit, t_vec3 ray_direction);
-void	handle_cone_surface_interaction(t_hit *hit);
-void	handle_sphere_surface_interaction(t_hit *hit);
-void	handle_plane_surface_interaction(t_hit *hit);
-void	handle_cylinder_surface_interaction(t_hit *hit);
-void	handle_light_globe_interaction(t_hit *hit, t_vec3 ray_direction);
-void	find_closest_object(t_data *data, t_ray *ray, t_hit *hit);
-void	trace_paths(t_data *data, t_ray *ray, uint32_t y, uint32_t x);
-
-void	reset_pixel_buffer(t_data *d);
-void	rotate_square(t_square *sq, t_quat q_rot);
-void	rotate_cone(t_cone *co, t_quat q_rot);
-void	rotate_cylinder(t_cylinder *c, t_quat q_rot);
-void	rotate_plane(t_plane *p, t_quat q_rot);
-void	recalc_rays_with_orientation(t_data *data);
-void	rotate_all_objects(t_data *d, t_quat q_rot);
-void	loop_hook(void *param);
-
-t_color	sample_direct_lights(t_data *data, t_hit *hit, t_vec3 view_dir);
-t_vec3	cosine_weighted_hemisphere(t_pcg *rng, const t_vec3 normal);
-void	offset_ray_origin(const t_vec3 p, const t_vec3 n, t_vec3 *origin_out);
-bool	random_is_specular(t_pcg *rng, float reflectivity);
-void	integrate_direct_lighting(t_data *d, t_ray *r,
-		t_pixel *pxl, t_color *throughput);
+void		gamma_adjust(t_color *c);
+void		compute_surface_interaction(t_hit *hit, t_vec3 ray_direction);
+void		handle_cone_surface_interaction(t_hit *hit);
+void		handle_sphere_surface_interaction(t_hit *hit);
+void		handle_plane_surface_interaction(t_hit *hit);
+void		handle_cylinder_surface_interaction(t_hit *hit);
+void		handle_light_globe_interaction(t_hit *hit, t_vec3 ray_direction);
+void		find_closest_object(t_data *data, t_ray *ray, t_hit *hit);
+void		trace_paths(t_data *data, t_ray *ray, uint32_t y, uint32_t x);
+void		reset_pixel_buffer(t_data *d);
+void		rotate_square(t_square *sq, t_quat q_rot);
+void		rotate_cone(t_cone *co, t_quat q_rot);
+void		rotate_cylinder(t_cylinder *c, t_quat q_rot);
+void		rotate_plane(t_plane *p, t_quat q_rot);
+void		recalc_rays_with_orientation(t_data *data);
+void		rotate_all_objects(t_data *d, t_quat q_rot);
+void		loop_hook(void *param);
+t_color		sample_direct_lights(t_data *data, t_hit *hit, t_vec3 view_dir);
+t_vec3		cosine_weighted_hemisphere(t_pcg *rng, const t_vec3 normal);
+void		offset_ray_origin(const t_vec3 p, const t_vec3 n,
+				t_vec3 *origin_out);
+bool		random_is_specular(t_pcg *rng, float reflectivity);
+void		integrate_direct_lighting(t_data *d, t_ray *r,
+				t_pixel *pxl, t_color *throughput);
+bool		mouse_jump_too_large(t_data *d, double dx, double dy);
+void		mouse_clamp_deltas(double *dx, double *dy);
+void		mouse_update_angles(t_camera *cam, double dx, double dy);
+void		apply_mouse_rotation(t_data *d, t_camera *cam,
+				double dx, double dy);
 
 #endif

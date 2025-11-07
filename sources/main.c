@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:35:30 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/11/04 19:00:58 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/07 16:46:41 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	rt_close(void *param)
 }
 
 /**
- * @brief Initialize runtime, parse scene, create window and set timing baselines.
+ * @brief Initialize runtime, parse scene,
+ * create window and set timing baselines.
  * @param data Out runtime structure to fill.
  * @param argv Command-line arguments (expects argv[1] to hold scene path).
  * @return None (terminates on failure).
@@ -37,6 +38,8 @@ void	rt_close(void *param)
  */
 static void	setup_data(t_data *data, char **argv)
 {
+	double	now;
+
 	ft_memset(data, 0, sizeof(t_data));
 	if (!parse_scene(argv[1], &data->scene))
 	{
@@ -54,8 +57,8 @@ static void	setup_data(t_data *data, char **argv)
 	debug_print_scene(&data->scene);
 	initialise_mlx_window(data);
 	{
-		double now = mlx_get_time();
-		data->last_move_time  = now;
+		now = mlx_get_time();
+		data->last_move_time = now;
 		data->last_frame_time = now;
 	}
 }

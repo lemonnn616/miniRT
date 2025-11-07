@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:15:21 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/11/04 19:00:35 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/07 15:15:51 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,25 @@
  * @return None.
  * @details Advances active_cam to its next node (or wraps to head), recomputes
  * basis, synchronizes last mouse position with current cursor, temporarily
- * suppresses the next mouse event, and switches to preview render (1 spp, 0 bounces).
+ * suppresses the next mouse event, and switches to preview render
+ * (1 spp, 0 bounces).
  */
-static void switch_to_next_camera(t_data *d)
+static void	switch_to_next_camera(t_data *d)
 {
+	t_camera	*next;
+	int32_t		mx_i;
+	int32_t		my_i;
+
+	my_i = 0;
+	mx_i = 0;
 	if (!d || !d->scene.cameras || !d->scene.active_cam)
 		return ;
-	t_camera *next;
 	if (d->scene.active_cam->next)
 		next = d->scene.active_cam->next;
 	else
 		next = d->scene.cameras;
 	d->scene.active_cam = next;
 	camera_compute_basis(next);
-	int32_t mx_i = 0, my_i = 0;
 	mlx_get_mouse_pos(d->mlx, &mx_i, &my_i);
 	d->last_mouse_x = (double)mx_i;
 	d->last_mouse_y = (double)my_i;
