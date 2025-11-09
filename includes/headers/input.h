@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:24:43 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 13:42:40 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/04 15:45:47 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 
 typedef struct s_keys
 {
-	bool w;
-	bool a;
-	bool s;
-	bool d;
+	bool	w;
+	bool	a;
+	bool	s;
+	bool	d;
 }	t_keys;
 
 void	mouse_move(double mx, double my, void *param);

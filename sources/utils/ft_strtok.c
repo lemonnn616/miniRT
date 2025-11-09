@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 13:29:36 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 12:45:23 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:24:10 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 #include <string.h>
 #include "libft.h"
 
+/**
+ * @brief Tokenizes a string in-place using
+ * a set of delimiter characters (non re-entrant).
+ * @param str Input string for first call; NULL for subsequent calls to continue.
+ * @param delim Set of delimiter characters.
+ * @return Pointer to next token, or NULL if no more tokens.
+ * @details Modifies the input buffer by inserting '\0'.
+ * Uses a static internal state; not thread-safe.
+ */
 char	*ft_strtok(char *str, const char *delim)
 {
 	static char	*last;

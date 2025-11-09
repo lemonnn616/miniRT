@@ -6,12 +6,22 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 13:24:42 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 12:47:03 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:24:23 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
+/**
+ * @brief Minimal long integer parser with sign and base parameter.
+ * @param nptr Input C-string.
+ * @param endptr If non-NULL, set to first unparsed character.
+ * @param base Numeric base (typically 10). Only decimal digits '0'..'9'
+ * are handled in this implementation.
+ * @return Parsed long integer.
+ * @details Skips leading spaces and parses optional sign;
+ * does not handle hex letters or prefixes.
+ */
 long	ft_strtol(const char *nptr, char **endptr, int base)
 {
 	const char	*s;

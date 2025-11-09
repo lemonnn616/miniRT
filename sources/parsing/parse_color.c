@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 14:32:07 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/06 15:01:52 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:40:29 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 #include <string.h>
 #include "utils.h"
 
+/**
+ * @brief Validate that 8-bit RGB components are within [0,255].
+ * @param r Red component.
+ * @param g Green component.
+ * @param b Blue component.
+ * @return true if all are in range; false otherwise.
+ */
 static bool	color_range_valid(long r, long g, long b)
 {
 	if (r < 0 || r > 255)
@@ -28,6 +35,16 @@ static bool	color_range_valid(long r, long g, long b)
 	return (true);
 }
 
+/**
+ * @brief Parse three comma-separated integers into r,g,b with strict format.
+ * @param copy Modifiable buffer with "R,G,B".
+ * @param r Output red.
+ * @param g Output green.
+ * @param b Output blue.
+ * @return true on success; false or prints error on malformed tokens.
+ * @details Ensures each token is fully consumed (no trailing chars)
+ * and no extra components.
+ */
 static bool	extract_components(char *copy, long *r, long *g, long *b)
 {
 	char	*tok;
@@ -56,6 +73,13 @@ static bool	extract_components(char *copy, long *r, long *g, long *b)
 	return (true);
 }
 
+/**
+ * @brief Parse a color string "R,G,B" with 0..255 integers
+ * into normalized t_color.
+ * @param str Input C-string.
+ * @param out Output color with channels in [0,1].
+ * @return true on success; false on validation/allocation errors.
+ */
 bool	parse_color(const char *str, t_color *out)
 {
 	char	*copy;

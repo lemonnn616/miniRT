@@ -3,15 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:49:11 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/07/17 13:26:05 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/04 18:58:44 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+/**
+ * @brief Frame loop hook: exits preview mode after a short idle period.
+ * @param param Opaque pointer to t_data.
+ * @details If preview mode is active and there was no movement for > 50 ms,
+ * restores MAX_RAYS and MAX_BOUNCES, clears the pixel buffer and restarts
+ * progressive rendering.
+ */
 void	loop_hook(void *param)
 {
 	t_data	*d;

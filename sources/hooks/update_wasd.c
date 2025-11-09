@@ -6,12 +6,20 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:40:59 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/07 16:36:41 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/07 15:21:27 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+/**
+ * @brief Update camera position from WASD keys along local basis vectors.
+ * @param d Global runtime data (reads keys).
+ * @param cam Camera to move.
+ * @param speed Movement step length for this frame.
+ * @return None.
+ * @details Moves along cam->dir (W/S) and cam->right (A/D).
+ */
 static void	update_camera_position(t_data *d, t_camera *cam, float speed)
 {
 	if (d->keys.w)
@@ -24,6 +32,13 @@ static void	update_camera_position(t_data *d, t_camera *cam, float speed)
 		cam->pos = vec_add(cam->pos, vec_scale(cam->right, speed));
 }
 
+/**
+ * @brief Apply movement, mark activity and restart progressive rendering.
+ * @param d Global runtime data.
+ * @param cam Camera to move.
+ * @param speed Movement step length.
+ * @return None.
+ */
 static void	process_movement(t_data *d, t_camera *cam, float speed)
 {
 	update_camera_position(d, cam, speed);
@@ -33,6 +48,14 @@ static void	process_movement(t_data *d, t_camera *cam, float speed)
 	start_progressive_render(d);
 }
 
+/**
+ * @brief Prepare movement for this frame (compute dt speed and run).
+ * @param d Global runtime data.
+ * @param delta Delta time (seconds) for this frame.
+ * @return None.
+ * @details Speed is scaled linearly with delta time:
+ *   speed = CAMERA_SPEED * delta.
+ */
 static void	prepare_movement(t_data *d, double delta)
 {
 	t_camera	*cam;
@@ -46,6 +69,13 @@ static void	prepare_movement(t_data *d, double delta)
 	process_movement(d, cam, speed);
 }
 
+/**
+ * @brief Per-frame update callback (time step & movement handling).
+ * @param param Opaque pointer to t_data.
+ * @return None.
+ * @details Computes clamped delta time in [0, 0.05] to avoid huge steps, and
+ * if any movement keys are pressed, advances the camera.
+ */
 void	update_cb(void *param)
 {
 	t_data	*d;

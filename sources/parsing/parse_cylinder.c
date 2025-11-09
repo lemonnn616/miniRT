@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:09 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/29 18:00:33 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/07 15:55:18 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,56 +16,14 @@
 #include <stdlib.h>
 #include "utils.h"
 
-static bool	validate_cy_tokens(char **tokens)
-{
-	int	n;
-
-	n = count_tokens(tokens);
-	if (n < 6 || n > 8)
-	{
-		printf("Error\nInvalid cylinder format\n");
-		return (false);
-	}
-	return (true);
-}
-
-static bool	fill_cylinder_data(t_cylinder *cy, char **tokens)
-{
-	t_vec3	base;
-	t_vec3	axis;
-	float	dia;
-	float	h;
-	char	*end = NULL;
-	char	*end2 = NULL;
-
-	if (!parse_vector(tokens[1], &base) || !parse_vector(tokens[2], &axis))
-		return (false);
-	if (axis.x < -1.0f || axis.x > 1.0f
-			|| axis.y < -1.0f || axis.y > 1.0f
-			|| axis.z < -1.0f || axis.z > 1.0f)
-		return (printf("Error\nCylinder axis components must be in [-1,1]\n"), false);
-	if (vec_length(axis) < 1e-6f)
-		return (printf("Error\nCylinder axis vector is zero\n"), false);
-	dia = ft_strtof(tokens[3], &end);
-	h = ft_strtof(tokens[4], &end2);
-	if (*tokens[3] == '\0' || *end != '\0')
-		return (printf("Error\nInvalid cylinder diameter format\n"), false);
-	if (*tokens[4] == '\0' || *end2 != '\0')
-		return (printf("Error\nInvalid cylinder height format\n"), false);
-	if (dia <= 0.0f || h <= 0.0f)
-	{
-		printf("Error\nCylinder size must be > 0\n");
-		return (false);
-	}
-	cy->base = base;
-	cy->axis0 = vec_normalize(axis);
-	cy->axis = cy->axis0;
-	cy->orient = (t_quat){1.0f, {0, 0, 0}};
-	cy->radius = dia * 0.5f;
-	cy->height = h;
-	return (true);
-}
-
+/**
+ * @brief Assign cylinder material.
+ * @param cy Cylinder to modify.
+ * @param col Base color.
+ * @param shininess Specular control [0..1].
+ * @param reflectivity Reflectivity [0..1].
+ * @return None.
+ */
 static void	set_cylinder_material(t_cylinder *cy, t_color col,
 	float shininess, float reflectivity)
 {
@@ -76,37 +34,87 @@ static void	set_cylinder_material(t_cylinder *cy, t_color col,
 	cy->mat.reflectivity = reflectivity;
 }
 
+/**
+ * @brief Free cylinder and return false.
+ * @param cy Cylinder to free.
+ * @return false (convenience).
+ */
+static bool	free_cylinder_fail(t_cylinder *cy)
+{
+	free(cy);
+	return (false);
+}
+
+/**
+ * @brief Parse color and apply material to cylinder.
+ * @param cy Cylinder.
+ * @param color_tok Token with color.
+ * @param sh Shininess.
+ * @param re Reflectivity.
+ * @return 1 on success; 0 on error with message.
+ */
+static int	parse_and_set_cy_material(t_cylinder *cy, const char *color_tok,
+		float sh, float re)
+{
+	t_color	col;
+
+	if (!parse_color(color_tok, &col))
+		return (printf("Error\nInvalid cylinder color\n"), 0);
+	set_cylinder_material(cy, col, sh, re);
+	return (1);
+}
+
+/**
+ * @brief Make an object node for cylinder.
+ * @param cy Cylinder pointer (owned by object).
+ * @return Allocated object or NULL (perror on failure).
+ */
+static t_object	*make_cylinder_object(t_cylinder *cy)
+{
+	t_object	*obj;
+
+	obj = (t_object *)malloc(sizeof(*obj));
+	if (!obj)
+	{
+		perror("malloc");
+		return (NULL);
+	}
+	obj->type = OBJ_CYLINDER;
+	obj->obj = cy;
+	obj->next = NULL;
+	return (obj);
+}
+
+/**
+ * @brief Parse a cylinder line and append to the scene object list.
+ * @param tokens Token array.
+ * @param scene Target scene.
+ * @return true on success; false otherwise.
+ */
 bool	parse_cylinder(char **tokens, t_scene *scene)
 {
 	t_cylinder	*cy;
 	t_object	*obj;
-	t_color		col;
-	float		shininess;
-	float		reflectivity;
-	int			n;
+	float		sh;
+	float		re;
 
 	if (!validate_cy_tokens(tokens))
 		return (false);
-	cy = malloc(sizeof(*cy));
+	cy = (t_cylinder *)malloc(sizeof(*cy));
 	if (!cy)
-		return (perror("malloc"), false);
+	{
+		perror("malloc");
+		return (false);
+	}
 	if (!fill_cylinder_data(cy, tokens))
-		return (free(cy), false);
-	if (!parse_color(tokens[5], &col))
-		return (free(cy), false);
-	shininess = 0.0f;
-	reflectivity = 0.0f;
-	n = count_tokens(tokens);
-	if (n > 6 && !parse_shininess(tokens[6], &shininess))
-		return (free(cy), false);
-	if (n > 7 && !parse_reflectivity(tokens[7], &reflectivity))
-		return (free(cy), false);
-	set_cylinder_material(cy, col, shininess, reflectivity);
-	obj = malloc(sizeof(*obj));
+		return (free_cylinder_fail(cy));
+	if (!parse_cylinder_optional(tokens, &sh, &re))
+		return (free_cylinder_fail(cy));
+	if (!parse_and_set_cy_material(cy, tokens[5], sh, re))
+		return (free_cylinder_fail(cy));
+	obj = make_cylinder_object(cy);
 	if (!obj)
-		return (perror("malloc"), free(cy), false);
-	obj->type = OBJ_CYLINDER;
-	obj->obj = cy;
+		return (free_cylinder_fail(cy));
 	obj->next = scene->objects;
 	scene->objects = obj;
 	return (true);

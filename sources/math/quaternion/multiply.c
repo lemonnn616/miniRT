@@ -6,12 +6,19 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:04:27 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 14:06:13 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:16:02 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "quaternion.h"
 
+/**
+ * @brief Multiplies two quaternions (Hamilton product).
+ * @param a Left operand quaternion.
+ * @param b Right operand quaternion.
+ * @return Product quaternion a ⊗ b.
+ * @details Math: w = aw*bw - av·bv; v = aw*bv + bw*av + av×bv.
+ */
 t_quat	quat_mul(t_quat a, t_quat b)
 {
 	t_quat	result;

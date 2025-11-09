@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:43:59 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/06 15:06:37 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:30:28 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 #include <stdlib.h>
 #include "utils.h"
 
+/**
+ * @brief Parse the resolution directive "R <width> <height>".
+ * @param tokens Token array for the line.
+ * @param scene Scene to update.
+ * @return true on success; false on format errors or duplicate definition.
+ * @details Validates positive dimensions; marks resolution_set.
+ */
 bool	parse_resolution(char **tokens, t_scene *scene)
 {
 	int	w;

@@ -14,6 +14,12 @@
 #include "utils.h"
 #include <stdio.h>
 
+/**
+ * @brief Parse a normalized shininess scalar in [0,1].
+ * @param str Input C-string.
+ * @param out Output float.
+ * @return true on success; false on format/range error.
+ */
 bool	parse_shininess(const char *str, float *out)
 {
 	char	*end;

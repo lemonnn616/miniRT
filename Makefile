@@ -1,7 +1,7 @@
 NAME := miniRT
 
 SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug sources/rendering/intersection \
-			sources/rendering/surface_interaction sources/rendering sources/rotation \
+			sources/rendering/surface_interaction sources/rendering \
 			sources/hooks sources/math/quaternion
 VPATH := $(SRC_DIRS)
 SRCS := \
@@ -60,7 +60,6 @@ SRCS := \
 	path_tracing.c \
 	ray_casting.c \
 	window.c \
-	rotate_objects.c \
 	conjugate.c \
 	create_from_two_vectors.c \
 	create_from_axis_angle.c \
@@ -78,7 +77,16 @@ SRCS := \
 	cosine_hemisphere.c \
 	parse_reflectivity.c \
 	count_tokens.c \
-	preview_mode.c
+	preview_mode.c \
+	parse_scene_utils.c \
+	parse_sphere_utils.c \
+	parse_plane_utils.c \
+	parse_cylinder_utils_1.c \
+	parse_cylinder_utils_2.c \
+	parse_cone_utils_1.c \
+	parse_cone_utils_2.c \
+	mouse_filters.c \
+	mouse_input.c
 
 OBJ_DIR := objects
 OBJECTS := $(SRCS:%.c=$(OBJ_DIR)/%.o)

@@ -6,7 +6,7 @@
 /*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:34:05 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/04/25 13:00:54 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/04 17:34:37 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@
 #include <stdlib.h>
 #include "utils.h"
 
+/**
+ * @brief Parse the ambient light directive "A <ratio> <R,G,B>".
+ * @param tokens Token array.
+ * @param scene Target scene (ambient must be unique).
+ * @return true on success; false if duplicated or malformed.
+ * @details ratio in [0,1].
+ * Sets scene->ambient and marks is_set.
+ */
 bool	parse_ambient(char **tokens, t_scene *scene)
 {
 	t_color	col;
