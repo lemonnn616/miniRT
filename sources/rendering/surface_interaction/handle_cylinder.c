@@ -6,11 +6,11 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:48:17 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 17:34:22 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:34:18 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "render.h"
 
 static t_vec3	get_cylinder_normal(t_hit *hit, t_cylinder *c)
 {

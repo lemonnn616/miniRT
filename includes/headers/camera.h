@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   camera.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:24:26 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/11/07 15:18:56 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 11:20:49 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CAMERA_H
 # define CAMERA_H
 
-# include "vec3.h"
+# include "rt_math.h"
 # include "quaternion.h"
 
 typedef struct s_camera

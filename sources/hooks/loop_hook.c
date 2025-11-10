@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:49:11 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/11/04 18:58:44 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:51:09 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "render.h"
 
 /**
  * @brief Frame loop hook: exits preview mode after a short idle period.

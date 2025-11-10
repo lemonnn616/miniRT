@@ -6,15 +6,15 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:05:44 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 22:09:24 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:28:02 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "render.h"
 
 static void	apply_plane_material(t_hit *hit, t_plane *p)
 {
-	hit->obj_colour = p->mat.color;
+	hit->obj_color = p->mat.color;
 	hit->reflectivity = fminf(1.0f, fmaxf(0.0f, p->mat.reflectivity));
 	hit->shininess = fminf(1.0f, fmaxf(0.0f, p->mat.shininess));
 	if (p->mat.specular > 0.0f)

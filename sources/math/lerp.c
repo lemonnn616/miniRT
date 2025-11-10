@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lerp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 13:30:44 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 15:35:04 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 11:37:02 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vec3.h"
+#include "rt_math.h"
 
 /**
  * @brief Linear interpolation (LERP) between two colors.
@@ -20,7 +20,7 @@
  * @return Interpolated color.
  * @details Math: c = c1*(1 - t) + c2*t.
  */
-t_color	lerp_colour(t_color c1, t_color c2, float fraction)
+t_color	lerp_color(t_color c1, t_color c2, float fraction)
 {
 	t_color	res;
 

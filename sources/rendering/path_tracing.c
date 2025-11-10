@@ -6,11 +6,12 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:26:40 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 17:26:24 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:36:23 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "render.h"
 
 static void	bounce_ray(t_data *d, t_ray *r, t_hit *hit)
 {
@@ -51,7 +52,7 @@ static bool	apply_russian_roulette(t_ray *r, t_color *throughput, int bounces)
 	random_value = pcg_random_float(r->rng);
 	if (random_value > survival_prob)
 		return (false);
-	*throughput = colour_scale(*throughput, 1.0f / survival_prob);
+	*throughput = color_scale(*throughput, 1.0f / survival_prob);
 	return (true);
 }
 
@@ -65,9 +66,9 @@ static bool	accumulate_emission(t_ray *ray, t_pixel *pxl,
 		return (false);
 	if (bounces == 0)
 		return (true);
-	inc = ray->hit_data->colour;
-	contrib = multiply_colours(inc, *throughput);
-	pxl->colour_sum = colour_add(pxl->colour_sum, contrib);
+	inc = ray->hit_data->color;
+	contrib = multiply_colors(inc, *throughput);
+	pxl->color_sum = color_add(pxl->color_sum, contrib);
 	return (true);
 }
 
@@ -77,7 +78,7 @@ static void	process_bounces(t_data *data, t_ray *r, t_pixel *pxl)
 	t_color	throughput;
 
 	bounces = 0;
-	throughput = new_colour(1.0f, 1.0f, 1.0f);
+	throughput = new_color(1.0f, 1.0f, 1.0f);
 	while (bounces++ < data->max_bounces)
 	{
 		ft_memset(r->hit_data, 0, sizeof(t_hit));
@@ -92,7 +93,7 @@ static void	process_bounces(t_data *data, t_ray *r, t_pixel *pxl)
 		r->hit_data->is_shiny = random_is_specular(r->rng,
 				r->hit_data->reflectivity);
 		if (!r->hit_data->is_shiny && r->hit_data->type != OBJ_LIGHT)
-			throughput = multiply_colours(throughput, r->hit_data->obj_colour);
+			throughput = multiply_colors(throughput, r->hit_data->obj_color);
 		if (!apply_russian_roulette(r, &throughput, bounces - 1))
 			break ;
 		bounce_ray(data, r, r->hit_data);
@@ -114,7 +115,7 @@ void	trace_paths(t_data *d, t_ray *r, uint32_t y, uint32_t x)
 		r->hit_data->surface_norm = px->surface_norm;
 		r->hit_data->specular = px->specular;
 		r->hit_data->shininess = px->shininess;
-		r->hit_data->obj_colour = px->obj_colour;
+		r->hit_data->obj_color = px->obj_color;
 		r->hit_data->inside_obj = false;
 		r->hit_data->type = OBJ_NONE;
 		offset_ray_origin(r->origin, r->hit_data->surface_norm, &r->origin);
@@ -122,7 +123,7 @@ void	trace_paths(t_data *d, t_ray *r, uint32_t y, uint32_t x)
 		rays++;
 	}
 	px->spp += d->max_rays;
-	avg = colour_scale(px->colour_sum, 1.0f / (float)px->spp);
+	avg = color_scale(px->color_sum, 1.0f / (float)px->spp);
 	gamma_adjust(&avg);
-	px->final_colour = combine_colours(avg, px->ambient);
+	px->final_color = combine_colors(avg, px->ambient);
 }

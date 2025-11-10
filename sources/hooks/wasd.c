@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   wasd.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:15:21 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/11/07 15:15:51 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:54:12 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "render.h"
 
 /**
  * @brief Cycle to the next camera and restart preview rendering.

@@ -6,11 +6,11 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:02:26 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 17:27:24 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:28:28 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "render.h"
 
 bool	valid_intersection(float *low, float *high)
 {

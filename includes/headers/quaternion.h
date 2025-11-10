@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   quaternion.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 14:10:33 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 14:13:29 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 11:55:20 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef QUATERNION_H
 # define QUATERNION_H
 
-# include "vec3.h"
+# include "rt_math.h"
 
 typedef struct s_quat
 {

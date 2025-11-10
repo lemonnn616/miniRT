@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   update_wasd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:40:59 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/11/07 15:21:27 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:52:22 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "render.h"
 
 /**
  * @brief Update camera position from WASD keys along local basis vectors.

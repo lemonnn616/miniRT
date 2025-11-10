@@ -6,11 +6,12 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 11:29:37 by natallia          #+#    #+#             */
-/*   Updated: 2025/09/26 21:57:56 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:35:18 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "render.h"
 
 static bool	wait_for_work(t_data *data, uint32_t *frame)
 {

@@ -6,11 +6,13 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 22:09:29 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/10 10:21:36 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:33:00 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "render.h"
+#include "light.h"
 
 static int	light_spp_for_hit(const t_hit *h, const t_light *l, int base)
 {
@@ -48,7 +50,7 @@ t_color	sample_direct_lights(t_data *d, t_hit *h, t_vec3 view_dir, t_pcg *rng)
 	int		base;
 
 	light = d->scene.lights;
-	total = new_colour(0, 0, 0);
+	total = new_color(0, 0, 0);
 	c.data = d;
 	c.hit = h;
 	c.view_dir = view_dir;
@@ -59,10 +61,10 @@ t_color	sample_direct_lights(t_data *d, t_hit *h, t_vec3 view_dir, t_pcg *rng)
 	while (light)
 	{
 		if (GLOBE_RADIUS > 0.0f)
-			total = colour_add(total, eval_area_light(&c, light,
+			total = color_add(total, eval_area_light(&c, light,
 						light_spp_for_hit(h, light, base)));
 		else
-			total = colour_add(total,
+			total = color_add(total,
 					eval_point_light(d, h, light, view_dir));
 		light = light->next;
 	}
@@ -78,6 +80,6 @@ void	integrate_direct_lighting(t_data *d, t_ray *r,
 
 	view_dir = vec_scale(r->direction, -1.0f);
 	direct = sample_direct_lights(d, r->hit_data, view_dir, r->rng);
-	contrib = multiply_colours(*throughput, direct);
-	pxl->colour_sum = colour_add(pxl->colour_sum, contrib);
+	contrib = multiply_colors(*throughput, direct);
+	pxl->color_sum = color_add(pxl->color_sum, contrib);
 }

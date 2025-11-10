@@ -6,11 +6,11 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 22:39:04 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/09 22:39:21 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:34:06 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "render.h"
 
 bool	is_in_shadow(t_data *d, t_hit *hit, t_vec3 light_dir, float dist)
 {

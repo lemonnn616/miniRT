@@ -6,11 +6,11 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:48:32 by natallia          #+#    #+#             */
-/*   Updated: 2025/07/23 13:24:40 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:34:46 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "render.h"
 
 void	handle_sphere_surface_interaction(t_hit *hit)
 {

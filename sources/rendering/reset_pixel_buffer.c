@@ -6,11 +6,12 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:19:03 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/09/26 22:12:02 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:38:24 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "render.h"
 
 void	reset_pixel_buffer(t_data *d)
 {
@@ -25,9 +26,9 @@ void	reset_pixel_buffer(t_data *d)
 		while (x < d->scene.width)
 		{
 			p = &d->pixels[y][x];
-			p->colour_sum = new_colour(0, 0, 0);
-			p->final_colour = new_colour(0, 0, 0);
-			p->ambient = new_colour(0, 0, 0);
+			p->color_sum = new_color(0, 0, 0);
+			p->final_color = new_color(0, 0, 0);
+			p->ambient = new_color(0, 0, 0);
 			p->spp = 0;
 			x++;
 		}

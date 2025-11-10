@@ -47,7 +47,7 @@ SRCS := \
 	intersect_plane.c \
 	intersect_sphere.c \
 	intersection_utils.c \
-	colour_math.c \
+	color_math.c \
 	light_utils.c \
 	direct_lighting.c \
 	light_evals.c \

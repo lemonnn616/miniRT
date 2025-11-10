@@ -6,11 +6,11 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:06:21 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/09 20:00:31 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:26:38 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "render.h"
 
 static bool	is_within_cone_height(t_ray *ray, t_cone *c, float root)
 {
@@ -108,7 +108,7 @@ void	intersect_cone(t_hit *hit, t_ray *ray, t_object *obj)
 	intersect_body(hit, ray, obj, body_hits);
 	if ((t_cone *)ray->hit_data->obj_ptr != c)
 		return ;
-	hit->obj_colour = c->mat.color;
+	hit->obj_color = c->mat.color;
 	hit->reflectivity = fminf(1.0f, fmaxf(0.0f, c->mat.reflectivity));
 	hit->shininess = fminf(1.0f, fmaxf(0.0f, c->mat.shininess));
 	if (c->mat.specular <= 0.0f)

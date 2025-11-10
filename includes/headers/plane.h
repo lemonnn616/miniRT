@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   plane.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:21:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/10/22 17:41:41 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 11:20:49 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PLANE_H
 # define PLANE_H
 
-# include "vec3.h"
+# include "rt_math.h"
 # include "material.h"
 # include "quaternion.h"
 
