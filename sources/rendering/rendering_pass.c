@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:07:27 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/10 12:37:46 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 15:52:28 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	get_first_hit(t_data *data, t_ray *ray, int32_t y, int32_t x)
 	data->pixels[y][x].ray_direction = ray->direction;
 	data->pixels[y][x].surface_norm = ray->hit_data->surface_norm;
 	data->pixels[y][x].ambient = blend_ambient_light(
-			ray->hit_data->color, data->scene.ambient,
+			ray->hit_data->obj_color, data->scene.ambient,
 			ray->hit_data->reflectivity);
 }
 
