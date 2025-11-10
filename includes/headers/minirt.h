@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:27:23 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/11/07 17:05:22 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 10:54:30 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,20 @@
 # define ERR_MUTEX "Failed to initialise mutex"
 # define ERR_COND "Failed to initialise condition variable"
 # define OFFSET 0.001f
-# define GLOBE_RADIUS 1.0f
 # define MAX_RAYS 20
 # define MAX_BOUNCES 10
 # define SEED_BASE 0x9E3779B97F4A7C15ULL
 # define ETERNITY 1
-# define TAU				6.2831854f
+# define TAU			6.2831854f
 # define PITCH_MAX_RAD	1.5533430f
 # define YAW_SENS		0.002f
 # define PITCH_SENS		0.002f
 # define MOUSE_MAX_PERC	0.10f
 # define MOUSE_MAX_PX	24.0
+
+# ifndef GLOBE_RADIUS
+	# define GLOBE_RADIUS 0.5f
+# endif
 
 typedef struct s_hit
 {
@@ -103,6 +106,14 @@ typedef struct s_pixel
 }	t_pixel;
 
 typedef struct s_data	t_data;
+
+typedef struct s_dlctx
+{
+	t_data	*data;
+	t_hit	*hit;
+	t_vec3	view_dir;
+	t_pcg	*rng;
+}	t_dlctx;
 
 typedef struct s_thread_ctx
 {
@@ -193,7 +204,8 @@ void		rotate_plane(t_plane *p, t_quat q_rot);
 void		recalc_rays_with_orientation(t_data *data);
 void		rotate_all_objects(t_data *d, t_quat q_rot);
 void		loop_hook(void *param);
-t_color		sample_direct_lights(t_data *data, t_hit *hit, t_vec3 view_dir);
+t_color	sample_direct_lights(t_data *data, t_hit *hit,
+	t_vec3 view_dir, t_pcg *rng);
 t_vec3		cosine_weighted_hemisphere(t_pcg *rng, const t_vec3 normal);
 void		offset_ray_origin(const t_vec3 p, const t_vec3 n,
 				t_vec3 *origin_out);
@@ -205,5 +217,11 @@ void		mouse_clamp_deltas(double *dx, double *dy);
 void		mouse_update_angles(t_camera *cam, double dx, double dy);
 void		apply_mouse_rotation(t_data *d, t_camera *cam,
 				double dx, double dy);
+t_color		compute_specular(t_light *l, t_hit *h,
+				t_vec3 view_dir, t_vec3 l_dir);
+t_color		compute_diffuse(t_light *l, t_hit *h, float n_dot_l);
+t_color		eval_area_light(t_dlctx *c, t_light *l, int m);
+t_color		eval_point_light(t_data *d, t_hit *h, t_light *l, t_vec3 view_dir);
+bool		is_in_shadow(t_data *d, t_hit *hit, t_vec3 light_dir, float dist);
 
 #endif
