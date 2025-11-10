@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:18:27 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/11/10 12:45:29 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 13:08:45 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_pcg
 	uint64_t	inc;
 }	t_pcg;
 
-typedef struct s_camera t_camera;
+typedef struct s_camera	t_camera;
 
 // Vector algebra
 t_vec3	vec_normalize(t_vec3 v);
