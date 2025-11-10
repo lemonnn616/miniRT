@@ -2,7 +2,7 @@ NAME := miniRT
 
 SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug sources/rendering/intersection \
 			sources/rendering/surface_interaction sources/rendering \
-			sources/hooks sources/math/quaternion
+			sources/hooks sources/math/quaternion sources/rendering/lighting
 VPATH := $(SRC_DIRS)
 SRCS := \
 	main.c \
@@ -49,7 +49,10 @@ SRCS := \
 	intersection_utils.c \
 	colour_math.c \
 	light_utils.c \
-	light_sampling.c \
+	direct_lighting.c \
+	light_evals.c \
+	shadows.c \
+	reflectance.c \
 	handle_cone.c \
 	handle_cylinder.c \
 	handle_light_globe.c \

@@ -6,7 +6,7 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:06:21 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 22:41:46 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/09 20:00:31 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static bool	is_within_cone_height(t_ray *ray, t_cone *c, float root)
 	hit_point = vec_add(ray->origin, vec_scale(ray->direction, root));
 	apex_to_point = vec_subtract(hit_point, c->apex);
 	height_projection = vec_dot(apex_to_point, c->axis);
-	if (height_projection >= 0 && height_projection <= c->height)
+	if (height_projection >= -EPSILON
+		&& height_projection <= c->height + EPSILON)
 		return (true);
 	return (false);
 }
@@ -37,7 +38,8 @@ static	t_vec3	get_cone_coefficients(t_ray *ray, t_cone *c)
 	d = ray->direction;
 	v = c->axis;
 	origin_to_apex = vec_subtract(ray->origin, c->apex);
-	cos_theta_squared = cosf(c->angle / 2) * cosf(c->angle / 2);
+	cos_theta_squared = cosf(degree_to_radian(c->angle) * 0.5f)
+		* cosf(degree_to_radian(c->angle) * 0.5f);
 	quad_coeff.x = vec_dot(d, v) * vec_dot(d, v)
 		- vec_dot(d, d) * cos_theta_squared;
 	quad_coeff.y = 2 * (vec_dot(origin_to_apex, v) * vec_dot(d, v)
@@ -80,8 +82,8 @@ void	intersect_base(t_hit *hit, t_ray *ray,
 		return ;
 	origin_to_base = vec_subtract(ray->origin, base_center);
 	distance = -vec_dot(origin_to_base, c->axis) / denominator;
-	if (is_within_circular_area(ray,
-			c->height * tanf(c->angle * 0.5f), c->axis, distance))
+	if (is_within_circular_area(ray, c->height
+			* tanf(degree_to_radian(c->angle) * 0.5f), base_center, distance))
 	{
 		*base_hit = distance;
 		if (distance > EPSILON && distance < hit->distance)
