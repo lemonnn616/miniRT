@@ -6,11 +6,11 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:05:20 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 22:14:31 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:28:14 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "render.h"
 
 void	intersect_sphere(t_hit *hit, t_ray *ray, t_object *obj)
 {
@@ -29,7 +29,7 @@ void	intersect_sphere(t_hit *hit, t_ray *ray, t_object *obj)
 		&& roots[0] < hit->distance)
 	{
 		update_hit(ray, roots[0], obj);
-		hit->obj_colour = s->mat.color;
+		hit->obj_color = s->mat.color;
 		hit->reflectivity = fminf(1.0f, fmaxf(0.0f, s->mat.reflectivity));
 		hit->shininess = fminf(1.0f, fmaxf(0.0f, s->mat.shininess));
 		if (s->mat.specular > 0.0f)

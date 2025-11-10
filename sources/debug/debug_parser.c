@@ -6,8 +6,6 @@ static const char	*obj_type_str(t_obj_type t)
 	if (t == OBJ_SPHERE) return "Sphere";
 	else if (t == OBJ_PLANE) return "Plane";
 	else if (t == OBJ_CYLINDER) return "Cylinder";
-	else if (t == OBJ_TRIANGLE) return "Triangle";
-	else if (t == OBJ_SQUARE) return "Square";
 	else if (t == OBJ_CONE) return "Cone";
 	else if (t == OBJ_LIGHT) return "Light";
 	else return "Unknown";

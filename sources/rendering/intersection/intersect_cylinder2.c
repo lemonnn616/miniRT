@@ -6,11 +6,11 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:01:20 by natallia          #+#    #+#             */
-/*   Updated: 2025/07/23 13:25:52 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:26:55 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "render.h"
 
 bool	is_within_cylinder_height(t_ray *ray, t_cylinder *c, float root)
 {

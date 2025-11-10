@@ -6,11 +6,11 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 10:57:23 by natallia          #+#    #+#             */
-/*   Updated: 2025/10/03 11:15:02 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:32:40 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "light.h"
 
 static void	orthonormal_basis(const t_vec3 normal,
 	t_vec3 *tangent, t_vec3 *bitangent)

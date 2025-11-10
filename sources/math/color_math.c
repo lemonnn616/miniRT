@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   colour_math.c                                      :+:      :+:    :+:   */
+/*   color_math.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-t_color	colour_scale(t_color c, float s)
+t_color	color_scale(t_color c, float s)
 {
 	c.r *= s;
 	c.g *= s;
@@ -20,7 +20,7 @@ t_color	colour_scale(t_color c, float s)
 	return (c);
 }
 
-t_color	colour_add(t_color a, t_color b)
+t_color	color_add(t_color a, t_color b)
 {
 	t_color	result;
 
@@ -30,7 +30,7 @@ t_color	colour_add(t_color a, t_color b)
 	return (result);
 }
 
-t_color	new_colour(float r, float g, float b)
+t_color	new_color(float r, float g, float b)
 {
 	t_color	c;
 
@@ -40,7 +40,7 @@ t_color	new_colour(float r, float g, float b)
 	return (c);
 }
 
-t_color	combine_colours(t_color c1, t_color c2)
+t_color	combine_colors(t_color c1, t_color c2)
 {
 	t_color	result;
 
@@ -50,7 +50,7 @@ t_color	combine_colours(t_color c1, t_color c2)
 	return (result);
 }
 
-t_color	multiply_colours(t_color a, t_color b)
+t_color	multiply_colors(t_color a, t_color b)
 {
 	t_color	result;
 

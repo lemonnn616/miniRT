@@ -6,11 +6,11 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:02:45 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/09 22:35:23 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:33:28 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "light.h"
 
 t_color	blend_ambient_light(t_color base, t_ambient amb, float reflectivity)
 {

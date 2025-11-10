@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   vec_length.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:58:53 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 15:34:20 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 11:20:49 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vec3.h"
+#include "rt_math.h"
 
 /**
  * @brief Computes the Euclidean length (magnitude) of a vector.

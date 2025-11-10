@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   vec_normalize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 13:30:38 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/11/04 15:34:06 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 11:20:49 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vec3.h"
+#include "rt_math.h"
 
 /**
  * @brief Normalizes a vector to unit length if its magnitude is not near zero.

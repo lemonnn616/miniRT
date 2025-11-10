@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   handle_light_globe.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 21:45:02 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/03 15:32:28 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:34:32 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "render.h"
+#include "light.h"
 
 void	handle_light_globe_interaction(t_hit *hit, t_vec3 ray_direction)
 {
@@ -27,7 +28,7 @@ void	handle_light_globe_interaction(t_hit *hit, t_vec3 ray_direction)
 	if (ndotv < 0.0f)
 		ndotv = 0.0f;
 	brightness = 0.1f + 0.9f * ndotv;
-	emission = colour_scale(l->color, l->intensity * brightness);
-	hit->colour = emission;
-	hit->obj_colour = emission;
+	emission = color_scale(l->color, l->intensity * brightness);
+	hit->color = emission;
+	hit->obj_color = emission;
 }

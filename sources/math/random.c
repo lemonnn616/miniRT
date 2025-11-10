@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   random.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 12:14:04 by natallia          #+#    #+#             */
-/*   Updated: 2025/06/29 13:47:08 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 11:20:49 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vec3.h"
+#include "rt_math.h"
 
 static float	norm_dist(t_pcg *rng)
 {

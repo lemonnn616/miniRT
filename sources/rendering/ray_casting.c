@@ -6,11 +6,12 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:20:17 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 17:18:58 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:37:07 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "render.h"
 
 static t_vec3	get_ray_direction(t_data *data, float y, float x)
 {

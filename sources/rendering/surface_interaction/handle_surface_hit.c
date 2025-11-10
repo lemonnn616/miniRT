@@ -6,17 +6,17 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:50:21 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 17:28:42 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:34:52 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "render.h"
 
 void	compute_surface_interaction(t_hit *hit, t_vec3 ray_direction)
 {
 	if (hit->hit_occurred == false)
 	{
-		hit->colour = new_colour(0.0f, 0.0f, 0.0f);
+		hit->color = new_color(0.0f, 0.0f, 0.0f);
 		return ;
 	}
 	if (hit->type == OBJ_SPHERE)

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   recalculate_rays_with_orientation.c                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 14:18:54 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/29 14:35:49 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:37:21 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "render.h"
 
 void	recalc_rays_with_orientation(t_data *data)
 {

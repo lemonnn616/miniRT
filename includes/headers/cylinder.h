@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:21:59 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/06/20 15:17:29 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 11:20:49 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CYLINDER_H
 # define CYLINDER_H
 
-# include "vec3.h"
+# include "rt_math.h"
 # include "material.h"
 # include "quaternion.h"
 

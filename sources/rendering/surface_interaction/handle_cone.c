@@ -6,11 +6,11 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:47:49 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/09 20:00:40 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:34:13 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "render.h"
 
 static t_vec3	get_cone_normal(t_hit *hit, t_cone *c)
 {

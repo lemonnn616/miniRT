@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
+/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:35:30 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/11/07 16:46:41 by iriadyns         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:43:36 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "render.h"
 
 /**
  * @brief MLX window close hook: marks the app as exiting.

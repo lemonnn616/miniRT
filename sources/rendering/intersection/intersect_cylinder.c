@@ -6,11 +6,11 @@
 /*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:06:03 by natallia          #+#    #+#             */
-/*   Updated: 2025/11/04 22:41:30 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:26:45 by natallia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "render.h"
 
 static void	intersect_top_cap(t_hit *hit, t_ray *ray,
 	t_object *obj, float *top_hit)
@@ -111,7 +111,7 @@ void	intersect_cylinder(t_hit *hit, t_ray *ray, t_object *obj)
 	intersect_bottom_cap(hit, ray, obj, &bottom);
 	if ((t_cylinder *)ray->hit_data->obj_ptr != c)
 		return ;
-	hit->obj_colour = c->mat.color;
+	hit->obj_color = c->mat.color;
 	hit->reflectivity = fminf(1.0f, fmaxf(0.0f, c->mat.reflectivity));
 	hit->shininess = fminf(1.0f, fmaxf(0.0f, c->mat.shininess));
 	if (c->mat.specular <= 0.0f)
