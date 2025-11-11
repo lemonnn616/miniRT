@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: natallia <natallia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iriadyns <iriadyns@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:35:30 by iriadyns          #+#    #+#             */
-/*   Updated: 2025/11/10 12:43:36 by natallia         ###   ########.fr       */
+/*   Updated: 2025/11/10 13:59:40 by iriadyns         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static void	setup_data(t_data *data, char **argv)
 	data->first_mouse = true;
 	data->mouse_block_until = 0.0;
 	data->suppress_next_mouse = false;
-	debug_print_scene(&data->scene);
 	initialise_mlx_window(data);
 	{
 		now = mlx_get_time();

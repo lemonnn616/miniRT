@@ -1,6 +1,6 @@
 NAME := miniRT
 
-SRC_DIRS := sources sources/parsing sources/math sources/utils sources/debug sources/rendering/intersection \
+SRC_DIRS := sources sources/parsing sources/math sources/utils sources/rendering/intersection \
 			sources/rendering/surface_interaction sources/rendering \
 			sources/hooks sources/math/quaternion sources/rendering/lighting
 VPATH := $(SRC_DIRS)
@@ -38,7 +38,6 @@ SRCS := \
 	vec_normalize.c \
 	vec_scale.c \
 	vec_subtract.c \
-	debug_parser.c \
 	exit.c \
 	intersect_cone.c \
 	intersect_cylinder.c \
